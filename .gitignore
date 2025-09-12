@@ -1,0 +1,24 @@
+# Dependency directories
+node_modules
+.pnpm-lock.yaml
+
+# Build output
+dist
+.next
+out
+
+# Local environment variables
+.env
+.env*.local
+
+# Logs
+logs
+*.log
+
+# IDE and OS files
+.idea/
+.vscode/
+*.DS_Store
+
+# Turborepo cache
+.turbo
