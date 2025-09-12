@@ -22,3 +22,5 @@ logs
 
 # Turborepo cache
 .turbo
+*storybook.log
+storybook-static
