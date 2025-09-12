@@ -1,10 +1,16 @@
 {
-  "name": "@monorepo/typescript-config",
-  "version": "0.0.0",
-  "private": true,
-  "files": [
-    "base.json",
-    "nextjs.json",
-    "react-library.json"
-  ]
+  "extends": "@monorepo/typescript-config/react-library.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "react": ["../../node_modules/react"],
+      "react-dom": ["../../node_modules/react-dom"]
+    }
+  },
+  "include": [
+    "src",
+    ".storybook"
+  ],
+  "exclude": ["node_modules", "dist"]
 }
