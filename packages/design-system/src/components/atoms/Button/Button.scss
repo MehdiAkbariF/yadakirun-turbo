@@ -1,47 +1,56 @@
-// برای استفاده از توکن‌ها، باید یک فایل متغیرهای SCSS بسازیم
-// فعلاً به صورت دستی مقادیر را وارد می‌کنیم
+// packages/design-system/src/components/atoms/Button/Button.scss
 
+// مرحله ۱: فایل توکن‌های مرکزی را وارد می‌کنیم
+@import '../../../theme/tokens';
+
+// مرحله ۲: از متغیرها به جای مقادیر هاردکد شده استفاده می‌کنیم
 .button {
-  font-family: '"Inter", sans-serif';
-  font-weight: 700;
+  font-family: $font-family-body;
+  font-weight: $font-weight-bold;
   border: 0;
-  border-radius: 8px;
+  border-radius: $border-radius-md;
   cursor: pointer;
   display: inline-block;
   line-height: 1;
+  transition: background-color 0.2s ease-in-out; // یک افکت زیبا برای تعامل بهتر
 
   &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+  // افزودن حالت هاور برای تجربه کاربری بهتر
+  &:not(:disabled):hover {
+    opacity: 0.9;
+  }
 }
 
 // Variants
 .button--primary {
-  color: #FFFFFF; // colors.white
-  background-color: #3B82F6; // colors.primary
+  color: $color-white;
+  background-color: $color-primary;
 }
 
 .button--secondary {
-  color: #374151; // colors.gray700
-  background-color: #E5E7EB; // colors.gray200 (باید به توکن اضافه شود)
+  color: $color-gray-700;
+  background-color: $color-gray-200;
 }
 
 .button--danger {
-  color: #FFFFFF; // colors.white
-  background-color: #EF4444; // colors.error
+  color: $color-white;
+  background-color: $color-error;
 }
 
 // Sizes
 .button--sm {
-  font-size: 12px; // typography.fontSizes.xs
-  padding: 10px 16px; // spacing
+  font-size: $font-size-xs;
+  padding: $button-padding-sm;
 }
 .button--md {
-  font-size: 14px; // typography.fontSizes.sm
-  padding: 12px 20px;
+  font-size: $font-size-sm;
+  padding: $button-padding-md;
 }
 .button--lg {
-  font-size: 16px; // typography.fontSizes.md
-  padding: 14px 24px;
+  font-size: $font-size-md;
+  padding: $button-padding-lg;
 }

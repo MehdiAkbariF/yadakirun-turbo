@@ -1,0 +1,40 @@
+// packages/design-system/src/theme/_tokens.scss
+
+// 1. Colors
+// ===================================
+// این متغیرها مستقیماً از فایل colors.ts ما الهام گرفته شده‌اند
+
+// Brand Colors
+$color-primary: #3B82F6;
+
+// Neutral Colors
+$color-white: #FFFFFF;
+$color-gray-200: #E5E7EB; // برای پس‌زمینه دکمه ثانویه
+$color-gray-700: #374151; // برای متن دکمه ثانویه
+
+// Feedback Colors
+$color-error: #EF4444;
+
+
+// 2. Typography
+// ===================================
+// این متغیرها از فایل typography.ts ما الهام گرفته شده‌اند
+
+$font-family-body: '"Inter", sans-serif';
+$font-weight-bold: 700;
+
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-md: 16px;
+
+
+// 3. Sizing & Spacing
+// ===================================
+// این متغیرها برای حفظ هماهنگی در اندازه‌ها هستند
+
+$border-radius-md: 8px;
+
+// Padding specific to buttons for now
+$button-padding-sm: 10px 16px;
+$button-padding-md: 12px 20px;
+$button-padding-lg: 14px 24px;
