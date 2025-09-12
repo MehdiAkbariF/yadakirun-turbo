@@ -1,25 +1,23 @@
 // packages/design-system/src/components/atoms/Button/Button.scss
 
-// مرحله ۱: فایل توکن‌های مرکزی را وارد می‌کنیم
-@import '../../../theme/tokens';
+@use '../../../theme/tokens' as tokens;
 
-// مرحله ۲: از متغیرها به جای مقادیر هاردکد شده استفاده می‌کنیم
 .button {
-  font-family: $font-family-body;
-  font-weight: $font-weight-bold;
+  font-family: tokens.$font-family-body;
+  font-weight: tokens.$font-weight-bold;
   border: 0;
-  border-radius: $border-radius-md;
+  border-radius: tokens.$border-radius-md;
+  // ... بقیه استایل‌ها
   cursor: pointer;
   display: inline-block;
   line-height: 1;
-  transition: background-color 0.2s ease-in-out; // یک افکت زیبا برای تعامل بهتر
+  transition: background-color 0.2s ease-in-out;
 
   &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
   }
 
-  // افزودن حالت هاور برای تجربه کاربری بهتر
   &:not(:disabled):hover {
     opacity: 0.9;
   }
@@ -27,30 +25,30 @@
 
 // Variants
 .button--primary {
-  color: $color-white;
-  background-color: $color-primary;
+  color: tokens.$color-white;
+  background-color: tokens.$color-primary;
 }
 
 .button--secondary {
-  color: $color-gray-700;
-  background-color: $color-gray-200;
+  color: tokens.$color-gray-700;
+  background-color: tokens.$color-gray-200;
 }
 
 .button--danger {
-  color: $color-white;
-  background-color: $color-error;
+  color: tokens.$color-white;
+  background-color: tokens.$color-error;
 }
 
 // Sizes
 .button--sm {
-  font-size: $font-size-xs;
-  padding: $button-padding-sm;
+  font-size: tokens.$font-size-xs;
+  padding: tokens.$button-padding-sm;
 }
 .button--md {
-  font-size: $font-size-sm;
-  padding: $button-padding-md;
+  font-size: tokens.$font-size-sm;
+  padding: tokens.$button-padding-md;
 }
 .button--lg {
-  font-size: $font-size-md;
-  padding: $button-padding-lg;
+  font-size: tokens.$font-size-md;
+  padding: tokens.$button-padding-lg;
 }

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@monorepo/*": ["packages/*/src"],
+      "vite": ["./node_modules/vite/dist/node/index.d.ts"]
+    }
+  }
+}
