@@ -1,0 +1,31 @@
+{
+  "extends": "../../packages/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@monorepo/design-system": [
+        "../../packages/design-system/src"
+      ]
+    },
+    "target": "ES2017"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "../../packages/design-system/src/**/*.ts", // شامل تمام فایل‌های TS در src
+    "../../packages/design-system/src/**/*.tsx" // شامل تمام فایل‌های TSX در src
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

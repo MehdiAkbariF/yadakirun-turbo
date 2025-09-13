@@ -1,0 +1,22 @@
+// مسیر: packages/design-system/src/styles/global.scss
+
+// وارد کردن تمام متغیرهای CSS که از توکن‌های ما تولید شده‌اند
+@use '../theme/_tokens.scss' as tokens;
+
+// استایل‌های عمومی و بازنشانی (reset) مرورگر
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-family-body, sans-serif); /* استفاده از متغیر CSS */
+  color: var(--text-color, #333); /* استفاده از متغیر CSS */
+  background-color: var(--background-color, #fff); /* استفاده از متغیر CSS */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}

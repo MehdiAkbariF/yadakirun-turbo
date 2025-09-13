@@ -1,22 +1,28 @@
+
 import React from 'react';
 import { ButtonProps } from './Button.types';
-import './Button.scss'; // فایل استایل را وارد می‌کنیم
+import './Button.scss';
 
 export const Button = ({
   variant = 'primary',
   size = 'md',
-  disabled = false,
   children,
+  className,
   ...props
 }: ButtonProps) => {
-  const mode = `button--${variant}`;
-  const sizeClass = `button--${size}`;
-  
+  const classNames = [
+    'button',
+    `button--${variant}`,
+    `button--${size}`,
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <button
       type="button"
-      className={['button', mode, sizeClass].join(' ')}
-      disabled={disabled}
+      className={classNames}
       {...props}
     >
       {children}

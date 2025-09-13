@@ -1,39 +1,38 @@
-// packages/design-system/src/components/atoms/Button/Button.test.tsx
+// مسیر: packages/design-system/src/components/atoms/Button/Button.test.tsx
 
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Button } from './Button';
-import { expect, test, describe } from 'vitest';
+import { expect, test, describe, vi } from 'vitest';
 
-// یک "مجموعه تست" برای کامپوننت Button تعریف می‌کنیم
 describe('Button Component', () => {
-
-  // اولین "مورد تست" ما
-  test('should render the button with the correct children text', () => {
-    // Arrange (آماده‌سازی): کامپوننت را با پراپ‌های مورد نظر در محیط تست رندر می‌کنیم
-    const buttonText = 'Click Me!';
-    render(<Button>{buttonText}</Button>);
-
-    // Act (عمل): در این تست ساده، عمل خاصی مانند کلیک نداریم.
-
-    // Assert (بررسی نتیجه): بررسی می‌کنیم که آیا نتیجه با انتظار ما مطابقت دارد یا نه
-    
-    // ابتدا، المنت دکمه را با استفاده از متنی که باید داخلش باشد، پیدا می‌کنیم
-    const buttonElement = screen.getByText(buttonText);
-    
-    // سپس، بررسی می‌کنیم که آیا این المنت واقعاً در "صفحه" (محیط شبیه‌سازی شده) وجود دارد یا نه
+  test('should render correctly with children', () => {
+    render(<Button>Click me</Button>);
+    const buttonElement = screen.getByRole('button', { name: /click me/i });
     expect(buttonElement).toBeInTheDocument();
   });
 
-  test('should apply the correct class for the primary variant', () => {
-    // Arrange
-    render(<Button variant="primary">Primary</Button>);
-
-    // Act
-    const buttonElement = screen.getByText('Primary');
-
-    // Assert
-    // بررسی می‌کنیم که آیا کلاس CSS صحیح به المنت اضافه شده است یا نه
-    expect(buttonElement).toHaveClass('button--primary');
+  test('should apply correct variant and size classes', () => {
+    render(<Button variant="secondary" size="lg">Large Secondary</Button>);
+    const buttonElement = screen.getByRole('button');
+    expect(buttonElement).toHaveClass('button--secondary');
+    expect(buttonElement).toHaveClass('button--lg');
   });
 
+  test('should be disabled when disabled prop is true', () => {
+    render(<Button disabled>Disabled</Button>);
+    const buttonElement = screen.getByRole('button');
+    expect(buttonElement).toBeDisabled();
+  });
+
+  test('should call onClick handler when clicked', async () => {
+    const user = userEvent.setup();
+    const handleClick = vi.fn();
+    render(<Button onClick={handleClick}>Clickable</Button>);
+    
+    const buttonElement = screen.getByRole('button', { name: /clickable/i });
+    await user.click(buttonElement);
+    
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
 });
