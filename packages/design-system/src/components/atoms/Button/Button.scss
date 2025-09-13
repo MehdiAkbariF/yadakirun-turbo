@@ -1,9 +1,9 @@
 // مسیر: packages/design-system/src/components/atoms/Button/Button.scss
 
-@use '../../../theme/_tokens.scss' as tokens; // <-- اینجا as tokens; را برگرداندیم
+@use '../../../theme/_tokens.scss' as tokens;
 
 .button {
-  font-family: tokens.$font-family-body; // <-- اینجا از tokens.$ استفاده می‌کنیم
+  font-family: tokens.$font-family-body;
   font-weight: tokens.$font-weight-bold;
   border-radius: tokens.$border-radius-md;
 
@@ -23,21 +23,21 @@
   }
 }
 
-// Variants (با استفاده از متغیرهای CSS)
+// Variants
 .button--primary {
-  color: var(--white);
-  background-color: var(--primary);
+  color: tokens.$color-white;
+  background-color: tokens.$color-primary;
 }
 
 .button--secondary {
-  color: var(--gray-700);
-  background-color: var(--gray-100);
-  box-shadow: inset 0 0 0 1px var(--gray-300);
+  color: tokens.$color-gray-700;
+  background-color: tokens.$color-gray-100;
+  box-shadow: inset 0 0 0 1px tokens.$color-gray-300;
 }
 
 .button--danger {
-  color: var(--white);
-  background-color: var(--error);
+  color: tokens.$color-white;
+  background-color: tokens.$color-error;
 }
 
 // Sizes

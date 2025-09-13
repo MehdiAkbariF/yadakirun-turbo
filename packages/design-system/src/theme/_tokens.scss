@@ -1,91 +1,35 @@
 // مسیر: packages/design-system/src/theme/_tokens.scss
 
-// بخش ۱: متغیرهای CSS برای تم‌های لایت/دارک
-// ===================================
-// این بخش متغیرهای CSS (مثلا --primary) را بر اساس تم فعال تولید می‌کند.
-
-@mixin generate-theme($theme-map) {
-  @each $mode-name, $mode-vars in $theme-map {
-    :root[data-theme="#{$mode-name}"] {
-      @each $variable-name, $color-value in $mode-vars {
-        --#{$variable-name}: #{$color-value};
-      }
-    }
-  }
-}
-
-$themes: (
-  light: (
-    // Brand Colors
-    primary: #3B82F6,
-    secondary: #10B981,
-
-    // Neutral Colors
-    white: #FFFFFF,
-    gray-100: #F3F4F6,
-    gray-300: #D1D5DB,
-    gray-500: #6B7280,
-    gray-700: #374151,
-    gray-900: #111827,
-    
-    // Feedback Colors
-    success: #22C55E,
-    error: #EF4444,
-    warning: #F97316,
-    info: #0EA5E9,
-    
-    // Accent Colors
-    orange: #F97316,
-    pale-blue: #93C5FD,
-
-    // General Text/Background
-    text-color: #374151,
-    background-color: #FFFFFF
-  ),
-  dark: (
-    // Brand Colors
-    primary: #60A5FA,
-    secondary: #6EE7B7,
-
-    // Neutral Colors
-    white: #000000,
-    gray-100: #1F2937,
-    gray-300: #4B5563,
-    gray-500: #D1D5DB,
-    gray-700: #E5E7EB,
-    gray-900: #F9FAFB,
-
-    // Feedback Colors
-    success: #6EEB83,
-    error: #F87171,
-    warning: #FCD34D,
-    info: #7DD3FC,
-
-    // Accent Colors
-    orange: #FCD34D,
-    pale-blue: #BFDBFE,
-    
-    // General Text/Background
-    text-color: #F9FAFB,
-    background-color: #111827
-  )
-);
-
-@include generate-theme($themes);
-
-
-// بخش ۲: توکن‌های SCSS (برای استفاده مستقیم در SCSS)
+// 1. Colors
 // ===================================
 
-// Typography
+$color-primary: #3B82F6;
+$color-secondary: #10B981;
+$color-white: #FFFFFF;
+$color-black: #000000;
+$color-gray-100: #F3F4F6;
+$color-gray-300: #D1D5DB;
+$color-gray-700: #374151;
+$color-gray-900: #111827; // <-- این خط را اضافه یا تایید کنید
+$color-error: #EF4444;
+
+// 2. Typography
+// ===================================
+
 $font-family-body: '"Inter", sans-serif';
 $font-weight-bold: 700;
+
 $font-size-xs: 0.75rem; // 12px
 $font-size-sm: 0.875rem; // 14px
 $font-size-md: 1rem;     // 16px
 
-// Sizing & Spacing
+
+// 3. Sizing & Spacing
+// ===================================
+
 $border-radius-md: 8px;
+
+// Padding specific to buttons for now
 $button-padding-sm: 10px 16px;
 $button-padding-md: 12px 20px;
 $button-padding-lg: 14px 24px;

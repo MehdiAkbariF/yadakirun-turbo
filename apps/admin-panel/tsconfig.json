@@ -13,6 +13,9 @@
       ],
       "@monorepo/design-system": [
         "../../packages/design-system/src"
+      ],
+      "@monorepo/api-client": [
+        "../../packages/api-client/src"
       ]
     },
     "target": "ES2017"
@@ -22,8 +25,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "../../packages/design-system/src/**/*.ts", // شامل تمام فایل‌های TS در src
-    "../../packages/design-system/src/**/*.tsx" // شامل تمام فایل‌های TSX در src
+    "../../packages/design-system/src/**/*.ts",
+    "../../packages/design-system/src/**/*.tsx",
+    "../../packages/api-client/src/**/*.ts"
   ],
   "exclude": [
     "node_modules"
