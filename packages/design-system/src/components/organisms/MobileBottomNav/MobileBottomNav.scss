@@ -1,0 +1,91 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4rem; // 64px
+  background-color: tokens.$color-bg-surface;
+  border-top: 1px solid tokens.$color-border-secondary;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  
+  // ✅ اصلاح: کاهش z-index به 20
+  // سلسله مراتب: 
+  // محتوا: 0-10
+  // نویگیشن پایین: 20
+  // سایدبار موبایل: 50
+  // هدر: 60
+  // مودال‌ها: 100+
+z-index: 10;
+  
+  padding-bottom: env(safe-area-inset-bottom);
+
+  // در دسکتاپ مخفی شود
+  @media (min-width: tokens.$breakpoint-lg) {
+    display: none;
+  }
+
+  &__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: tokens.$color-text-secondary;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    position: relative;
+    padding-top: 4px;
+
+    &:hover {
+      color: tokens.$color-brand-primary;
+    }
+
+    &--active {
+      color: tokens.$color-brand-primary;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40%;
+        height: 3px;
+        background-color: tokens.$color-brand-primary;
+        border-radius: 0 0 4px 4px;
+      }
+    }
+  }
+
+  &__icon-wrapper {
+    position: relative;
+    margin-bottom: 2px;
+  }
+
+  &__badge {
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    background-color: tokens.$color-brand-accent;
+    color: tokens.$color-text-on-brand;
+    font-size: 10px;
+    font-weight: bold;
+    height: 16px;
+    min-width: 16px;
+    padding: 0 4px;
+    border-radius: tokens.$radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid tokens.$color-bg-surface;
+  }
+}

@@ -83,7 +83,7 @@ export const SidebarNewsSlider = ({ items, title }: SidebarNewsSliderProps) => {
                 
                 <div className="mini-news-card__meta">
                   <CalendarDays size={12} />
-                  <span>{item.date}</span>
+                  <Label size="xs" weight="bold" color="disabled">{item.date}</Label>
                 </div>
               </div>
               

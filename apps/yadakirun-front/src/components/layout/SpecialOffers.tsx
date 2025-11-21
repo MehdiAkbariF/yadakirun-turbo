@@ -112,20 +112,20 @@ export const SpecialOffers = () => {
             className="!py-4"
           >
             <SwiperSlide key="special-offer-intro" className="!w-auto">
-              <div className="">
+              <div className=" flex flex-col justify-center items-center gap-2">
                 <Image
-                  src="/takhfif.webp"
+                  src="/TAKHFIF.webp"
                   alt="تخفیفات ویژه"
                   width={120}
                   height={120}
                   priority={true}
                 />
-                <Label as="h2" size="3x" weight="extra-bold" className="mt-4" color="on-brand">
+                <Label as="h2" size="xl" weight="extra-bold" className="mt-4" color="on-brand">
                   تخفیفات ویژه
                 </Label>
                 <div className="mt-6 flex items-center justify-center gap-x-2">
                   <Clock size={20} />
-                  <Label as="span" size="base" weight="semi-bold" color="on-brand">
+                  <Label as="span" size="sm" weight="semi-bold" color="on-brand">
                     زمان باقی مانده:
                   </Label>
                 </div>

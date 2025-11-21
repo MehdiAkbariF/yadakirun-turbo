@@ -34,7 +34,9 @@ export const Breadcrumb = ({ items }: BreadcrumbProps) => {
               ) : (
                 <>
                   <Link href={item.href} className="breadcrumb__link">
+                   <Label size="xs" color="secondary" className="breadcrumb__active">
                     {item.label}
+                    </Label>
                   </Link>
                   <ChevronLeft size={14} className="breadcrumb__separator" />
                 </>

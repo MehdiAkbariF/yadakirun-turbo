@@ -14,7 +14,10 @@ export const ProductCard = ({ title, href, imgSrc, price, badgeText, className }
       {/* ✅✅✅ استفاده از کامپوننت Badge به جای div ساده */}
       {badgeText && (
         <Badge variant="primary" className="product-card__badge">
-          {badgeText}
+          <Label size='xs' color='brand-secondarys'>
+             {badgeText}
+          </Label>
+         
         </Badge>
       )}
       

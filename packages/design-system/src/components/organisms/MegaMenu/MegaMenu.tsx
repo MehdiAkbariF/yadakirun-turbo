@@ -21,7 +21,7 @@ export const MegaMenu = ({ triggerText, categories, brands }: MegaMenuProps) => 
       data-testid="mega-menu"
     >
       <div className={`mega-menu__trigger ${isOpen ? 'mega-menu__trigger--active' : ''}`}>
-        <Label as="span" size="sm" weight="medium" color="secondary">
+        <Label as="span" size="sm" weight="bold" color="primary">
           {triggerText}
         </Label>
         <ChevronDown size={16} className="mega-menu__chevron" />
@@ -29,7 +29,12 @@ export const MegaMenu = ({ triggerText, categories, brands }: MegaMenuProps) => 
 
       <div className={`mega-menu__dropdown ${isOpen ? 'mega-menu__dropdown--open' : ''}`} data-testid="mega-menu-dropdown">
         <div className="mega-menu__content">
-          <div className="mega-menu__column">
+          
+          {/* ستون اول: دسته‌بندی قطعات */}
+          <div 
+             className="mega-menu__column"
+             onMouseEnter={() => setActiveSubMenu(null)} 
+          >
             <Label as="h3" size="sm" weight="bold" color="primary" className="mega-menu__title">
               قطعات خودرو
             </Label>
@@ -44,14 +49,21 @@ export const MegaMenu = ({ triggerText, categories, brands }: MegaMenuProps) => 
             </ul>
           </div>
 
+          {/* ستون دوم: برندها */}
           <div className="mega-menu__column">
             <Label as="h3" size="sm" weight="bold" color="primary" className="mega-menu__title">
               برند خودرو
             </Label>
             <ul className="mega-menu__list">
               {brands.map((item) => (
-                <li key={item.id} onMouseEnter={() => item.subItems.length > 0 && setActiveSubMenu(item.id)}>
-                  <a href={item.href} className="mega-menu__link mega-menu__link--parent">
+                <li 
+                  key={item.id} 
+                  onMouseEnter={() => setActiveSubMenu(item.id)}
+                >
+                  <a 
+                    href={item.href} 
+                    className={`mega-menu__link mega-menu__link--parent ${activeSubMenu === item.id ? 'mega-menu__link--active' : ''}`}
+                  >
                     <Label as="span" size="sm">{item.title}</Label>
                     {item.subItems.length > 0 && <ChevronLeft size={16} />}
                   </a>
@@ -60,13 +72,18 @@ export const MegaMenu = ({ triggerText, categories, brands }: MegaMenuProps) => 
             </ul>
           </div>
 
-          <div className="mega-menu__sub-menu-column">
-            {brands.map((brand) => (
-              brand.subItems.length > 0 && (
+          {/* 
+             ✅ ستون سوم: به صورت پیش‌فرض بسته است (در CSS) 
+             و فقط وقتی activeSubMenu مقدار داشته باشد کلاس open می‌گیرد
+          */}
+          <div className={`mega-menu__sub-menu-column ${activeSubMenu ? 'mega-menu__sub-menu-column--open' : ''}`}>
+            {brands.map((brand) => {
+              if (!brand.subItems || brand.subItems.length === 0) return null;
+              
+              return (
                 <div
                   key={`sub-${brand.id}`}
                   className={`mega-menu__sub-menu ${activeSubMenu === brand.id ? 'mega-menu__sub-menu--active' : ''}`}
-                  data-testid={`submenu-${brand.id}`}
                 >
                   <Label as="h3" size="sm" weight="bold" color="primary" className="mega-menu__title">
                     مدل‌های {brand.title}
@@ -79,8 +96,8 @@ export const MegaMenu = ({ triggerText, categories, brands }: MegaMenuProps) => 
                     ))}
                   </div>
                 </div>
-              )
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

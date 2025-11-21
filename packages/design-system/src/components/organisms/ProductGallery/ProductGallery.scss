@@ -8,7 +8,15 @@
   &__main {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    
+    // ✅ اصلاح شده: در سایز lg و پایین‌تر (موبایل و تبلت) نسبت تصویر 2 به 1 است
+    aspect-ratio: 2 / 1; 
+
+    // ✅ در سایزهای خیلی بزرگ (XL به بالا) تصویر مربعی می‌شود تا زیباتر دیده شود
+    @media (min-width: tokens.$breakpoint-lg) {
+      aspect-ratio: 1 / 1;
+    }
+
     background-color: tokens.$color-bg-surface;
     border: 1px solid tokens.$color-border-secondary;
     border-radius: tokens.$radius-xl;
@@ -32,8 +40,8 @@
   &__expand-btn {
     position: absolute;
     bottom: tokens.$spacing-4;
-    right: tokens.$spacing-4; // در حالت RTL سمت راست قرار می‌گیرد (یا چپ بسته به دایرکشن)
-    z-index: 10; // بالاتر از عکس
+    right: tokens.$spacing-4; 
+    z-index: 10; 
     
     width: 40px;
     height: 40px;
@@ -48,7 +56,7 @@
     color: tokens.$color-text-primary;
     cursor: pointer;
     
-    opacity: 0; // در حالت عادی مخفی (یا می‌توانید همیشه نمایش دهید)
+    opacity: 0; 
     transform: translateY(10px);
     transition: all 0.3s ease;
 

@@ -94,7 +94,7 @@ export const MainHeader = () => {
   
   const themeToggleComponent = (
     <>
-      <div className="lg:hidden">
+      <div className="">
         <ThemeToggle
           variant="icon"
           className="header-action header-action--theme-toggle"
@@ -102,14 +102,7 @@ export const MainHeader = () => {
           onToggle={toggleTheme}
         />
       </div>
-      <div className="hidden lg:flex">
-        <ThemeToggle
-          variant="slider"
-          className="header-action header-action--theme-toggle"
-          isDarkMode={theme === 'dark-blue'}
-          onToggle={toggleTheme}
-        />
-      </div>
+     
     </>
   );
 

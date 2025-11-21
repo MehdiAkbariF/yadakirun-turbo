@@ -29,7 +29,7 @@
   &__image-wrapper {
     position: relative;
     // در موبایل عرض فیکس و کوچک دارد
-    width: 110px; 
+    width: 90px; 
     flex-shrink: 0; // جلوگیری از جمع شدن عکس
     display: flex;
     align-items: center;
@@ -37,15 +37,17 @@
     margin-left: tokens.$spacing-3; // فاصله از متن (در RTL میشه سمت چپ عکس)
 
     @media (min-width: tokens.$breakpoint-sm) {
-      width: 100%;
+     
+      width: 150px;
       aspect-ratio: 1 / 1; // در دسکتاپ مربعی شود
-      margin-left: 0;
+      margin-left: auto;
+      margin-right: auto;
       margin-bottom: tokens.$spacing-3;
     }
   }
 
   &__image {
-    object-fit: contain;
+    object-fit: fill;
     max-height: 100%;
     width: auto;
     max-width: 100%;
@@ -114,7 +116,7 @@
   }
 
   &__old-price {
-    font-size: 10px;
+    font-size: tokens.$font-size-sm;
     color: tokens.$color-text-placeholder;
     text-decoration: line-through;
 

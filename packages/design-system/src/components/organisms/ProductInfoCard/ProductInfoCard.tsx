@@ -76,7 +76,7 @@ export const ProductInfoCard = ({
         ) : (
            <div className="quantity-selector">
               <button onClick={() => handleQuantity(1)}><Plus size={16}/></button>
-              <span>{quantity}</span>
+              <Label>{quantity}</Label>
               <button onClick={() => handleQuantity(-1)}><Minus size={16}/></button>
            </div>
         )}
@@ -98,8 +98,8 @@ export const ProductInfoCard = ({
          )}
          {discountAmount && (
            <div className="flex justify-between text-sm text-utility-success mb-4">
-              <span className="font-bold">سود شما:</span>
-              <span className="font-bold">{formatPrice(discountAmount)}</span>
+              <Label className="font-bold">سود شما:</Label>
+              <Label className="font-bold">{formatPrice(discountAmount)}</Label>
            </div>
          )}
          <div className="flex justify-between items-center pt-4 border-t border-border-secondary">

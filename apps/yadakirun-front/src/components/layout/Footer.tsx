@@ -4,7 +4,7 @@ import { Container } from '@monorepo/design-system/src/components/organisms/Cont
 
 export const Footer = () => {
   return (
-    <footer className="w-full py-8 bg-gray-800 text-white z-10">
+    <footer className="w-full py-8 bg-gray-800 text-white ">
       <Container>
         <div className="text-center">
           <Label as="p" color="secondary">

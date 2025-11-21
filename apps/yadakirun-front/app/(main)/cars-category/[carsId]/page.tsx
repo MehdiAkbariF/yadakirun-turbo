@@ -57,6 +57,7 @@ const categoryData = [
   { href: '/category/offroad', imgSrc: '/Renault.svg', title: 'آفرود' },
   { href: '/category/mvm', imgSrc: '/Renault.svg', title: 'MVM' },
   { href: '/category/geely', imgSrc: '/geely.webp', title: 'جیلی' },
+    { href: '/category/geely', imgSrc: '/geely.webp', title: 'جیلی' },
 ];
 
 const textContentData = [
@@ -106,12 +107,10 @@ export default function CarsCategoryPage() {
              <Label as="h1" size="xl" weight="bold" className="mb-6">دسته‌بندی‌های مرتبط</Label>
              
              {/* ✅ اصلاح: استفاده از CardGrid در دسکتاپ */}
-             <div className="hidden lg:block">
-                <CardGrid items={categoryData} columns={6} /> 
-             </div>
+            
              
              {/* ✅ اصلاح: استفاده از CardSlider در موبایل (مشابه HomePage) */}
-             <div className="lg:hidden">
+             <div >
                 <CardSlider items={categoryData} />
              </div>
            </div>

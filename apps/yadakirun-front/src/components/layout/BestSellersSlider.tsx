@@ -29,12 +29,12 @@ export const BestSellersSlider = ({ title, items = sampleData, uniqueId }: BestS
   return (
     // ✅✅✅ اصلاح اصلی اینجاست ✅✅✅
     <section className="bestsellers-section">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 bo">
         <div className="mb-8 text-right border-r-4 border-accent pr-4 pt-2">
             <Label as="h2" size="xl" weight="extra-bold">{title}</Label>
         </div>
       </div>
-      <div className="w-full relative container mx-auto" dir="rtl">
+      <div className="w-full relative container mx-auto  pb-5" dir="rtl">
         <Swiper
           modules={[Autoplay, Navigation]}
           loop={true}
@@ -67,7 +67,7 @@ export const BestSellersSlider = ({ title, items = sampleData, uniqueId }: BestS
             </SwiperSlide>
           ))}
         </Swiper>
-        <div className={`${nextButtonClass} swiper-button-next`}></div>
+        <div className={`${nextButtonClass} swiper-button-next `}></div>
         <div className={`${prevButtonClass} swiper-button-prev`}></div>
       </div>
        <style jsx global>{`

@@ -2,6 +2,9 @@
 
 .mega-menu {
   position: relative;
+  height: 100%; 
+  display: flex;
+  align-items: center;
 
   &__trigger {
     display: flex;
@@ -9,7 +12,7 @@
     gap: tokens.$spacing-1;
     cursor: pointer;
     padding: tokens.$spacing-2 0;
-    position: relative;
+    height: 100%;
     
     &:hover, &--active {
       .label {
@@ -28,8 +31,9 @@
 
   &__dropdown {
     position: absolute;
-    top: 100%;
-    right: 0;
+    top: 100%; 
+    right: -100px;
+    
     width: 60rem;
     max-width: 90vw;
     background-color: tokens.$color-bg-surface;
@@ -37,11 +41,13 @@
     box-shadow: tokens.$shadow-xl;
     border: 1px solid tokens.$color-border-secondary;
     padding: tokens.$spacing-6;
+    
     opacity: 0;
     visibility: hidden;
     transform: translateY(10px);
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-    z-index: tokens.$z-index-10;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    
+    z-index: 100; 
 
     &--open {
       opacity: 1;
@@ -52,51 +58,64 @@
 
   &__content {
     display: flex;
-    // ✅ یک ارتفاع حداکثری برای کل محتوا در نظر می‌گیریم
-    max-height: 70vh; // مثلا ۷۰ درصد ارتفاع صفحه
+    max-height: 70vh;
+    overflow: hidden; // جلوگیری از سرریز هنگام انیمیشن
   }
 
   &__column {
     flex: 1;
     padding: 0 tokens.$spacing-4;
     border-left: 1px solid tokens.$color-border-secondary;
-    // ✅ مهم: به ستون‌ها اجازه اسکرول شدن می‌دهیم
-    overflow-y: auto; 
+    overflow-y: auto;
+    // انتقال نرم برای وقتی که ستون سوم باز می‌شود و این‌ها باید فشرده شوند
+    transition: flex 0.3s ease; 
     
-    // استایل اسکرول‌بار (اختیاری ولی زیبا)
     &::-webkit-scrollbar {
-      width: 1px;
-    }
-    &::-webkit-scrollbar-track {
-      background: transparent;
+      width: 4px;
     }
     &::-webkit-scrollbar-thumb {
       background: tokens.$color-border-primary;
       border-radius: tokens.$radius-full;
     }
 
-
-    &:last-child {
-      border-left: none;
+    // وقتی ستون سوم بسته است، خط آخر نباید باشد، اما وقتی باز است باید باشد.
+    // این را با CSS خالص هندل می‌کنیم (border-left روی ستون سوم میگذاریم)
+    &:nth-child(2) {
+      border-left: none; // پیش‌فرض بوردر ندارد
     }
   }
 
+  // ✅ ستون سوم: پیش‌فرض مخفی و جمع شده
   &__sub-menu-column {
-    flex: 2;
-    position: relative;
-    padding: 0 tokens.$spacing-4;
-    // ✅ این ستون هم باید قابلیت اسکرول داشته باشد
-    overflow-y: auto;
+    flex: 0; // عرض صفر
+    width: 0;
+    opacity: 0;
+    padding: 0; // پدینگ صفر
+    overflow: hidden;
+    border-right: 0 solid tokens.$color-border-secondary; // بوردر مخفی
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); // انیمیشن نرم
+
+    // ✅ حالت باز شده
+    &--open {
+      flex: 2; // گرفتن فضای بیشتر
+      opacity: 1;
+      width: auto;
+      padding: 0 tokens.$spacing-4;
+      // بوردر سمت راست برای جدا شدن از ستون دوم (چون RTL هستیم)
+      border-right: 1px solid tokens.$color-border-secondary;
+      overflow-y: auto;
+      min-height: 300px;
+    }
   }
   
   &__title {
     margin-bottom: tokens.$spacing-4;
-    padding: 0 tokens.$spacing-2;
-    position: sticky; // ✅ عنوان را در بالای ستون ثابت نگه می‌داریم
-    top: -1px; // برای جلوگیری از باگ‌های رندرینگ
-    background-color: tokens.$color-bg-surface; // پس‌زمینه برای پوشاندن متن زیرین
-    padding-top: tokens.$spacing-1;
+    position: sticky;
+    top: 0;
+    background-color: tokens.$color-bg-surface;
+    padding-top: tokens.$spacing-2;
     z-index: 1;
+    white-space: nowrap; // جلوگیری از شکستن متن در حین انیمیشن
   }
 
   &__list {
@@ -109,40 +128,33 @@
   }
 
   &__link {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: tokens.$spacing-2 tokens.$spacing-3;
     border-radius: tokens.$radius-md;
     text-decoration: none;
-    transition: background-color 0.2s, color 0.2s;
+    transition: background-color 0.2s;
+    white-space: nowrap; // جلوگیری از شکستن متن
 
-    .label {
-      transition: color 0.2s; // انیمیشن رنگ لیبل
-    }
+    .label { transition: color 0.2s; }
 
-    &:hover {
+    &:hover, &--active {
       background-color: tokens.$color-bg-secondary;
-      .label {
-        color: tokens.$color-text-primary;
-      }
+      .label { color: tokens.$color-text-primary; }
     }
 
     &--parent {
-      display: flex;
       justify-content: space-between;
-      align-items: center;
     }
   }
 
   &__sub-menu {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    
+    // محتوا را در حالت بسته نگه می‌داریم
+    display: none;
+
     &--active {
-      opacity: 1;
-      visibility: visible;
+      display: block;
+      animation: fadeIn 0.3s ease forwards;
     }
   }
 
@@ -151,4 +163,9 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: tokens.$spacing-1;
   }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(5px); }
+  to { opacity: 1; transform: translateX(0); }
 }

@@ -2,7 +2,8 @@
 
 .article-row {
   display: flex;
-  flex-direction: column; // موبایل: ستونی
+  flex-direction: row; // ✅ همیشه افقی (هم موبایل هم دسکتاپ)
+  align-items: stretch;
   background-color: tokens.$color-bg-surface;
   border-radius: tokens.$radius-xl;
   overflow: hidden;
@@ -10,16 +11,14 @@
   transition: all 0.3s ease;
   text-decoration: none;
   position: relative;
-  min-height: 180px; // حداقل ارتفاع مناسب
+  
+  // حداقل ارتفاع در موبایل کمتر باشد
+  min-height: 140px; 
 
-  // --- دسکتاپ و تبلت ---
   @media (min-width: tokens.$breakpoint-md) {
-    flex-direction: row; // افقی
-    align-items: stretch;
-    height: 200px; // ارتفاع فیکس برای نظم در لیست
+    height: 200px; // ارتفاع ثابت دسکتاپ
   }
 
-  // --- هاور افکت ---
   &:hover {
     border-color: tokens.$color-brand-primary;
     box-shadow: tokens.$shadow-lg;
@@ -35,60 +34,65 @@
     }
   }
 
-  // --- بخش عکس ---
+  // --- بخش تصویر ---
   &__image-wrapper {
     position: relative;
-    width: 100%;
-    height: 200px; // ارتفاع عکس در موبایل
-    overflow: hidden;
     flex-shrink: 0;
+    
+    // ✅ استایل موبایل: عکس کوچک سمت راست
+    width: 110px; 
+    height: auto; // ارتفاع خودکار تا کل ارتفاع کارت را بگیرد
+    overflow: hidden;
 
+    // ✅ استایل دسکتاپ: عکس بزرگتر
     @media (min-width: tokens.$breakpoint-md) {
-      width: 280px; // عرض عکس در دسکتاپ
-      height: 100%;
+      width: 280px;
     }
   }
 
   &__image {
-    object-fit: fill;
+    object-fit: fill; // استفاده از cover بهتر از fill است
     transition: transform 0.5s ease;
   }
 
+  // تگ روی عکس را در موبایل مخفی می‌کنیم چون الان مثل دسکتاپ متادیتا داریم
   &__mobile-tag {
-    position: absolute;
-    top: tokens.$spacing-3;
-    right: tokens.$spacing-3;
-    background-color: rgba(tokens.$color-brand-primary, 0.9);
-    color: tokens.$color-text-on-brand;
-    padding: 2px 8px;
-    border-radius: tokens.$radius-md;
-    font-size: tokens.$font-size-xs;
-    font-weight: tokens.$font-weight-bold;
-    z-index: 2;
+    display: none; 
   }
 
   // --- بخش محتوا ---
   &__content {
-    padding: tokens.$spacing-4 tokens.$spacing-5;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    width: 100%;
-    justify-content: space-between; // فاصله انداختن بین بالا و پایین
+    width: 100%; // اشغال فضای باقی‌مانده
+    justify-content: space-between;
+    
+    // پدینگ کمتر در موبایل
+    padding: tokens.$spacing-3;
+
+    @media (min-width: tokens.$breakpoint-md) {
+      padding: tokens.$spacing-4 tokens.$spacing-5;
+    }
   }
 
   &__body {
     display: flex;
     flex-direction: column;
-    gap: tokens.$spacing-2;
+    gap: tokens.$spacing-1;
   }
 
   &__title {
     line-height: 1.5;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2; // در موبایل ۲ خط
     -webkit-box-orient: vertical;
     overflow: hidden;
+    font-size: tokens.$font-size-sm; // فونت کمی کوچکتر در موبایل
+
+    @media (min-width: tokens.$breakpoint-md) {
+      font-size: tokens.$font-size-lg;
+    }
   }
 
   &__excerpt {
@@ -99,9 +103,11 @@
     overflow: hidden;
     opacity: 0.8;
     margin-top: tokens.$spacing-1;
+    font-size: tokens.$font-size-xs;
 
-    @media (max-width: tokens.$breakpoint-sm) {
-      display: none; // در موبایل‌های کوچک خلاصه حذف شود تا جا باز شود
+    // در موبایل‌های خیلی کوچک (زیر ۳۵۰ پیکسل) شاید بهتر باشد مخفی شود
+    @media (max-width: 350px) {
+      display: none;
     }
   }
 
@@ -109,51 +115,64 @@
   &__footer {
     display: flex;
     align-items: center;
-    justify-content: space-between; // ✅ کلید اصلی: فاصله حداکثری بین متا و دکمه
-    margin-top: tokens.$spacing-4;
-    padding-top: tokens.$spacing-3;
+    justify-content: space-between;
+    margin-top: tokens.$spacing-2;
+    padding-top: tokens.$spacing-2;
     border-top: 1px solid dashed tokens.$color-border-secondary;
+
+    @media (min-width: tokens.$breakpoint-md) {
+      margin-top: tokens.$spacing-4;
+      padding-top: tokens.$spacing-3;
+    }
   }
 
-  // --- گروه متا دیتا (آیکون‌ها) ---
   &__meta-group {
     display: flex;
     align-items: center;
     gap: tokens.$spacing-2;
-    flex-wrap: wrap; // اگر فضا کم بود بشکند
+    flex-wrap: wrap;
   }
 
   &__meta-item {
     display: flex;
     align-items: center;
-    gap: tokens.$spacing-1;
+    gap: 2px; // فاصله کمتر در موبایل
     
     svg {
-      opacity: 0.7; // آیکون‌ها کمی کمرنگ‌تر
+      width: 12px;
+      height: 12px;
+      opacity: 0.7;
+    }
+
+    @media (min-width: tokens.$breakpoint-md) {
+      gap: tokens.$spacing-1;
+      svg { width: 14px; height: 14px; }
     }
   }
 
   &__dot {
-    width: 4px;
-    height: 4px;
+    width: 3px;
+    height: 3px;
     background-color: tokens.$color-border-primary;
     border-radius: 50%;
   }
 
-  // --- دکمه CTA ---
   &__cta {
     display: flex;
     align-items: center;
     gap: tokens.$spacing-1;
-    opacity: 0; // مخفی در حالت عادی (دسکتاپ)
+    opacity: 0;
     transform: translateX(10px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    white-space: nowrap; // جلوگیری از شکستن متن دکمه
+    white-space: nowrap;
 
-    // در موبایل همیشه دیده شود
+    // در موبایل همیشه دیده شود (چون هاور نداریم)
     @media (max-width: tokens.$breakpoint-md) {
        opacity: 1;
        transform: translateX(0);
+       
+       // در موبایل فقط آیکون فلش باشد تا جا کم نگیرد
+       .label { display: none; } 
     }
   }
 }

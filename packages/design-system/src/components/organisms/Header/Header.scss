@@ -1,37 +1,60 @@
 @use '../../../styles/_variables.scss' as tokens;
 
+$header-height: 5rem; 
+
 .header {
   width: 100%;
-  height: 5rem;
+  height: $header-height;
   background-color: tokens.$color-bg-surface;
   transition: tokens.$transition-base;
   border-bottom: 1px solid tokens.$color-border-secondary;
+  position: relative;
+  
+  // لایه هدر باید بالاترین باشد تا روی منو قرار بگیرد
+  z-index: 60; 
 
   &--scrolled {
     box-shadow: tokens.$shadow-md;
   }
 
+  // ✅✅✅ اصلاح نهایی برای رفع مشکل بنر ✅✅✅
+  &--menu-open {
+    box-shadow: none !important; 
+    border-bottom-color: tokens.$color-border-secondary;
+    
+    // 1. اجبار هدر به چسبیدن به بالای صفحه
+    position: fixed !important; 
+    top: 0 !important;
+    left: 0;
+    right: 0;
+    
+    // 2. اطمینان از اینکه عرض کامل است
+    width: 100%;
+    
+    // 3. جلوگیری از انیمیشن پرش موقع تغییر وضعیت
+    transition: none;
+  }
+
   &__container {
     width: 100%;
-    max-width: tokens.$breakpoint-xl;
     height: 100%;
     margin: 0 auto;
-    padding: 0 tokens.$spacing-4;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: tokens.$spacing-4;
+    // پدینگ پیش‌فرض موبایل
+    padding: 0 tokens.$spacing-4;
+    gap: tokens.$spacing-2;
   }
 
-  &__left,
-  &__right {
+  // =========================================================
+  // Mobile Layout (Default)
+  // =========================================================
+  &__left, &__right {
     display: flex;
     align-items: center;
   }
   
-  // ===================================
-  // چیدمان موبایل (پیش‌فرض)
-  // ===================================
   &__left {
     order: 2;
     justify-content: flex-end;
@@ -42,13 +65,8 @@
     order: 1;
   }
 
-  &__nav {
-    display: none;
-  }
-  
-  &__actions-desktop {
-    display: none;
-  }
+  &__nav { display: none; }
+  &__actions-desktop { display: none; }
   
   &__actions-mobile {
     display: flex;
@@ -57,17 +75,32 @@
   }
 
   &__mobile-toggle {
-    display: block;
-    color: tokens.$color-text-secondary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: tokens.$spacing-2;
     background: none;
     border: none;
-    cursor: pointer;
-    padding: tokens.$spacing-2;
     border-radius: tokens.$radius-md;
+    cursor: pointer;
+    color: tokens.$color-text-primary;
     transition: background-color 0.2s;
-    &:hover {
-      background-color: tokens.$color-bg-secondary;
-    }
+
+    &:hover { background-color: tokens.$color-bg-secondary; }
+  }
+
+  &__toggle-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+
+  &__mobile-toggle--active .header__toggle-icon {
+    transform: rotate(90deg);
+    color: tokens.$color-brand-primary;
   }
 
   .header-action {
@@ -83,21 +116,14 @@
     color: tokens.$color-text-secondary;
     text-decoration: none;
 
-    &:hover {
-      background-color: tokens.$color-bg-secondary;
-    }
+    &:hover { background-color: tokens.$color-bg-secondary; }
 
-    &--cart,
-    &--user-link {
-      display: none;
-    }
+    &--cart, &--user-link { display: none; }
   }
   
   .header-action--search {
     padding: 0; 
-    &:hover {
-      background-color: transparent;
-    }
+    &:hover { background-color: transparent; }
   }
 
   .cart-badge {
@@ -115,64 +141,73 @@
     justify-content: center;
     border: 2px solid tokens.$color-bg-surface;
   }
-  
-  // ===================================
-  // چیدمان دسکتاپ (lg)
-  // ===================================
+
+  // =========================================================
+  // ✅ Compact Desktop (1024px - 1280px)
+  // =========================================================
   @media (min-width: tokens.$breakpoint-lg) {
     &__container {
-      padding: 0 tokens.$spacing-6;
+      // در این بازه از max-width استفاده نمی‌کنیم تا از تمام فضا استفاده شود
+      max-width: 100%; 
+      padding: 0 tokens.$spacing-4; // پدینگ کناری کم
     }
-    
-    &__left, &__right {
-      order: 0;
-    }
-    
+
+    &__left, &__right { order: 0; }
+
     &__left {
-      gap: tokens.$spacing-8;
       justify-content: flex-start;
       flex: 1;
-      min-width: 0;
+      min-width: 0; // اجازه می‌دهد آیتم‌ها فشرده شوند
+      gap: tokens.$spacing-3; // فاصله کمتر بین لوگو و منو
     }
-    
+
     &__right {
       justify-content: flex-end;
-      gap: tokens.$spacing-2;
-      flex-shrink: 0; 
+      flex-shrink: 0; // جلوگیری از جمع شدن اکشن‌ها
+      gap: tokens.$spacing-1;
     }
-    
+
     &__nav {
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
+        overflow: visible !important; 
+      flex-wrap: nowrap; // عدم شکست خط
+      overflow-x: auto; // اگر جا نشد اسکرول بخورد (بهتر از شکستن صفحه)
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+      &::-webkit-scrollbar { display: none; } /* Chrome */
+    }
+
+    &__mobile-toggle { display: none; }
+    &__actions-desktop { display: flex; align-items: center; gap: tokens.$spacing-1; }
+    &__actions-mobile { display: none; }
+    
+    .header-action { 
+      &--cart, &--user-link { display: flex; } 
+      // در سایز فشرده متن دکمه را مخفی یا کوچک می‌کنیم
+      &--user-link span { font-size: 0.7rem; }
     }
     
-    &__mobile-toggle {
-      display: none;
-    }
-
-    &__actions-desktop {
-      display: flex;
-      align-items: center;
-      gap: tokens.$spacing-2;
-    }
-
-    &__actions-mobile {
-      display: none;
-    }
-
-    .header-action {
-      &--cart,
-      &--user-link {
-        display: flex;
-      }
-    }
-
-    .header-action--cart {
-      position: relative;
-    }
+    .header-action--cart { position: relative; }
   }
 
+  // =========================================================
+  // ✅ Large Desktop (1280px+) - حالت استاندارد
+  // =========================================================
+  @media (min-width: tokens.$breakpoint-xl) {
+    &__container {
+      max-width: tokens.$breakpoint-xl; // محدود کردن عرض برای مانیتورهای بزرگ
+      padding: 0 tokens.$spacing-6;
+    }
+
+    &__left { gap: tokens.$spacing-8; }
+    &__right { gap: tokens.$spacing-2; }
+    &__actions-desktop { gap: tokens.$spacing-2; }
+    
+    .header-action--user-link span { font-size: tokens.$font-size-sm; }
+  }
+
+  // --- Nav Links ---
   &__nav-link {
     text-decoration: none;
     transition: tokens.$transition-base;
@@ -180,22 +215,22 @@
     position: relative;
     white-space: nowrap;
 
+    // استایل فشرده (LG)
     @media (min-width: tokens.$breakpoint-lg) {
-      &:not(:first-child) {
-        margin-right: tokens.$spacing-7;
-      }
-      
-      [dir="ltr"] &:not(:first-child) {
-        margin-right: 0;
-        margin-left: tokens.$spacing-7;
-      }
+      font-size: 0.8rem;
+      &:not(:first-child) { margin-right: tokens.$spacing-3; }
+      [dir="ltr"] &:not(:first-child) { margin-right: 0; margin-left: tokens.$spacing-3; }
+    }
+
+    // استایل استاندارد (XL)
+    @media (min-width: tokens.$breakpoint-xl) {
+      font-size: tokens.$font-size-sm;
+      &:not(:first-child) { margin-right: tokens.$spacing-7; }
+      [dir="ltr"] &:not(:first-child) { margin-right: 0; margin-left: tokens.$spacing-7; }
     }
     
-    &:hover,
-    &--active {
-      .label {
-        color: tokens.$color-text-primary;
-      }
+    &:hover, &--active {
+      .label { color: tokens.$color-text-primary; }
     }
 
     &::after {
@@ -211,103 +246,157 @@
       transition: transform 0.3s ease;
     }
 
-    &:hover::after,
-    &--active::after {
-      transform: scaleX(1);
-    }
+    &:hover::after, &--active::after { transform: scaleX(1); }
+  }
+}
+
+// ... (استایل‌های Mobile Menu بدون تغییر باقی می‌مانند) ...
+.mobile-menu-backdrop {
+  position: fixed;
+  top: $header-height;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 45;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  backdrop-filter: blur(2px);
+
+  &--visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (min-width: tokens.$breakpoint-lg) {
+    display: none;
   }
 }
 
 .mobile-menu {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: tokens.$z-index-50;
-  opacity: 0;
+  top: 0; // ✅ منو از بالاترین نقطه شروع می‌شود
+  right: 0;
+  bottom: 0;
+  width: 100%; 
+  height: 100vh; // ارتفاع کل صفحه
+  
+  // ✅ پدینگ از بالا به اندازه ارتفاع هدر
+  // این باعث می‌شود محتوای منو دقیقاً از زیر هدر شروع شود
+  // و چون z-index هدر بالاتر است، فضای خالی بالای منو زیر هدر پنهان می‌شود
+  padding-top: $header-height; 
+
+  background-color: tokens.$color-bg-surface;
+  z-index: 50; // لایه زیر هدر
+  
+  transform: translateX(100%);
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), visibility 0.4s;
+  @media (min-width: tokens.$breakpoint-sm) {
+    width: 50%; 
+    border-left: 1px solid tokens.$color-border-secondary;
+    
+    [dir="ltr"] & {
+      left: auto;
+      right: 0;
+      border-left: 1px solid tokens.$color-border-secondary;
+    }
+    
+    [dir="rtl"] & {
+        right: 0;
+        left: auto;
+        border-left: 1px solid tokens.$color-border-secondary;
+    }
+  }
+
+  @media (min-width: tokens.$breakpoint-lg) {
+    display: none;
+  }
 
   &--open {
-    opacity: 1;
+    transform: translateX(0);
     visibility: visible;
+    @media (min-width: tokens.$breakpoint-md) {
+      box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+    }
   }
 
   &__content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 80%;
-    max-width: 320px;
+    width: 100%;
     height: 100%;
-    background-color: tokens.$color-bg-surface;
-    box-shadow: tokens.$shadow-lg;
-    padding: tokens.$spacing-6;
     display: flex;
     flex-direction: column;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
+  }
+
+  &__scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: tokens.$spacing-4 tokens.$spacing-6;
     
-    [dir="rtl"] & {
-      left: auto;
-      right: 0;
-      transform: translateX(100%);
+    &::-webkit-scrollbar {
+      width: 3px;
     }
-  }
-  
-  &--open &__content {
-    transform: translateX(0);
-  }
-  
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid tokens.$color-border-secondary;
-    padding-bottom: tokens.$spacing-4;
-    margin-bottom: tokens.$spacing-6;
-    color: tokens.$color-text-primary;
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: tokens.$color-border-secondary;
+      border-radius: 10px;
+    }
   }
 
   &__nav {
     display: flex;
     flex-direction: column;
-    gap: tokens.$spacing-4;
+    gap: tokens.$spacing-2;
   }
   
-  &__actions {
-    margin-top: auto;
-    padding-top: tokens.$spacing-6;
-    border-top: 1px solid tokens.$color-border-secondary;
-    display: flex;
-    flex-direction: column;
-    gap: tokens.$spacing-4;
-  }
-    &__link {
+  &__link {
     display: block;
-    padding: tokens.$spacing-3 tokens.$spacing-4;
+    padding: tokens.$spacing-4 0;
     border-bottom: 1px solid tokens.$color-border-secondary;
     text-decoration: none;
+    font-size: tokens.$font-size-base;
     
     &:hover {
-      background-color: tokens.$color-bg-secondary;
+      color: tokens.$color-brand-primary;
+    }
+    
+    &--sub {
+      padding-right: tokens.$spacing-4;
+      padding-left: 0;
+      border-bottom: none;
+      padding-top: tokens.$spacing-3;
+      padding-bottom: tokens.$spacing-3;
+      font-size: tokens.$font-size-sm;
+      color: tokens.$color-text-secondary;
+      
+      [dir="ltr"] & {
+        padding-left: tokens.$spacing-4;
+        padding-right: 0;
+      }
     }
   }
   
   &__sublist {
     display: flex;
     flex-direction: column;
-    gap: tokens.$spacing-1;
+    gap: 0;
+    background-color: tokens.$color-bg-secondary;
+    border-radius: tokens.$radius-lg;
+    padding: tokens.$spacing-2 0;
+    margin-top: tokens.$spacing-2;
   }
   
   &__footer {
-    margin-top: auto;
-    padding-top: tokens.$spacing-4;
+    flex-shrink: 0;
+    padding: tokens.$spacing-6;
     border-top: 1px solid tokens.$color-border-secondary;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: tokens.$color-bg-surface;
+    z-index: 30;
   }
 }

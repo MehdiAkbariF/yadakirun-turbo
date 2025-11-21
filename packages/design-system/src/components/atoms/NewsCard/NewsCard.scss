@@ -2,45 +2,63 @@
 
 .news-card {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 100%;
+  flex-direction: row; // موبایل: افقی
+  align-items: stretch;
+  
+  // ✅ مهم برای هم‌اندازه شدن در اسلایدر
+  height: 100%; 
   width: 100%;
+  
   background-color: tokens.$color-bg-surface;
   border-radius: tokens.$radius-xl;
   box-shadow: tokens.$shadow-md;
   transition: tokens.$transition-base;
   text-decoration: none;
   padding: tokens.$spacing-3;
+  border: 1px solid transparent;
 
+  // هاور افکت
   &:hover {
     box-shadow: tokens.$shadow-xl;
+    border-color: tokens.$color-border-secondary;
+    transform: translateY(-2px);
+
     .news-card__link {
+      color: tokens.$color-brand-primary-hover;
       transform: translateX(-4px);
+      
       [dir="rtl"] & {
         transform: translateX(4px);
       }
     }
   }
 
+  // --- بخش تصویر ---
   &__image-container {
     position: relative;
     flex-shrink: 0;
-    width: 5rem;
-    height: 5rem;
+    width: 80px; // سایز فیکس در موبایل
+    height: 80px;
     border-radius: tokens.$radius-lg;
     overflow: hidden;
   }
 
   &__image {
-    object-fit: fill;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  &:hover &__image {
+    transform: scale(1.05);
   }
   
+  // --- بخش محتوا ---
   &__content {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    min-height: 100%; 
+    flex-grow: 1; // پر کردن فضای باقی‌مانده
+    justify-content: space-between; // پخش کردن محتوا
+    
     padding-right: tokens.$spacing-3;
     [dir="ltr"] & {
       padding-right: 0;
@@ -49,24 +67,36 @@
   }
 
   &__date {
+    display: block;
     margin-bottom: tokens.$spacing-1;
+    font-size: 10px;
   }
 
   &__title {
     font-size: tokens.$font-size-xs;
-    line-height: tokens.$line-height-snug;
+    line-height: 1.5;
+    font-weight: tokens.$font-weight-bold;
+    color: tokens.$color-text-primary;
+    
+    // محدود کردن متن به ۲ خط
     display: -webkit-box;
-    -webkit-line-clamp: 2; // ✅ محدود به دو خط برای جا شدن بقیه موارد
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    margin-bottom: tokens.$spacing-1;
   }
 
   &__description {
+    font-size: 11px;
+    color: tokens.$color-text-secondary;
+    line-height: 1.6;
+    
+    // هرچند با JS محدود کردیم، اما نگه داشتن این برای اطمینان خوب است
     display: -webkit-box;
-    -webkit-line-clamp: 2; // توضیحات هم به دو خط محدود می‌شود
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin-top: tokens.$spacing-1;
+    margin-bottom: tokens.$spacing-2;
   }
 
   &__link {
@@ -74,51 +104,62 @@
     align-items: center;
     gap: tokens.$spacing-1;
     font-size: tokens.$font-size-xs;
-    font-weight: tokens.$font-weight-semi-bold;
+    font-weight: tokens.$font-weight-bold;
     color: tokens.$color-brand-primary;
-    margin-top: auto;
-    padding-top: tokens.$spacing-2;
-    transition: transform 0.3s ease;
+    
+    // ✅ چسباندن به پایین کارت
+    margin-top: auto; 
+    padding-top: tokens.$spacing-1;
+    transition: all 0.3s ease;
   }
 
+  // کنترل متن دکمه در ریسپانسیو
   &__link-text--desktop { display: none; }
   &__link-text--mobile { display: inline; }
   
   // ===================================
-  // استایل دسکتاپ (عمودی)
+  // استایل دسکتاپ (LG به بالا: عمودی)
   // ===================================
   @media (min-width: tokens.$breakpoint-lg) {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 0;
-
+    flex-direction: column; // تغییر جهت به عمودی
+    padding: 0; // حذف پدینگ کلی (چون عکس تمام عرض می‌شود)
+    
     &__image-container {
       width: 100%;
       height: auto;
-      aspect-ratio: 16 / 10;
-      border-radius: tokens.$radius-xl tokens.$radius-xl 0 0;
-    }
-
-    &__image {
-      border-radius: 0;
+      aspect-ratio: 16 / 10; // نسبت تصویر عریض
+      border-radius: tokens.$radius-xl tokens.$radius-xl 0 0; // گردی فقط بالا
     }
 
     &__content {
-      padding: tokens.$spacing-4;
+      padding: tokens.$spacing-5; // پدینگ داخلی بیشتر
+      
       [dir="ltr"] & {
-        padding-left: tokens.$spacing-4;
+        padding-left: tokens.$spacing-5;
+      }
+      [dir="rtl"] & {
+        padding-right: tokens.$spacing-5;
       }
     }
 
     &__title {
-      font-size: tokens.$font-size-sm;
-      -webkit-line-clamp: 2;
-      min-height: 2.75rem; // ارتفاع ثابت برای دو خط
+      font-size: tokens.$font-size-base;
+      margin-bottom: tokens.$spacing-2;
+      // حداقل ارتفاع برای تراز ماندن کارت‌ها (تقریباً ارتفاع ۲ خط)
+      min-height: 3rem; 
     }
     
     &__description {
-      -webkit-line-clamp: 3; // در دسکتاپ اجازه می‌دهیم سه خط باشد
-      margin-top: tokens.$spacing-2;
+      font-size: tokens.$font-size-sm;
+      // در دسکتاپ شاید بخواهید متن بیشتری نشان دهید، اما چون JS محدود کرده، اینجا همان 30 کاراکتر اعمال میشود.
+      // اگر می‌خواهید در دسکتاپ بیشتر باشد، باید لاجیک JS را با مدیا کوئری یا هوک useMediaQuery ترکیب کنید.
+      // فعلاً طبق درخواست شما کلاً ۳۰ کاراکتر است.
+      margin-bottom: tokens.$spacing-4;
+    }
+
+    &__date {
+      font-size: tokens.$font-size-xs;
+      margin-bottom: tokens.$spacing-2;
     }
 
     &__link-text--desktop { display: inline; }

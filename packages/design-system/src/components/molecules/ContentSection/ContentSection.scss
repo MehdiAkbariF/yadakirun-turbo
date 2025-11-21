@@ -1,4 +1,3 @@
-// packages/design-system/src/components/molecules/ContentSection/ContentSection.scss
 @use '../../../styles/_variables.scss' as tokens;
 
 .content-section {
@@ -18,54 +17,56 @@
   }
 }
 
-// استایل‌های شبیه به `prose` برای خوانایی بهتر محتوا
 .content-section__body {
-  color: tokens.$color-text-secondary;
-  font-size: tokens.$font-size-lg;
-  line-height: tokens.$line-height-relaxed;
-  text-align: justify; // برای زیبایی متن‌های طولانی
+  // استایل‌های پیش‌فرض برای متن‌های داخل سکشن
+  color: tokens.$color-text-primary;
+  font-family: tokens.$font-family-base;
+  font-size: tokens.$font-size-base;
+  line-height: tokens.$line-height-loose; // برای خوانایی بهتر متن طولانی
+  text-align: justify;
 
-  // استایل برای پاراگراف‌ها
-  p {
-    margin-bottom: 1.25em;
+  // فاصله بین پاراگراف‌ها (چه Label باشند چه p)
+  p, .label {
+    margin-bottom: tokens.$spacing-4;
   }
 
-  // استایل برای لیست‌ها
-  ul,
-  ol {
-    margin-bottom: 1.25em;
-    padding-right: 1.5em;
+  // استایل لیست‌ها
+  ul, ol {
+    margin-bottom: tokens.$spacing-4;
+    padding-right: tokens.$spacing-6;
+    list-style-position: inside;
+
     [dir="ltr"] & {
       padding-right: 0;
-      padding-left: 1.5em;
+      padding-left: tokens.$spacing-6;
     }
   }
 
   li {
-    margin-bottom: 0.5em;
-  }
-  
-  // استایل برای متن‌های bold
-  strong {
-    color: tokens.$color-text-primary;
-    font-weight: tokens.$font-weight-bold;
+    margin-bottom: tokens.$spacing-2;
   }
 
-  // استایل برای لینک‌ها
+  // لینک‌ها
   a {
     color: tokens.$color-text-link;
     text-decoration: none;
     font-weight: tokens.$font-weight-medium;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+
     &:hover {
-      text-decoration: underline;
+      border-bottom-color: tokens.$color-text-link;
     }
   }
 
-  // استایل برای تیترهای داخلی
-  h2, h3, h4, h5, h6 {
+  // تیترهای داخلی
+  h3, h4, h5 {
     color: tokens.$color-text-primary;
     font-weight: tokens.$font-weight-bold;
-    margin-top: 2em;
-    margin-bottom: 1em;
+    margin-top: tokens.$spacing-8;
+    margin-bottom: tokens.$spacing-4;
   }
+  
+  h3 { font-size: tokens.$font-size-xl; }
+  h4 { font-size: tokens.$font-size-lg; }
 }

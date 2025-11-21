@@ -6,7 +6,7 @@ import { Wrench, ShieldCheck, Headphones } from 'lucide-react'; // آیکون‌
 import { MainHeader } from '@/src/components/layout/MainHeader';
 import { VideoBanner } from '@/src/components/layout/VideoBanner';
 import { Footer } from '@monorepo/design-system/src/components/organisms/Footer/Footer'; // ✅ ایمپورت فوتر جدید
-
+import { AppMobileNav } from '@/src/components/layout/AppMobileNav'; // ✅ ایمپورت جدید
 // ✅ داده‌های فوتر را در لی‌اوت تعریف می‌کنیم
 const footerData = {
   logo: <Image src="/logo.webp" alt="لوگوی یاداکیرون" width={80} height={80} />,
@@ -46,7 +46,7 @@ export default function MainLayout({
   return (
     <div className="">
       <VideoBanner />
-      <div className="relative   z-10 flex flex-col">
+      <div className="relative    flex flex-col">
         <div className="sticky top-0 z-20">
           <MainHeader />
         </div>
@@ -58,6 +58,7 @@ export default function MainLayout({
 
       {/* ✅✅✅ استفاده از کامپوننت Footer جدید با پاس دادن داده‌ها ✅✅✅ */}
       <Footer {...footerData} />
+       <AppMobileNav />
     </div>
   );
 }

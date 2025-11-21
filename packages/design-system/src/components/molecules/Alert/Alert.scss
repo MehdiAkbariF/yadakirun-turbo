@@ -1,0 +1,130 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.ds-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: tokens.$spacing-3;
+  padding: tokens.$spacing-4;
+  // پدینگ پایین را کمی بیشتر می‌کنیم تا جا برای نوار تایمر باشد (اگر تایمر فعال بود)
+  &--has-timer {
+    padding-bottom: tokens.$spacing-5;
+    overflow: hidden; // برای اینکه نوار از گردی گوشه‌ها بیرون نزند
+  }
+  
+  border-radius: tokens.$radius-lg;
+  font-family: tokens.$font-family-base;
+  position: relative;
+  border: 1px solid transparent;
+  animation: alertFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: tokens.$spacing-4;
+
+  // --- Variants (رنگ نوار تایمر هم اینجا تنظیم می‌شود) ---
+  &--error {
+    background-color: rgba(tokens.$color-utility-error, 0.1);
+    border-color: rgba(tokens.$color-utility-error, 0.2);
+    color: tokens.$color-utility-error;
+    .ds-alert__icon { color: tokens.$color-utility-error; }
+    .ds-alert__progress-bar { background-color: tokens.$color-utility-error; }
+  }
+
+  &--success {
+    background-color: rgba(tokens.$color-utility-success, 0.1);
+    border-color: rgba(tokens.$color-utility-success, 0.2);
+    color: tokens.$color-utility-success;
+    .ds-alert__icon { color: tokens.$color-utility-success; }
+    .ds-alert__progress-bar { background-color: tokens.$color-utility-success; }
+  }
+
+  &--warning {
+    background-color: rgba(tokens.$color-utility-warning, 0.1);
+    border-color: rgba(tokens.$color-utility-warning, 0.2);
+    color: #856404;
+    .ds-alert__icon { color: tokens.$color-utility-warning; }
+    .ds-alert__progress-bar { background-color: tokens.$color-utility-warning; }
+  }
+
+  &--info {
+    background-color: rgba(tokens.$color-utility-info, 0.1);
+    border-color: rgba(tokens.$color-utility-info, 0.2);
+    color: tokens.$color-utility-info;
+    .ds-alert__icon { color: tokens.$color-utility-info; }
+    .ds-alert__progress-bar { background-color: tokens.$color-utility-info; }
+  }
+
+  // --- Timer Progress Bar ---
+  &__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0; // در حالت RTL و LTR باید کل عرض را بگیرد
+    right: 0;
+    height: 4px;
+    width: 100%;
+    background-color: rgba(0,0,0,0.05); // رنگ پس‌زمینه نوار
+  }
+
+  &__progress-bar {
+    height: 100%;
+    width: 100%;
+    transform-origin: left; // شروع انیمیشن از چپ (یا راست بسته به سلیقه)
+    animation: timerProgress linear forwards;
+    opacity: 0.7;
+  }
+
+  // ✅ حرفه‌ای: توقف تایمر هنگام هاور
+  &:hover {
+    .ds-alert__progress-bar {
+      animation-play-state: paused;
+    }
+  }
+
+  // --- Elements ---
+  &__icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__title {
+    font-weight: tokens.$font-weight-bold;
+    font-size: tokens.$font-size-sm;
+  }
+
+  &__message {
+    font-size: tokens.$font-size-sm;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+
+  &__close {
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    color: inherit;
+    padding: 0;
+    margin-top: 2px;
+    z-index: 2; // روی نوار تایمر باشد
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes alertFadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes timerProgress {
+  from { width: 100%; }
+  to { width: 0%; }
+}

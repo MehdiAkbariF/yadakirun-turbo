@@ -36,7 +36,7 @@ export const BlogCard = ({
             </div>
           )}
         </div>
-        <Label as="h3" size="lg" weight="bold" className="blog-card__title line-clamp-2">
+        <Label as="h3" size="sm" weight="bold" className="blog-card__title line-clamp-2">
           {title}
         </Label>
         {excerpt && (

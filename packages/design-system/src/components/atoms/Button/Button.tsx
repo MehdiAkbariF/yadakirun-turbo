@@ -1,4 +1,5 @@
 import React from 'react';
+import { Loader2 } from 'lucide-react';
 import { ButtonProps } from './Button.types';
 import './Button.scss';
 
@@ -12,14 +13,15 @@ export const Button = ({
   children,
   className,
   disabled,
+  type = 'button',
   ...props
 }: ButtonProps) => {
   const classNames = [
-    'button',
-    `button--${variant}`,
-    `button--size-${size}`,
-    fullWidth ? 'button--full-width' : '',
-    isLoading ? 'button--loading' : '',
+    'ds-button',
+    `ds-button--${variant}`,
+    `ds-button--${size}`,
+    fullWidth ? 'ds-button--full' : '',
+    isLoading ? 'ds-button--loading' : '',
     className,
   ]
     .filter(Boolean)
@@ -27,15 +29,21 @@ export const Button = ({
 
   return (
     <button
-      type="button"
+      type={type}
       className={classNames}
       disabled={disabled || isLoading}
       {...props}
     >
-      {isLoading && <span className="button__spinner" />}
-      {!isLoading && leftIcon && <span className="button__icon-left">{leftIcon}</span>}
-      {children}
-      {!isLoading && rightIcon && <span className="button__icon-right">{rightIcon}</span>}
+      {/* لودر همیشه در DOM هست اما با CSS مدیریت می‌شود */}
+      <span className="ds-button__loader">
+        <Loader2 className="ds-button__spinner-icon" size={size === 'sm' ? 16 : 20} />
+      </span>
+      
+      <span className="ds-button__content">
+        {leftIcon && <span className="ds-button__icon-left">{leftIcon}</span>}
+        {children}
+        {rightIcon && <span className="ds-button__icon-right">{rightIcon}</span>}
+      </span>
     </button>
   );
 };

@@ -1,0 +1,51 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.ds-otp-group {
+  display: flex;
+  gap: tokens.$spacing-2; // فاصله کمتر برای موبایل
+  justify-content: center;
+  width: 100%;
+
+  @media (min-width: tokens.$breakpoint-sm) {
+    gap: tokens.$spacing-3; // فاصله بیشتر برای دسکتاپ
+  }
+}
+
+.ds-otp-field {
+  // Responsive Sizing
+  width: 45px;
+  height: 50px;
+  
+  @media (min-width: tokens.$breakpoint-sm) {
+    width: 56px;
+    height: 64px;
+  }
+
+  border: 1px solid tokens.$color-border-primary;
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-xl;
+  text-align: center;
+  font-size: tokens.$font-size-xl;
+  font-weight: tokens.$font-weight-bold;
+  color: tokens.$color-text-primary;
+  transition: all 0.2s ease;
+  caret-color: tokens.$color-brand-primary;
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-brand-primary;
+    box-shadow: 0 0 0 4px rgba(tokens.$color-brand-primary, 0.15);
+    transform: translateY(-2px);
+  }
+
+  &--filled {
+    border-color: tokens.$color-text-primary;
+    background-color: tokens.$color-bg-secondary;
+  }
+
+  &:disabled {
+    background-color: tokens.$color-bg-secondary;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

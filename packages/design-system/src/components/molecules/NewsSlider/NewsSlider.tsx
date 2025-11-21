@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { NewsCard } from "../../atoms/NewsCard/NewsCard";
@@ -11,10 +11,6 @@ import "swiper/css/navigation";
 
 interface NewsSliderProps {
   items: Omit<NewsCardProps, "className">[];
-  /**
-   * جهت اسلایدر.
-   * نکته: اگر vertical انتخاب شود، در موبایل به صورت خودکار به horizontal تبدیل می‌شود تا لی‌اوت خراب نشود.
-   */
   direction?: "horizontal" | "vertical";
   uniqueId: string;
 }
@@ -24,49 +20,17 @@ export const NewsSlider = ({
   direction = "horizontal",
   uniqueId,
 }: NewsSliderProps) => {
-  // استیت برای تشخیص سایز صفحه
-  const [isLargeScreen, setIsLargeScreen] = useState(true); // پیش‌فرض دسکتاپ فرض می‌کنیم تا پرش اولیه کم باشد
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    
-    // تابع تشخیص عرض صفحه (BreakPoint lg: 1024px)
-    const checkScreenSize = () => {
-      setIsLargeScreen(window.innerWidth >= 1024);
-    };
-
-    // چک کردن اولیه
-    checkScreenSize();
-
-    // لیسنر برای تغییر سایز
-    window.addEventListener("resize", checkScreenSize);
-    return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
-
-  // منطق هوشمند: اگر ورودی عمودی بود اما صفحه کوچک بود، افقی شود
-  // اگر ورودی افقی بود، همیشه افقی بماند
-  const effectiveDirection = direction === "vertical" && !isLargeScreen ? "horizontal" : direction;
-  
-  const isVertical = effectiveDirection === "vertical";
-
-  // جلوگیری از ارور هیدراسیون (Hydration Mismatch)
-  if (!mounted) return null; 
+  const isVertical = direction === "vertical";
 
   return (
-    <div 
-      className={`relative w-full transition-all duration-300 ${
-        isVertical ? "h-[600px]" : "h-auto"
-      }`}
-    >
+    <div className="relative w-full">
       <Swiper
         modules={[Navigation, Autoplay]}
-        direction={effectiveDirection}
-        // در حالت عمودی (دسکتاپ) ۳ آیتم، در حالت افقی (موبایل) ۱.۲ آیتم
-        slidesPerView={isVertical ? 3 : 1.2}
-        spaceBetween={25}
+        direction={direction}
+        // تنظیمات ریسپانسیو
+        slidesPerView={1.2} // پیش‌فرض موبایل
+        spaceBetween={16}
         navigation={
-      
           !isVertical
             ? {
                 nextEl: `.news-slider-next-${uniqueId}`,
@@ -75,33 +39,41 @@ export const NewsSlider = ({
             : false
         }
         autoplay={{
-          delay: 4000,
+          delay: 5000,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
         breakpoints={
           isVertical
-            ? {} 
+            ? {}
             : {
-                480: { slidesPerView: 1.5 },
-                640: { slidesPerView: 2.2 },
-                1024: { slidesPerView: 4 }, // اگر افقی بود در دسکتاپ
+                480: { slidesPerView: 1.5, spaceBetween: 16 },
+                640: { slidesPerView: 2.2, spaceBetween: 20 },
+                1024: { slidesPerView: 3, spaceBetween: 24 }, // در دسکتاپ 3 تایی
+                1280: { slidesPerView: 4, spaceBetween: 24 }, // در مانیتور بزرگ 4 تایی
               }
         }
-        className={isVertical ? "!h-full" : "!pb-10"} // پدینگ پایین برای دکمه‌های نویگیشن در حالت افقی
+        // ✅ پدینگ پایین برای دکمه‌های نویگیشن
+        className="!pb-12" 
       >
         {items.map((article, index) => (
-          <SwiperSlide key={`${article.href}-${index}`} className={isVertical ? "!h-auto py-2" : ""}>
-            <NewsCard {...article} />
+          <SwiperSlide 
+            key={`${article.href}-${index}`} 
+            // ✅✅✅ نکته کلیدی برای هم‌اندازه شدن: !h-auto
+            // این باعث می‌شود اسلاید ارتفاع کانتینر را پر کند (که برابر با بلندترین کارت است)
+            className="!h-auto !flex"
+          >
+            {/* کارت با ارتفاع 100% که قبلا در SCSS تنظیم کردیم */}
+            <NewsCard {...article} className="w-full" />
           </SwiperSlide>
         ))}
       </Swiper>
 
-      {/* دکمه‌های کنترلی فقط در حالت افقی نمایش داده شوند */}
+      {/* دکمه‌های کنترلی */}
       {!isVertical && (
         <>
-          <div className={`news-slider-next-${uniqueId} swiper-button-next !text-brand-primary !w-8 !h-8 after:!text-lg`}></div>
-          <div className={`news-slider-prev-${uniqueId} swiper-button-prev !text-brand-primary !w-8 !h-8 after:!text-lg`}></div>
+          <div className={`news-slider-next-${uniqueId} swiper-button-next !w-10 !h-10 after:!text-xl`}></div>
+          <div className={`news-slider-prev-${uniqueId} swiper-button-prev !w-10 !h-10 after:!text-xl`}></div>
         </>
       )}
     </div>

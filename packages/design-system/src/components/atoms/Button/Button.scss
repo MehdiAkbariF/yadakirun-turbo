@@ -1,6 +1,13 @@
 @use '../../../styles/_variables.scss' as tokens;
 
-.button {
+// تعریف انیمیشن چرخش
+@keyframes button-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.ds-button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -9,31 +16,41 @@
   font-weight: tokens.$font-weight-bold;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: all 0.2s ease;
-  line-height: 1;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
+  overflow: hidden;
+  user-select: none;
   
-  &:disabled, &--loading {
-    opacity: 0.6;
-    cursor: not-allowed;
+  // افکت کلیک
+  &:active:not(:disabled) {
+    transform: scale(0.98);
   }
 
-  &--full-width { width: 100%; }
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    // در حالت دیسبلد معمولی (نه لودینگ) فیلتر سیاه و سفید داشته باشد
+    &:not(.ds-button--loading) {
+      filter: grayscale(0.2);
+    }
+  }
+
+  &--full { width: 100%; }
 
   // --- Sizes ---
-  &--size-sm {
-    height: 32px;
+  &--sm {
+    height: 36px;
     padding: 0 tokens.$spacing-3;
     font-size: tokens.$font-size-xs;
   }
-  &--size-md {
-    height: 40px;
-    padding: 0 tokens.$spacing-4;
+  &--md {
+    height: 44px;
+    padding: 0 tokens.$spacing-5;
     font-size: tokens.$font-size-sm;
   }
-  &--size-lg {
-    height: 48px;
-    padding: 0 tokens.$spacing-6;
+  &--lg {
+    height: 52px;
+    padding: 0 tokens.$spacing-8;
     font-size: tokens.$font-size-base;
   }
 
@@ -41,19 +58,17 @@
   &--primary {
     background-color: tokens.$color-brand-primary;
     color: tokens.$color-text-on-brand;
-    &:hover:not(:disabled) { background-color: tokens.$color-brand-primary-hover; }
+    box-shadow: 0 4px 10px rgba(tokens.$color-brand-primary, 0.2);
+    &:hover:not(:disabled) { 
+      background-color: tokens.$color-brand-primary-hover; 
+      box-shadow: 0 6px 15px rgba(tokens.$color-brand-primary, 0.3);
+    }
   }
   
   &--secondary {
     background-color: tokens.$color-bg-secondary;
     color: tokens.$color-text-primary;
     &:hover:not(:disabled) { background-color: tokens.$color-border-secondary; }
-  }
-
-  &--danger {
-    background-color: tokens.$color-utility-error;
-    color: #fff;
-    &:hover:not(:disabled) { opacity: 0.9; }
   }
 
   &--outline {
@@ -63,9 +78,10 @@
     &:hover:not(:disabled) { 
       border-color: tokens.$color-brand-primary;
       color: tokens.$color-brand-primary;
+      background-color: rgba(tokens.$color-brand-primary, 0.05);
     }
   }
-  
+
   &--ghost {
     background-color: transparent;
     color: tokens.$color-text-secondary;
@@ -75,6 +91,58 @@
     }
   }
 
+  &--danger {
+    background-color: tokens.$color-utility-error;
+    color: #fff;
+    &:hover:not(:disabled) { opacity: 0.9; }
+  }
+
+  // --- Loading Logic (Professional Transition) ---
+  
+  // 1. کانتینر محتوا (متن و آیکون‌ها)
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: tokens.$spacing-2;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  // 2. کانتینر لودر
+  &__loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    // پوزیشن اولیه (مخفی)
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // آیکون چرخان
+  &__spinner-icon {
+    animation: button-spin 1s linear infinite;
+  }
+
   &__icon-left { margin-left: tokens.$spacing-2; }
   &__icon-right { margin-right: tokens.$spacing-2; }
+
+  // --- وقتی دکمه در حالت Loading است ---
+  &--loading {
+    // محتوا محو و کوچک می‌شود
+    .ds-button__content {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    // لودر ظاهر و بزرگ می‌شود
+    .ds-button__loader {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
 }

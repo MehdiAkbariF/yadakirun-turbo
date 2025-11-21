@@ -68,7 +68,10 @@ export const CommentsSection = ({
         
         <button onClick={() => setIsModalOpen(true)} className="ds-btn-outline">
           <PenLine size={18} />
-          ثبت دیدگاه
+          <Label color='primary' >
+                      ثبت دیدگاه
+          </Label>
+   
         </button>
       </div>
 

@@ -1,0 +1,133 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.result-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: tokens.$z-index-max; // بالاترین لایه
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: tokens.$spacing-4;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.result-modal {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-2xl;
+  box-shadow: tokens.$shadow-2xl;
+  padding: tokens.$spacing-8 tokens.$spacing-6;
+  text-align: center;
+  overflow: hidden;
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); // افکت فنری جذاب
+
+  // --- Variants ---
+  &--success {
+    .result-modal__icon-bg {
+      background-color: rgba(tokens.$color-utility-success, 0.1);
+      color: tokens.$color-utility-success;
+    }
+    .result-modal__progress-bar {
+      background-color: tokens.$color-utility-success;
+    }
+  }
+
+  &--error {
+    .result-modal__icon-bg {
+      background-color: rgba(tokens.$color-utility-error, 0.1);
+      color: tokens.$color-utility-error;
+    }
+    .result-modal__progress-bar {
+      background-color: tokens.$color-utility-error;
+    }
+  }
+
+  // --- Elements ---
+  &__icon-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: tokens.$spacing-4;
+  }
+
+  &__icon-bg {
+    width: 80px;
+    height: 80px;
+    border-radius: tokens.$radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: tokens.$spacing-2;
+    transition: transform 0.3s ease;
+  }
+
+  &__content {
+    margin-bottom: tokens.$spacing-6;
+  }
+
+  &__title {
+    margin-bottom: tokens.$spacing-2;
+  }
+
+  &__close-btn {
+    position: absolute;
+    top: tokens.$spacing-4;
+    right: tokens.$spacing-4;
+    background: transparent;
+    border: none;
+    color: tokens.$color-text-secondary;
+    cursor: pointer;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: tokens.$color-text-primary;
+    }
+  }
+
+  // --- Timer Bar ---
+  &__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-color: tokens.$color-bg-secondary;
+  }
+
+  &__progress-bar {
+    height: 100%;
+    width: 100%;
+    transform-origin: left;
+    animation: progressShrink linear forwards;
+  }
+
+  // توقف تایمر هنگام هاور برای خواندن متن
+  &:hover .result-modal__progress-bar {
+    animation-play-state: paused;
+  }
+}
+
+// --- Animations ---
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { 
+    opacity: 0; 
+    transform: scale(0.8) translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
+}
+
+@keyframes progressShrink {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}

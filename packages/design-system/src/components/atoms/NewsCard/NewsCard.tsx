@@ -8,10 +8,16 @@ import './NewsCard.scss';
 export const NewsCard = ({ title, date, description, href, imgSrc, className }: NewsCardProps) => {
   const classNames = ['news-card', className].filter(Boolean).join(' ');
 
+  // تابع کمکی برای کوتاه کردن متن
+  const truncateText = (text: string, limit: number) => {
+    if (text.length <= limit) return text;
+    return text.slice(0, limit) + '...';
+  };
+
   return (
     <a href={href} className={classNames}>
       <div className="news-card__image-container">
-        <Image src={imgSrc} alt={title} fill  className="news-card__image" />
+        <Image src={imgSrc} alt={title} fill className="news-card__image" />
       </div>
       <div className="news-card__content">
         {date && (
@@ -24,7 +30,8 @@ export const NewsCard = ({ title, date, description, href, imgSrc, className }: 
         </Label>
         {description && (
           <Label as="p" size="xs" color="secondary" className="news-card__description">
-            {description}
+            {/* ✅ اعمال محدودیت ۳۰ کاراکتر */}
+            {truncateText(description, 30)}
           </Label>
         )}
         <div className="news-card__link">

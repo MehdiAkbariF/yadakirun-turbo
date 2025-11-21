@@ -60,19 +60,19 @@ export const SimpleProductCard = ({
            )}
            {rating && (
              <div className="flex items-center gap-1 mr-auto sm:mr-0">
-               <span className="text-xs font-bold text-text-primary">{rating}</span>
-               <Star size={12} className="fill-utility-warning text-utility-warning" />
+               <Label weight='bold' color='warning'>{rating}</Label>
+               <Star size={15} className="fill-utility-warning " />
              </div>
            )}
         </div>
 
-        <h3 className="simple-product-card__title" title={title}>
+        <Label className="simple-product-card__title" >
           {title}
-        </h3>
+        </Label>
 
         <div className="simple-product-card__meta">
           <Store size={14} />
-          <span>{seller}</span>
+          <Label size='xs'>{seller}</Label>
         </div>
 
         {/* بخش قیمت و موجودی (چسبیده به پایین) */}
@@ -84,19 +84,22 @@ export const SimpleProductCard = ({
                   <Badge variant="error" className="text-[10px] px-1.5 py-0.5 rounded-md">
                     {discountPercent}%
                   </Badge>
-                  <span className="simple-product-card__old-price">
+                  <Label className="simple-product-card__old-price">
                     {formatPrice(originalPrice)}
-                  </span>
+                  </Label>
                 </div>
               )}
               
-              <div className="simple-product-card__price">
-                {formatPrice(price)} <span>تومان</span>
+              <div className="simple-product-card__price flex items-center gap-2">
+                {formatPrice(price)} <Label size='sm'>تومان</Label>
               </div>
             </div>
           ) : (
             <div className="simple-product-card__out-of-stock">
-              ناموجود
+              <Label color='secondary' weight='bold'>
+                       ناموجود
+              </Label>
+       
             </div>
           )}
         </div>

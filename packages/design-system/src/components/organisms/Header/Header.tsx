@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { HeaderProps } from './Header.types';
 import { Label } from '../../atoms/Label/Label';
@@ -20,6 +20,22 @@ export const Header = ({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
 
+  // جلوگیری از اسکرول بادی وقتی منو باز است
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
+  const handleToggleMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   const handleCloseMenu = () => {
     setIsMobileMenuOpen(false);
     setOpenAccordion(null);
@@ -29,7 +45,13 @@ export const Header = ({
     setOpenAccordion(prevId => (prevId === id ? null : id));
   };
 
-  const classNames = ['header', className, isScrolled ? 'header--scrolled' : ''].filter(Boolean).join(' ');
+  // اضافه کردن کلاس header--menu-open وقتی منو باز است
+  const classNames = [
+    'header',
+    className,
+    isScrolled ? 'header--scrolled' : '',
+    isMobileMenuOpen ? 'header--menu-open' : ''
+  ].filter(Boolean).join(' ');
 
   return (
     <>
@@ -38,7 +60,6 @@ export const Header = ({
           <div className="header__left">
             <div className="header__actions-mobile">
               {searchSlot}
-            
             </div>
             {logo}
             <nav className="header__nav" data-testid="desktop-nav">
@@ -51,7 +72,7 @@ export const Header = ({
                     href={link.href}
                     className={`header__nav-link ${activePath === link.href ? 'header__nav-link--active' : ''}`}
                   >
-                    <Label as="span" size="sm" weight="medium" color="secondary">{link.title}</Label>
+                    <Label as="span" size="sm" weight="bold" color="primary">{link.title}</Label>
                   </a>
                 ))}
             </nav>
@@ -64,56 +85,66 @@ export const Header = ({
               {themeToggleSlot}
               {userSlot}
             </div>
+            
             <button
-              className="header__mobile-toggle"
-              onClick={() => setIsMobileMenuOpen(true)}
-              aria-label="Open menu"
+              className={`header__mobile-toggle ${isMobileMenuOpen ? 'header__mobile-toggle--active' : ''}`}
+              onClick={handleToggleMenu}
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             >
-              <Menu size={24} />
+              <div className="header__toggle-icon">
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </div>
             </button>
           </div>
         </div>
       </header>
       
+      {/* بک‌دراپ برای تبلت (وقتی منو نصفه است) */}
+      <div 
+        className={`mobile-menu-backdrop ${isMobileMenuOpen ? 'mobile-menu-backdrop--visible' : ''}`}
+        onClick={handleCloseMenu}
+      />
+
+      {/* کانتینر منوی موبایل */}
       <div
         className={`mobile-menu ${isMobileMenuOpen ? 'mobile-menu--open' : ''}`}
-        onClick={handleCloseMenu}
         data-testid="mobile-menu-container"
       >
-        <div className="mobile-menu__content" onClick={(e) => e.stopPropagation()}>
-          <div className="mobile-menu__header">
-            {logo}
-            <button onClick={handleCloseMenu} aria-label="Close menu">
-              <X size={24} />
-            </button>
-          </div>
-          <nav className="mobile-menu__nav" data-testid="mobile-nav">
-            {navLinks.map((item) => {
-              if (item.children && item.children.length > 0 && item.id) {
+        <div className="mobile-menu__content">
+          
+          {/* بخش اسکرول‌خور */}
+          <div className="mobile-menu__scroll-area">
+            <nav className="mobile-menu__nav" data-testid="mobile-nav">
+              {navLinks.map((item) => {
+                if (item.children && item.children.length > 0 && item.id) {
+                  return (
+                    <AccordionMenu
+                      key={item.id}
+                      title={<Label as="span" size="base" weight="semi-bold" color='primary'>{item.title}</Label>}
+                      isOpen={openAccordion === item.id}
+                      onToggle={() => handleAccordionToggle(item.id!)}
+                    >
+                      <div className="mobile-menu__sublist">
+                        {item.children.map((child) => (
+                          <a key={child.href} href={child.href} onClick={handleCloseMenu} className="mobile-menu__link mobile-menu__link--sub">
+                            <Label as="span" size="sm" color='primary' >{child.title}</Label>
+
+                          </a>
+                        ))}
+                      </div>
+                    </AccordionMenu>
+                  );
+                }
                 return (
-                  <AccordionMenu
-                    key={item.id}
-                    title={<Label as="span" size="base" weight="semi-bold">{item.title}</Label>}
-                    isOpen={openAccordion === item.id}
-                    onToggle={() => handleAccordionToggle(item.id!)}
-                  >
-                    <div className="mobile-menu__sublist">
-                      {item.children.map((child) => (
-                        <a key={child.href} href={child.href} onClick={handleCloseMenu} className="mobile-menu__link mobile-menu__link--sub">
-                          <Label as="span" size="sm">{child.title}</Label>
-                        </a>
-                      ))}
-                    </div>
-                  </AccordionMenu>
+                  <a key={item.href} href={item.href} onClick={handleCloseMenu} className="mobile-menu__link">
+                    <Label as="span" size="base" weight="semi-bold">{item.title}</Label>
+                  </a>
                 );
-              }
-              return (
-                <a key={item.href} href={item.href} onClick={handleCloseMenu} className="mobile-menu__link">
-                  <Label as="span" size="base" weight="semi-bold">{item.title}</Label>
-                </a>
-              );
-            })}
-          </nav>
+              })}
+            </nav>
+          </div>
+
+          {/* فوتر ثابت */}
           <div className="mobile-menu__footer">
             {themeToggleSlot}
             {userSlot}

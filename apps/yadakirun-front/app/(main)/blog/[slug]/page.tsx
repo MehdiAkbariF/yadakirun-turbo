@@ -240,7 +240,11 @@ export default async function BlogPostPage({ params }: PageProps) {
                     
                     <a href="#comments" className="flex items-center gap-2 px-6 py-3 bg-brand-primary text-on-brand rounded-xl font-bold hover:bg-brand-primary-hover transition-colors no-underline">
                        <MessageSquare size={18} />
-                       ثبت دیدگاه
+                       <Label size='sm' color='brand-secondary'>
+
+                                            ثبت دیدگاه
+                       </Label>
+   
                     </a>
                  </div>
               </div>

@@ -1,0 +1,77 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.blog-slider-wrapper {
+  position: relative;
+  width: 100%;
+
+}
+
+.blog-slider {
+  padding-bottom: tokens.$spacing-12 !important; // فضا برای Pagination در موبایل
+  
+  // اصلاح پدینگ برای اینکه سایه کارت‌ها بریده نشود
+  padding-top: tokens.$spacing-4 !important;
+  padding-left: tokens.$spacing-2 !important;
+  padding-right: tokens.$spacing-2 !important;
+  margin-left: -#{tokens.$spacing-2} !important;
+  margin-right: -#{tokens.$spacing-2} !important;
+}
+
+// --- کنترل‌های اسلایدر (دکمه‌ها) ---
+.blog-slider__controls {
+  display: none; // در موبایل مخفی
+  position: absolute;
+  top: -60px; // قرارگیری بالای اسلایدر (هم‌تراز با تیتر)
+  left: 0;    // سمت چپ (در RTL)
+  gap: tokens.$spacing-2;
+  
+  [dir="ltr"] & {
+    left: auto;
+    right: 0;
+  }
+
+
+}
+
+.blog-slider__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: tokens.$radius-full;
+  border: 1px solid tokens.$color-border-secondary;
+  background-color: tokens.$color-bg-surface;
+  color: tokens.$color-text-secondary;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: tokens.$color-brand-primary;
+    color: tokens.$color-text-on-brand;
+    border-color: tokens.$color-brand-primary;
+  }
+
+  // حالت غیرفعال (ابتدا و انتهای اسلایدر)
+  &.swiper-button-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// --- استایل Pagination (نقطه‌های زیر اسلایدر) ---
+.swiper-pagination-bullet {
+  background: tokens.$color-text-placeholder !important;
+  opacity: 0.5;
+  width: 8px;
+  height: 8px;
+  transition: all 0.3s;
+
+  &-active {
+    background: tokens.$color-brand-primary !important;
+    opacity: 1;
+    width: 24px; // اکتیو کشیده شود
+    border-radius: 4px;
+  }
+}
