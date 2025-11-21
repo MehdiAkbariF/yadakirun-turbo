@@ -1,0 +1,36 @@
+// packages/design-system/src/components/atoms/ImageCard/ImageCard.scss
+@use '../../../styles/_variables.scss' as tokens;
+
+.image-card {
+  display: block;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: tokens.$radius-xl; // استفاده از توکن
+  box-shadow: tokens.$shadow-lg; // استفاده از توکن
+  // استفاده از متغیر CSS برای نسبت ابعاد
+  aspect-ratio: var(--aspect-ratio, 16 / 9);
+
+  &__image {
+    object-fit: fill;
+    transition: transform 0.4s ease-out; // انیمیشن نرم‌تر
+  }
+  
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: black;
+    opacity: 0;
+    transition: tokens.$transition-base;
+  }
+
+  // افکت هاور
+  &:hover {
+    .image-card__image {
+      transform: scale(1.05); // افکت زوم زیبا
+    }
+    .image-card__overlay {
+      opacity: 0.2; // لایه تیره روی تصویر
+    }
+  }
+}

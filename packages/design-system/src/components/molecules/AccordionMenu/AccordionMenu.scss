@@ -1,0 +1,50 @@
+// packages/design-system/src/components/molecules/AccordionMenu/AccordionMenu.scss
+@use '../../../styles/_variables.scss' as tokens;
+
+.accordion-menu {
+  border-bottom: 1px solid tokens.$color-border-secondary;
+
+  &__trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: tokens.$spacing-4;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: right;
+
+    &:hover {
+      background-color: tokens.$color-bg-secondary;
+    }
+  }
+  
+  &__title {
+    // استایل عنوان در اینجا قرار می‌گیرد (مثلا با استفاده از Label)
+  }
+
+  &__chevron {
+    transition: transform 0.3s ease;
+    color: tokens.$color-text-secondary;
+    
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__content {
+    display: grid;
+    grid-template-rows: 0fr; // برای انیمیشن ارتفاع
+    transition: grid-template-rows 0.3s ease-in-out;
+
+    &--open {
+      grid-template-rows: 1fr;
+    }
+  }
+  
+  &__content-inner {
+    overflow: hidden;
+    padding: 0 tokens.$spacing-4 tokens.$spacing-4 tokens.$spacing-8; // ایجاد تورفتگی
+  }
+}

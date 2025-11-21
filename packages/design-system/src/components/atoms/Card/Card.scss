@@ -1,0 +1,43 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.card {
+  display: block;
+  border-radius: tokens.$radius-lg;
+  background-color: tokens.$color-bg-surface;
+  box-shadow: tokens.$shadow-md;
+  overflow: hidden;
+  transition: tokens.$transition-base;
+  height: 100%; // برای اینکه در گرید هم‌قد باشند
+  
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: tokens.$shadow-xl;
+  }
+
+  &__image-container {
+    position: relative;
+    width: 100%;
+    // نسبت تصویر ۴ به ۳
+    aspect-ratio: 5/3;
+   background-color: tokens.$color-bg-surface; // برای کارت‌های without image
+  }
+
+  &__image {
+    object-fit: contain;
+    padding: tokens.$spacing-4;
+    transition: transform 0.3s ease;
+    
+    // در هاور کارت، تصویر بزرگنمایی می‌شود
+    .card:hover & {
+      transform: scale(1.05);
+    }
+  }
+
+  &__title-container {
+    padding: tokens.$spacing-3;
+    text-align: center;
+    
+     background-color: tokens.$color-bg-surface;
+  }
+}

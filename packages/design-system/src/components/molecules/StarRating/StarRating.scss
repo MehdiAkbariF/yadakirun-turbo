@@ -1,0 +1,24 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  &__icon {
+    color: tokens.$color-border-primary; // رنگ خالی (خاکستری)
+    transition: color 0.2s ease, transform 0.1s;
+    cursor: pointer;
+
+    &--filled {
+      color: tokens.$color-utility-warning; // زرد/طلایی
+      fill: tokens.$color-utility-warning;
+    }
+  }
+
+  &--readonly {
+    .star-rating__icon {
+      cursor: default;
+    }
+  }
+}

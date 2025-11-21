@@ -1,0 +1,27 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.service-card {
+  display: flex;
+  align-items: center;
+  gap: tokens.$spacing-3;
+  padding: tokens.$spacing-3;
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-lg;
+  box-shadow: tokens.$shadow-md;
+  border: 1px solid tokens.$color-border-secondary;
+}
+
+.service-card__icon {
+  width: tokens.$spacing-7;
+  height: tokens.$spacing-7;
+  color: tokens.$color-brand-accent;
+  flex-shrink: 0;
+}
+
+.service-card__title {
+  // استایل‌ها از طریق کامپوننت Label اعمال می‌شوند
+}
+
+.service-card__description {
+  // استایل‌ها از طریق کامپوننت Label اعمال می‌شوند
+}

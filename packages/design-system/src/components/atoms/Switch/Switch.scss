@@ -1,0 +1,38 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.switch-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: tokens.$spacing-2 0;
+}
+
+.switch-track {
+  width: 40px;
+  height: 24px;
+  background-color: tokens.$color-border-primary;
+  border-radius: tokens.$radius-full;
+  position: relative;
+  transition: background-color 0.3s;
+
+  &--checked {
+    background-color: tokens.$color-brand-primary;
+
+    .switch-thumb {
+      transform: translateX(16px);
+    }
+  }
+}
+
+.switch-thumb {
+  width: 18px;
+  height: 18px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 3px; // در حالت RTL ممکن است نیاز به راست باشد، اما فعلا چپ استاندارد است
+  transition: transform 0.3s;
+  box-shadow: tokens.$shadow;
+}

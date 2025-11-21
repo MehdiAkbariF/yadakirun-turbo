@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  /* --- Background Tokens (Clean Names) --- */
+  /* این‌ها کلاس‌های bg-surface, bg-body و... را می‌سازند */
+  --color-surface: var(--color-bg-surface);
+  --color-body: var(--color-bg-body);
+  --color-surface-hover: var(--color-bg-surface-hover);
+  --color-secondary-bg: var(--color-bg-secondary); /* کلاس bg-secondary-bg برای جلوگیری از تداخل */
+  --color-accent-bg: var(--color-bg-accent);
+
+  /* --- Text Tokens --- */
+  /* نکته مهم: ما توکن primary را به رنگ متن وصل می‌کنیم تا text-primary خاکستری باشد */
+  /* برای رنگ برند از brand-primary استفاده می‌کنیم */
+  --color-primary: var(--color-text-primary);      /* کلاس: text-primary */
+  --color-secondary: var(--color-text-secondary);  /* کلاس: text-secondary */
+  --color-placeholder: var(--color-text-placeholder);
+  --color-on-brand: var(--color-text-on-brand);
+  --color-link: var(--color-text-link);
+  --color-disabled: var(--color-text-disabled);
+  --color-heading: var(--color-heading);
+
+  /* --- Brand Colors --- */
+  --color-brand-primary: var(--color-brand-primary);
+  --color-brand-secondary: var(--color-brand-secondary);
+  --color-brand-accent: var(--color-brand-accent);
+  --color-brand-primary-hover: var(--color-brand-primary-hover);
+
+  /* --- Border Colors --- */
+  --color-border-primary: var(--color-border-primary);
+  --color-border-secondary: var(--color-border-secondary);
+
+  /* --- Utility Colors --- */
+  --color-success: var(--color-utility-success);
+  --color-error: var(--color-utility-error);
+  --color-warning: var(--color-utility-warning);
+  --color-info: var(--color-utility-info);
+
+  /* --- Breakpoints --- */
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* --- Radius --- */
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+}
+
+@layer base {
+  body {
+    /* استفاده از توکن‌های جدید و تمیز */
+    @apply bg-body text-primary font-sans;
+  }
+}

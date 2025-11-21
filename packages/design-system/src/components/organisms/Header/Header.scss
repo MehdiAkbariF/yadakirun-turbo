@@ -1,0 +1,313 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.header {
+  width: 100%;
+  height: 5rem;
+  background-color: tokens.$color-bg-surface;
+  transition: tokens.$transition-base;
+  border-bottom: 1px solid tokens.$color-border-secondary;
+
+  &--scrolled {
+    box-shadow: tokens.$shadow-md;
+  }
+
+  &__container {
+    width: 100%;
+    max-width: tokens.$breakpoint-xl;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 tokens.$spacing-4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: tokens.$spacing-4;
+  }
+
+  &__left,
+  &__right {
+    display: flex;
+    align-items: center;
+  }
+  
+  // ===================================
+  // چیدمان موبایل (پیش‌فرض)
+  // ===================================
+  &__left {
+    order: 2;
+    justify-content: flex-end;
+    gap: tokens.$spacing-2;
+  }
+  
+  &__right {
+    order: 1;
+  }
+
+  &__nav {
+    display: none;
+  }
+  
+  &__actions-desktop {
+    display: none;
+  }
+  
+  &__actions-mobile {
+    display: flex;
+    align-items: center;
+    gap: tokens.$spacing-1;
+  }
+
+  &__mobile-toggle {
+    display: block;
+    color: tokens.$color-text-secondary;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: tokens.$spacing-2;
+    border-radius: tokens.$radius-md;
+    transition: background-color 0.2s;
+    &:hover {
+      background-color: tokens.$color-bg-secondary;
+    }
+  }
+
+  .header-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: tokens.$spacing-2;
+    border-radius: tokens.$radius-md;
+    transition: background-color 0.2s;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: tokens.$color-text-secondary;
+    text-decoration: none;
+
+    &:hover {
+      background-color: tokens.$color-bg-secondary;
+    }
+
+    &--cart,
+    &--user-link {
+      display: none;
+    }
+  }
+  
+  .header-action--search {
+    padding: 0; 
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: tokens.$radius-full;
+    background-color: tokens.$color-utility-error;
+    color: tokens.$color-text-on-brand;
+    font-size: tokens.$font-size-xs;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid tokens.$color-bg-surface;
+  }
+  
+  // ===================================
+  // چیدمان دسکتاپ (lg)
+  // ===================================
+  @media (min-width: tokens.$breakpoint-lg) {
+    &__container {
+      padding: 0 tokens.$spacing-6;
+    }
+    
+    &__left, &__right {
+      order: 0;
+    }
+    
+    &__left {
+      gap: tokens.$spacing-8;
+      justify-content: flex-start;
+      flex: 1;
+      min-width: 0;
+    }
+    
+    &__right {
+      justify-content: flex-end;
+      gap: tokens.$spacing-2;
+      flex-shrink: 0; 
+    }
+    
+    &__nav {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    &__mobile-toggle {
+      display: none;
+    }
+
+    &__actions-desktop {
+      display: flex;
+      align-items: center;
+      gap: tokens.$spacing-2;
+    }
+
+    &__actions-mobile {
+      display: none;
+    }
+
+    .header-action {
+      &--cart,
+      &--user-link {
+        display: flex;
+      }
+    }
+
+    .header-action--cart {
+      position: relative;
+    }
+  }
+
+  &__nav-link {
+    text-decoration: none;
+    transition: tokens.$transition-base;
+    padding: tokens.$spacing-2 0;
+    position: relative;
+    white-space: nowrap;
+
+    @media (min-width: tokens.$breakpoint-lg) {
+      &:not(:first-child) {
+        margin-right: tokens.$spacing-7;
+      }
+      
+      [dir="ltr"] &:not(:first-child) {
+        margin-right: 0;
+        margin-left: tokens.$spacing-7;
+      }
+    }
+    
+    &:hover,
+    &--active {
+      .label {
+        color: tokens.$color-text-primary;
+      }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: tokens.$color-brand-primary;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover::after,
+    &--active::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: tokens.$z-index-50;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  &--open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+    max-width: 320px;
+    height: 100%;
+    background-color: tokens.$color-bg-surface;
+    box-shadow: tokens.$shadow-lg;
+    padding: tokens.$spacing-6;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    
+    [dir="rtl"] & {
+      left: auto;
+      right: 0;
+      transform: translateX(100%);
+    }
+  }
+  
+  &--open &__content {
+    transform: translateX(0);
+  }
+  
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid tokens.$color-border-secondary;
+    padding-bottom: tokens.$spacing-4;
+    margin-bottom: tokens.$spacing-6;
+    color: tokens.$color-text-primary;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: tokens.$spacing-4;
+  }
+  
+  &__actions {
+    margin-top: auto;
+    padding-top: tokens.$spacing-6;
+    border-top: 1px solid tokens.$color-border-secondary;
+    display: flex;
+    flex-direction: column;
+    gap: tokens.$spacing-4;
+  }
+    &__link {
+    display: block;
+    padding: tokens.$spacing-3 tokens.$spacing-4;
+    border-bottom: 1px solid tokens.$color-border-secondary;
+    text-decoration: none;
+    
+    &:hover {
+      background-color: tokens.$color-bg-secondary;
+    }
+  }
+  
+  &__sublist {
+    display: flex;
+    flex-direction: column;
+    gap: tokens.$spacing-1;
+  }
+  
+  &__footer {
+    margin-top: auto;
+    padding-top: tokens.$spacing-4;
+    border-top: 1px solid tokens.$color-border-secondary;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

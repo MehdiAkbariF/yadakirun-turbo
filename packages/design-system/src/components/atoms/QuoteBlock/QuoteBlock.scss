@@ -1,0 +1,20 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.quote-block {
+  display: flex;
+  gap: tokens.$spacing-4;
+  padding: tokens.$spacing-5;
+  margin: tokens.$spacing-6 0;
+  background-color: rgba(tokens.$color-brand-primary, 0.05);
+  border-right: 4px solid tokens.$color-brand-primary; // RTL border
+  border-radius: tokens.$radius-lg;
+
+  &__icon {
+    color: tokens.$color-brand-primary;
+    flex-shrink: 0;
+  }
+  
+  &__text {
+    line-height: tokens.$line-height-relaxed;
+  }
+}

@@ -1,0 +1,98 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+// ===================================
+// Variant 1: Slider Toggle
+// ===================================
+.theme-toggle-slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 50px;
+  height: 26px;
+  border-radius: tokens.$radius-full;
+  border: 1px solid tokens.$color-border-primary;
+  background-color: tokens.$color-bg-secondary;
+  cursor: pointer;
+  padding: 3px;
+  transition: tokens.$transition-base;
+
+  &:hover {
+    border-color: tokens.$color-text-secondary;
+  }
+
+  &__icon {
+    color: tokens.$color-utility-warning;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: opacity 0.2s ease, color 0.2s ease;
+
+    &--sun {
+      left: 5px;
+      opacity: 1;
+    }
+    &--moon {
+      right: 5px;
+      opacity: 0.5;
+      color: tokens.$color-text-primary;
+    }
+  }
+
+  &__slider {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: tokens.$color-bg-surface;
+    box-shadow: tokens.$shadow-md;
+    transition: transform 0.3s ease;
+    transform: translateX(0);
+    
+    [dir="rtl"] & {
+      transform: translateX(-10px);
+    }
+  }
+
+  &--dark {
+    background-color: tokens.$color-bg-body;
+
+    .theme-toggle-slider__slider {
+      transform: translateX(24px);
+      
+      [dir="rtl"] & {
+        transform: translateX(10);
+      }
+    }
+
+    .theme-toggle-slider__icon {
+      &--sun {
+        opacity: 0.5;
+      }
+      &--moon {
+        opacity: 1;
+        color: tokens.$color-utility-warning;
+      }
+    }
+  }
+}
+
+// ===================================
+// Variant 2: Icon Only Toggle
+// ===================================
+.theme-toggle-icon-only {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: tokens.$radius-full;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: tokens.$color-text-secondary;
+  transition: tokens.$transition-base;
+
+  &:hover {
+    background-color: tokens.$color-bg-secondary;
+    color: tokens.$color-text-primary;
+  }
+}

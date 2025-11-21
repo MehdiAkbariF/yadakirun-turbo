@@ -1,0 +1,35 @@
+// packages/design-system/src/components/organisms/Container/Container.scss
+@use '../../../styles/_variables.scss' as tokens;
+
+.container {
+  width: 100%;
+  max-width: tokens.$breakpoint-2xl;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: tokens.$spacing-4;
+  padding-right: tokens.$spacing-4;
+
+  @media (min-width: tokens.$breakpoint-sm) {
+    padding-left: tokens.$spacing-6;
+    padding-right: tokens.$spacing-6;
+  }
+
+  @media (min-width: tokens.$breakpoint-lg) {
+    padding-left: tokens.$spacing-8;
+    padding-right: tokens.$spacing-8;
+  }
+
+  // ✅✅✅ استایل‌های جدید برای حالت بخش ✅✅✅
+  &--section {
+    background-color: tokens.$color-bg-surface;
+    padding-top: tokens.$spacing-16;    // 64px
+    padding-bottom: tokens.$spacing-16; // 64px
+    border-radius: tokens.$radius-2xl;  // 24px
+    
+    // در صفحات بزرگتر، پدینگ را بیشتر می‌کنیم
+    @media (min-width: tokens.$breakpoint-md) {
+      padding-top: tokens.$spacing-24;    // 96px
+      padding-bottom: tokens.$spacing-24; // 96px
+    }
+  }
+}

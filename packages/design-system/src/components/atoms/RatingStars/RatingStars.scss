@@ -1,0 +1,16 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.rating-stars {
+  display: flex;
+  align-items: center;
+
+  &__star {
+    color: tokens.$color-border-primary;
+    fill: tokens.$color-border-primary; // رنگ ستاره خالی
+
+    &--filled {
+      color: tokens.$color-utility-warning;
+      fill: tokens.$color-utility-warning; // رنگ ستاره پر
+    }
+  }
+}

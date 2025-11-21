@@ -1,0 +1,50 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.sort-options {
+  display: flex;
+  align-items: center;
+  gap: tokens.$spacing-4;
+  padding: tokens.$spacing-4;
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-lg;
+  border: 1px solid tokens.$color-border-secondary;
+  margin-bottom: tokens.$spacing-6;
+  overflow-x: auto; // اسکرول افقی در موبایل
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: tokens.$spacing-2;
+    color: tokens.$color-text-secondary;
+    flex-shrink: 0;
+  }
+
+  &__list {
+    display: flex;
+    gap: tokens.$spacing-2;
+  }
+}
+
+.sort-btn {
+  padding: tokens.$spacing-2 tokens.$spacing-4;
+  border-radius: tokens.$radius-full;
+  font-size: tokens.$font-size-sm;
+  color: tokens.$color-text-secondary;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: tokens.$color-bg-secondary;
+    color: tokens.$color-brand-primary;
+  }
+
+  &--active {
+    background-color: rgba(tokens.$color-brand-primary, 0.1);
+    color: tokens.$color-brand-primary;
+    border-color: rgba(tokens.$color-brand-primary, 0.2);
+    font-weight: tokens.$font-weight-bold;
+  }
+}

@@ -1,0 +1,63 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.order-summary {
+  background: linear-gradient(to bottom right, tokens.$color-bg-surface, tokens.$color-bg-secondary);
+  border: 1px solid tokens.$color-border-primary;
+  border-radius: tokens.$radius-xl;
+  padding: tokens.$spacing-6;
+  position: sticky;
+  top: 100px;
+}
+
+.order-summary__rows {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-3;
+  margin-bottom: tokens.$spacing-4;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-summary__total {
+  border-top: 1px dashed tokens.$color-border-primary;
+  padding-top: tokens.$spacing-4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-apply {
+  background-color: tokens.$color-bg-surface;
+  border: 1px solid tokens.$color-border-primary;
+  color: tokens.$color-text-primary;
+  padding: 0 tokens.$spacing-4;
+  border-radius: tokens.$radius-lg;
+  font-weight: bold;
+  transition: all 0.2s;
+  &:hover {
+    background-color: tokens.$color-brand-primary;
+    color: tokens.$color-text-on-brand;
+    border-color: tokens.$color-brand-primary;
+  }
+}
+
+.btn-checkout {
+  width: 100%;
+  background-color: tokens.$color-brand-accent; // دکمه پرداخت معمولا نارنجی/اکسنت است
+  color: tokens.$color-text-on-brand;
+  padding: tokens.$spacing-4;
+  border-radius: tokens.$radius-lg;
+  font-weight: bold;
+  font-size: tokens.$font-size-base;
+  transition: transform 0.2s, background-color 0.2s;
+  margin-bottom: tokens.$spacing-4;
+  &:hover {
+    background-color: tokens.$color-brand-accent-hover;
+    transform: translateY(-2px);
+    box-shadow: tokens.$shadow-lg;
+  }
+}

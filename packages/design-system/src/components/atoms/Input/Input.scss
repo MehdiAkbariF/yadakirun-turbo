@@ -1,0 +1,91 @@
+// packages/design-system/src/components/atoms/Input/Input.scss
+@use '../../../styles/_variables.scss' as tokens;
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+
+    .input-field {
+      background-color: tokens.$color-bg-secondary;
+    }
+  }
+}
+
+.input-label {
+  margin-bottom: tokens.$spacing-2;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: tokens.$spacing-3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: tokens.$color-text-placeholder;
+  pointer-events: none; // اجازه می‌دهد کلیک از روی آیکون عبور کند
+  
+  [dir="rtl"] & {
+    left: auto;
+    right: tokens.$spacing-3;
+  }
+}
+
+.input-field {
+  width: 100%;
+  height: 40px;
+  padding: tokens.$spacing-2 tokens.$spacing-3;
+  border-radius: tokens.$radius-md;
+  border: 1px solid tokens.$color-border-primary;
+  background-color: tokens.$color-bg-surface;
+  color: tokens.$color-text-primary;
+  font-family: tokens.$font-family-base;
+  font-size: tokens.$font-size-sm;
+  transition: tokens.$transition-base;
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-brand-primary;
+    box-shadow: 0 0 0 2px rgba(var(--color-brand-primary), 0.2);
+  }
+
+  &::placeholder {
+    color: tokens.$color-text-placeholder;
+  }
+
+  &--with-icon {
+    padding-left: tokens.$spacing-10; // فضا برای آیکون
+    
+    [dir="rtl"] & {
+      padding-left: tokens.$spacing-3;
+      padding-right: tokens.$spacing-10;
+    }
+  }
+}
+
+// حالت خطا
+.input-container--error {
+  .input-field {
+    border-color: tokens.$color-utility-error;
+    &:focus {
+      box-shadow: 0 0 0 2px rgba(var(--color-utility-error), 0.2);
+    }
+  }
+  .input-icon {
+    color: tokens.$color-utility-error;
+  }
+}
+
+.input-error-message {
+  margin-top: tokens.$spacing-2;
+}

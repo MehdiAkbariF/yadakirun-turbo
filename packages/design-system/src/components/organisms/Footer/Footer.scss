@@ -1,0 +1,120 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.footer {
+  background-color: tokens.$color-bg-surface;
+  padding-top: tokens.$spacing-12; // فضای بالای دکمه
+  position: relative;
+  border-top: 1px solid tokens.$color-border-secondary;
+
+  &__scroll-to-top {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%); // دقیقاً در مرکز و بالا
+
+    button {
+      background-color: tokens.$color-brand-primary;
+      color: tokens.$color-text-on-brand;
+      width: 60px;
+      height: 60px;
+      border-radius: tokens.$radius-full;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: tokens.$shadow-lg;
+      transition: tokens.$transition-base;
+
+      &:hover {
+        background-color: tokens.$color-brand-primary-hover;
+        transform: scale(1.1) translateY(-2px);
+      }
+    }
+  }
+
+  &__main-content {
+    display: flex;
+    flex-direction: column;
+    gap: tokens.$spacing-10;
+  }
+
+  &__grid-top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: tokens.$spacing-10;
+
+    @media (min-width: tokens.$breakpoint-lg) {
+      grid-template-columns: repeat(2, 1fr);
+      align-items: start;
+    }
+  }
+
+  &__grid-middle {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: tokens.$spacing-10;
+    padding-top: tokens.$spacing-10;
+    border-top: 1px solid tokens.$color-border-secondary;
+    
+    @media (min-width: tokens.$breakpoint-lg) {
+      grid-template-columns: repeat(2, 1fr);
+      align-items: center;
+    }
+  }
+  
+  &__grid-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: tokens.$spacing-4;
+    padding-top: tokens.$spacing-10;
+    border-top: 1px solid tokens.$color-border-secondary;
+
+    @media (min-width: tokens.$breakpoint-md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (min-width: tokens.$breakpoint-lg) {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  &__link-button {
+    text-align: center;
+    background-color: tokens.$color-bg-secondary;
+    color: tokens.$color-text-primary;
+    font-weight: tokens.$font-weight-semi-bold;
+    font-size: tokens.$font-size-sm;
+    padding: tokens.$spacing-3 tokens.$spacing-4;
+    border-radius: tokens.$radius-lg;
+    box-shadow: tokens.$shadow-md;
+    transition: tokens.$transition-base;
+    text-decoration: none;
+
+    &:hover {
+      background-color: tokens.$color-brand-primary;
+      color: tokens.$color-text-on-brand;
+      transform: translateY(-2px);
+      box-shadow: tokens.$shadow-md;
+    }
+  }
+
+  &__bottom {
+    margin-top: tokens.$spacing-10;
+    padding-top: tokens.$spacing-6;
+    border-top: 1px solid tokens.$color-border-secondary;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: tokens.$spacing-6;
+
+    @media (min-width: tokens.$breakpoint-lg) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+}
+
+// استایل برای رنگ نارنجی در متن (از کد قبلی شما)
+.text-accent {
+  color: tokens.$color-brand-accent;
+}

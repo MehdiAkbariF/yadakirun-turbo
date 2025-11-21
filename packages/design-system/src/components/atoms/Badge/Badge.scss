@@ -1,0 +1,35 @@
+// packages/design-system/src/components/atoms/Badge/Badge.scss
+@use '../../../styles/_variables.scss' as tokens;
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: tokens.$spacing-1 tokens.$spacing-3;
+  border-radius: tokens.$radius-full;
+  font-size: tokens.$font-size-xs;
+  font-weight: tokens.$font-weight-medium;
+  line-height: tokens.$line-height-tight;
+  white-space: nowrap;
+
+  // Variants
+  &--variant-primary {
+    background-color: tokens.$color-brand-primary;
+    color: tokens.$color-text-on-brand;
+  }
+  &--variant-secondary {
+    background-color: tokens.$color-bg-secondary;
+    color: tokens.$color-text-secondary;
+  }
+  &--variant-success {
+    background-color: tokens.$color-utility-success;
+    color: tokens.$color-text-on-brand;
+  }
+  &--variant-error {
+    background-color: tokens.$color-utility-error;
+    color: tokens.$color-text-on-brand;
+  }
+  &--variant-warning {
+    background-color: tokens.$color-utility-warning;
+    color: tokens.$color-text-primary;
+  }
+}

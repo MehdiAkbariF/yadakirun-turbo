@@ -1,0 +1,40 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.breadcrumb {
+  margin-bottom: tokens.$spacing-6;
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: tokens.$spacing-2;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: tokens.$spacing-2;
+  }
+
+  &__link {
+    font-size: tokens.$font-size-sm;
+    color: tokens.$color-text-placeholder;
+    text-decoration: none;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: tokens.$color-brand-primary;
+    }
+  }
+
+  &__separator {
+    color: tokens.$color-border-primary;
+  }
+
+  &__active {
+    color: tokens.$color-text-primary;
+  }
+}

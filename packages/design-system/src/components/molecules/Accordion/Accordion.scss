@@ -1,0 +1,63 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.accordion {
+  border: 1px solid tokens.$color-border-secondary;
+  border-radius: tokens.$radius-lg;
+  background-color: tokens.$color-bg-surface;
+  margin-bottom: tokens.$spacing-6;
+
+  &__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: tokens.$spacing-4;
+    background-color: tokens.$color-bg-secondary;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    
+    // حذف استایل‌های پیش‌فرض دکمه
+    outline: none;
+    font-family: inherit;
+
+    &:hover {
+      background-color: tokens.$color-border-secondary;
+    }
+  }
+
+  &__chevron {
+    color: tokens.$color-text-secondary;
+    transition: transform 0.3s ease;
+  }
+
+  // --- انیمیشن مدرن با Grid ---
+  &__content-wrapper {
+    display: grid;
+    grid-template-rows: 0fr; // حالت بسته
+    transition: grid-template-rows 0.3s ease-out;
+    border-top: 0 solid tokens.$color-border-secondary; // برای انیمیشن بوردر
+  }
+
+  &__inner {
+    overflow: hidden; // محتوا باید مخفی شود تا انیمیشن کار کند
+    min-height: 0;
+  }
+
+  &__content {
+    padding: tokens.$spacing-4;
+    // پدینگ را اینجا می‌دهیم تا در محاسبه ارتفاع تاثیر نگذارد
+  }
+
+  // --- حالت باز ---
+  &--open {
+    .accordion__chevron {
+      transform: rotate(180deg);
+    }
+
+    .accordion__content-wrapper {
+      grid-template-rows: 1fr; // حالت باز (ارتفاع خودکار)
+      border-top: 1px solid tokens.$color-border-secondary; // بوردر فقط وقتی باز است دیده شود
+    }
+  }
+}

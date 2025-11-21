@@ -1,0 +1,32 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.card-grid {
+  display: grid;
+  // تعداد ستون‌های پیش‌فرض برای گریدهایی که ریسپانسیو نیستند
+  grid-template-columns: repeat(var(--grid-columns, 7), minmax(0, 1fr));
+  gap: 1.5rem;
+
+  // استایل‌های ریسپانسیو برای گرید جدید
+  &--responsive {
+    // ✅✅✅ اصلاح شد: موبایل با ۳ ستون شروع می‌شود
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: tokens.$spacing-3; // فاصله کمتر برای ستون‌های بیشتر در موبایل
+
+    // تبلت کوچک: ۴ ستون
+    @media (min-width: tokens.$breakpoint-sm) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: tokens.$spacing-4;
+    }
+
+    // تبلت بزرگ: ۵ ستون
+    @media (min-width: tokens.$breakpoint-md) {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    // دسکتاپ: ۶ ستون
+    @media (min-width: tokens.$breakpoint-lg) {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: tokens.$spacing-6;
+    }
+  }
+}

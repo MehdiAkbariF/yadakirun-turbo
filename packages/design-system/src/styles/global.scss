@@ -1,13 +1,15 @@
-// مسیر: packages/design-system/src/styles/global.scss
+@use 'fonts'; // ایمپورت کردن تعاریف فونت
 
-@use '../theme/_tokens.scss' as tokens; // <-- اینجا از as tokens استفاده می‌کنیم
+// ✅✅✅ اصلاح شد: مسیر صحیح به فایل توکن‌ها
+@use 'variables' as tokens;
 
-html, body {
+html,
+body {
   padding: 0;
   margin: 0;
-  font-family: tokens.$font-family-body;
-  color: tokens.$color-gray-900; // رنگ متن ثابت
-  background-color: tokens.$color-white; // رنگ پس‌زمینه ثابت
+  font-family: tokens.$font-family-base;
+  color: var(--color-text-primary); // استفاده از متغیرهای CSS
+  background-color: var(--color-bg-body);
 }
 
 a {

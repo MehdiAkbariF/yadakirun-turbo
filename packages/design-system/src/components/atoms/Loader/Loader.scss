@@ -1,0 +1,66 @@
+
+@use '../../../styles/_variables.scss' as tokens;
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  display: inline-block;
+  border-style: solid;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+
+  // --- Sizes ---
+  &--size-sm {
+    width: 1rem; // 16px
+    height: 1rem;
+    border-width: 2px;
+  }
+  &--size-md {
+    width: 2rem; // 32px
+    height: 2rem;
+    border-width: 3px;
+  }
+  &--size-lg {
+    width: 4rem; // 64px
+    height: 4rem;
+    border-width: 4px;
+  }
+  &--size-xl {
+    width: 6rem; // 96px
+    height: 6rem;
+    border-width: 5px;
+  }
+
+  // --- Variants (Colors) ---
+  &--variant-primary {
+    border-color: tokens.$color-brand-primary;
+    border-right-color: transparent; // این بخش "شکاف" را در اسپینر ایجاد می‌کند
+  }
+  &--variant-secondary {
+    border-color: tokens.$color-text-secondary;
+    border-right-color: transparent;
+  }
+  &--variant-light {
+    border-color: tokens.$color-bg-surface;
+    border-right-color: transparent;
+  }
+  &--variant-dark {
+    border-color: tokens.$color-text-primary;
+    border-right-color: transparent;
+  }
+}
+
+// استایل برای حالت تمام صفحه
+.loader-fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(var(--shadow-color-rgb), 0.5); // یک پس‌زمینه نیمه‌شفاف
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: tokens.$z-index-max;
+}

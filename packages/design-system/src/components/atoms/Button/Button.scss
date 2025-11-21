@@ -1,57 +1,80 @@
-// مسیر: packages/design-system/src/components/atoms/Button/Button.scss
-
-@use '../../../theme/_tokens.scss' as tokens;
+@use '../../../styles/_variables.scss' as tokens;
 
 .button {
-  font-family: tokens.$font-family-body;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: tokens.$radius-lg;
+  font-family: tokens.$font-family-base;
   font-weight: tokens.$font-weight-bold;
-  border-radius: tokens.$border-radius-md;
-
-  border: 0;
   cursor: pointer;
-  display: inline-block;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
   line-height: 1;
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-
-  &:disabled {
+  white-space: nowrap;
+  
+  &:disabled, &--loading {
+    opacity: 0.6;
     cursor: not-allowed;
-    opacity: 0.5;
   }
 
-  &:not(:disabled):hover {
-    opacity: 0.9;
+  &--full-width { width: 100%; }
+
+  // --- Sizes ---
+  &--size-sm {
+    height: 32px;
+    padding: 0 tokens.$spacing-3;
+    font-size: tokens.$font-size-xs;
   }
-}
+  &--size-md {
+    height: 40px;
+    padding: 0 tokens.$spacing-4;
+    font-size: tokens.$font-size-sm;
+  }
+  &--size-lg {
+    height: 48px;
+    padding: 0 tokens.$spacing-6;
+    font-size: tokens.$font-size-base;
+  }
 
-// Variants
-.button--primary {
-  color: tokens.$color-white;
-  background-color: tokens.$color-primary;
-}
+  // --- Variants ---
+  &--primary {
+    background-color: tokens.$color-brand-primary;
+    color: tokens.$color-text-on-brand;
+    &:hover:not(:disabled) { background-color: tokens.$color-brand-primary-hover; }
+  }
+  
+  &--secondary {
+    background-color: tokens.$color-bg-secondary;
+    color: tokens.$color-text-primary;
+    &:hover:not(:disabled) { background-color: tokens.$color-border-secondary; }
+  }
 
-.button--secondary {
-  color: tokens.$color-gray-700;
-  background-color: tokens.$color-gray-100;
-  box-shadow: inset 0 0 0 1px tokens.$color-gray-300;
-}
+  &--danger {
+    background-color: tokens.$color-utility-error;
+    color: #fff;
+    &:hover:not(:disabled) { opacity: 0.9; }
+  }
 
-.button--danger {
-  color: tokens.$color-white;
-  background-color: tokens.$color-error;
-}
+  &--outline {
+    background-color: transparent;
+    border-color: tokens.$color-border-primary;
+    color: tokens.$color-text-primary;
+    &:hover:not(:disabled) { 
+      border-color: tokens.$color-brand-primary;
+      color: tokens.$color-brand-primary;
+    }
+  }
+  
+  &--ghost {
+    background-color: transparent;
+    color: tokens.$color-text-secondary;
+    &:hover:not(:disabled) { 
+      background-color: tokens.$color-bg-secondary;
+      color: tokens.$color-text-primary;
+    }
+  }
 
-// Sizes
-.button--sm {
-  font-size: tokens.$font-size-xs;
-  padding: tokens.$button-padding-sm;
-}
-
-.button--md {
-  font-size: tokens.$font-size-sm;
-  padding: tokens.$button-padding-md;
-}
-
-.button--lg {
-  font-size: tokens.$font-size-md;
-  padding: tokens.$button-padding-lg;
+  &__icon-left { margin-left: tokens.$spacing-2; }
+  &__icon-right { margin-right: tokens.$spacing-2; }
 }

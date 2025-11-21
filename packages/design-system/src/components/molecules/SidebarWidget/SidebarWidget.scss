@@ -1,0 +1,40 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.sidebar-widget {
+  background-color: tokens.$color-bg-surface;
+  border: 1px solid tokens.$color-border-secondary;
+  border-radius: tokens.$radius-xl;
+  overflow: hidden;
+  margin-bottom: tokens.$spacing-6;
+  box-shadow: tokens.$shadow-lg;
+
+  &__header {
+    padding: tokens.$spacing-4 tokens.$spacing-6;
+    border-bottom: 1px solid tokens.$color-border-secondary;
+    display: flex;
+    align-items: center;
+    background-color: rgba(tokens.$color-bg-secondary, 0.3); // کمی تیره‌تر برای هدر ویجت
+  }
+
+  &__title {
+    position: relative;
+    padding-right: tokens.$spacing-3;
+    
+    // خط رنگی کنار عنوان (Accent Color)
+    &::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 20px;
+      width: 4px;
+      background-color: tokens.$color-brand-accent;
+      border-radius: tokens.$radius-sm;
+    }
+  }
+
+  &__content {
+    padding: tokens.$spacing-6;
+  }
+}

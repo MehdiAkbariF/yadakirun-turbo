@@ -1,0 +1,71 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.comments-section {
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-xl;
+  padding: tokens.$spacing-6;
+  border: 1px solid tokens.$color-border-secondary;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: tokens.$spacing-6;
+    flex-wrap: wrap;
+    gap: tokens.$spacing-4;
+  }
+
+  &__stats {
+    background-color: tokens.$color-bg-secondary;
+    padding: tokens.$spacing-4;
+    border-radius: tokens.$radius-lg;
+    margin-bottom: tokens.$spacing-6;
+  }
+
+  &__filters {
+    display: flex;
+    align-items: center;
+    gap: tokens.$spacing-6;
+    margin-bottom: tokens.$spacing-6;
+    padding-bottom: tokens.$spacing-4;
+    border-bottom: 1px solid tokens.$color-border-secondary;
+    flex-wrap: wrap;
+  }
+}
+
+.ds-btn-outline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid tokens.$color-brand-primary;
+  color: tokens.$color-brand-primary;
+  border-radius: tokens.$radius-lg;
+  font-weight: tokens.$font-weight-bold;
+  background: transparent;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: tokens.$color-brand-primary;
+    color: tokens.$color-text-on-brand;
+  }
+}
+
+.filter-btn {
+  font-size: tokens.$font-size-sm;
+  color: tokens.$color-text-secondary;
+  font-weight: tokens.$font-weight-medium;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+
+  &:hover {
+    color: tokens.$color-brand-primary;
+  }
+
+  &--active {
+    color: tokens.$color-brand-primary;
+    border-bottom-color: tokens.$color-brand-primary;
+    font-weight: tokens.$font-weight-bold;
+  }
+}

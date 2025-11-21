@@ -1,0 +1,59 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-xl;
+  overflow: hidden;
+  border: 1px solid tokens.$color-border-primary;
+  transition: tokens.$transition-base;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: tokens.$shadow-lg;
+    border-color: tokens.$color-brand-primary;
+  }
+
+  &__image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 60%; // Aspect Ratio
+  }
+
+  &__image {
+    object-fit: fill;
+  }
+
+  &__category {
+    position: absolute;
+    top: tokens.$spacing-3;
+    right: tokens.$spacing-3;
+    background-color: rgba(tokens.$color-brand-primary, 0.9);
+    color: tokens.$color-text-on-brand;
+    padding: tokens.$spacing-1 tokens.$spacing-3;
+    border-radius: tokens.$radius-full;
+    font-size: tokens.$font-size-xs;
+    font-weight: tokens.$font-weight-semi-bold;
+  }
+
+  &__content {
+    padding: tokens.$spacing-4;
+    display: flex;
+    flex-direction: column;
+    gap: tokens.$spacing-3;
+    flex-grow: 1;
+  }
+
+  &__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: tokens.$color-text-secondary;
+  }
+  
+  &__title {
+    margin-bottom: auto; // هل دادن متن خلاصه به پایین اگر لازم بود
+  }
+}

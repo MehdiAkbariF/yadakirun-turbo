@@ -1,0 +1,178 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.product-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-4;
+
+  &__main {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: tokens.$color-bg-surface;
+    border: 1px solid tokens.$color-border-secondary;
+    border-radius: tokens.$radius-xl;
+    overflow: hidden;
+    cursor: zoom-in;
+    
+    // برای نمایش صحیح دکمه روی عکس
+    &:hover .product-gallery__expand-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &__img {
+    object-fit: contain;
+    padding: tokens.$spacing-6;
+    transition: transform 0.1s ease-out;
+    z-index: 1;
+  }
+
+  &__expand-btn {
+    position: absolute;
+    bottom: tokens.$spacing-4;
+    right: tokens.$spacing-4; // در حالت RTL سمت راست قرار می‌گیرد (یا چپ بسته به دایرکشن)
+    z-index: 10; // بالاتر از عکس
+    
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background-color: rgba(tokens.$color-bg-surface, 0.8);
+    backdrop-filter: blur(4px);
+    border: 1px solid tokens.$color-border-secondary;
+    border-radius: tokens.$radius-full;
+    color: tokens.$color-text-primary;
+    cursor: pointer;
+    
+    opacity: 0; // در حالت عادی مخفی (یا می‌توانید همیشه نمایش دهید)
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: tokens.$color-brand-primary;
+      color: tokens.$color-text-on-brand;
+      border-color: tokens.$color-brand-primary;
+    }
+
+    // در موبایل همیشه نمایش داده شود
+    @media (max-width: tokens.$breakpoint-sm) {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &__thumbnails {
+    display: flex;
+    gap: tokens.$spacing-2;
+    overflow-x: auto;
+    padding-bottom: tokens.$spacing-2;
+    
+    // مخفی کردن اسکرول بار
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  &__thumb {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+    border: 2px solid tokens.$color-border-secondary;
+    border-radius: tokens.$radius-lg;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: tokens.$color-bg-surface;
+    padding: 0;
+
+    &--active {
+      border-color: tokens.$color-brand-primary;
+    }
+
+    &:hover {
+      border-color: tokens.$color-brand-primary-hover;
+    }
+  }
+}
+
+// --- Fullscreen Modal Styles ---
+.product-gallery-modal {
+  position: fixed;
+  inset: 0; // top: 0, right: 0, bottom: 0, left: 0
+  z-index: tokens.$z-index-max; // بالاترین اولویت
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+
+  &__close {
+    position: absolute;
+    top: tokens.$spacing-6;
+    right: tokens.$spacing-6;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    z-index: 20;
+    transition: transform 0.2s;
+    
+    &:hover {
+      transform: scale(1.1);
+      color: tokens.$color-utility-error;
+    }
+  }
+
+  &__content {
+    position: relative;
+    width: 90%;
+    height: 70%;
+    margin-bottom: tokens.$spacing-6;
+  }
+
+  &__img {
+    object-fit: contain;
+  }
+
+  &__thumbs {
+    display: flex;
+    gap: tokens.$spacing-3;
+    overflow-x: auto;
+    max-width: 90%;
+    padding: tokens.$spacing-2;
+  }
+
+  &__thumb-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: tokens.$radius-md;
+    border: 2px solid transparent;
+    overflow: hidden;
+    opacity: 0.6;
+    transition: all 0.2s;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    &.active {
+      opacity: 1;
+      border-color: tokens.$color-brand-primary;
+      transform: scale(1.1);
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

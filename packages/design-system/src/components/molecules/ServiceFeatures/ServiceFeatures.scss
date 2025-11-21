@@ -1,0 +1,31 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.service-features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: tokens.$spacing-4;
+  margin-top: tokens.$spacing-6;
+
+  @media (min-width: tokens.$breakpoint-sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: tokens.$breakpoint-lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &__card {
+    display: flex;
+    align-items: flex-start;
+    gap: tokens.$spacing-3;
+    background-color: tokens.$color-bg-surface;
+    border: 1px solid tokens.$color-border-secondary;
+    border-radius: tokens.$radius-lg;
+    padding: tokens.$spacing-4;
+    height: 100%;
+  }
+
+  &__icon {
+    color: tokens.$color-brand-accent;
+    flex-shrink: 0;
+  }
+}

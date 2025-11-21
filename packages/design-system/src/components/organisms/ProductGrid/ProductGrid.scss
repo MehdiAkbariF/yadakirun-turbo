@@ -1,0 +1,70 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.product-grid-container {
+  // بوردرهای بیرونی (بالا و چپ) برای ایجاد ظاهر جدول‌مانند
+  border-top: 1px solid tokens.$color-border-secondary;
+  border-left: 1px solid tokens.$color-border-secondary;
+  
+  // گرید بدون فاصله (gap: 0)
+  display: grid;
+  grid-template-columns: 1fr; // موبایل: ۱ ستون
+  gap: 0; 
+
+  @media (min-width: tokens.$breakpoint-sm) {
+    grid-template-columns: repeat(2, 1fr); // تبلت کوچک: ۲ ستون
+  }
+
+  @media (min-width: tokens.$breakpoint-lg) {
+    grid-template-columns: repeat(3, 1fr); // دسکتاپ: ۳ ستون
+  }
+
+  @media (min-width: tokens.$breakpoint-xl) {
+    grid-template-columns: repeat(4, 1fr); // مانیتور بزرگ: ۴ ستون
+  }
+}
+
+.product-grid-item {
+  // هر آیتم بوردر پایین و راست دارد تا شبکه کامل شود
+  border-bottom: 1px solid tokens.$color-border-secondary;
+  border-right: 1px solid tokens.$color-border-secondary;
+}
+
+// استایل دکمه‌های صفحه‌بندی
+.pg-pagination-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: tokens.$spacing-2;
+  margin-top: tokens.$spacing-8;
+}
+
+.pg-pagination-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: tokens.$radius-lg;
+  font-size: tokens.$font-size-sm;
+  transition: all 0.2s;
+  border: 1px solid tokens.$color-border-secondary;
+  background-color: tokens.$color-bg-surface;
+  color: tokens.$color-text-primary;
+  cursor: pointer;
+
+  &:hover {
+    background-color: tokens.$color-bg-secondary;
+    border-color: tokens.$color-border-primary;
+  }
+
+  &--active {
+    background-color: tokens.$color-brand-primary;
+    color: tokens.$color-text-on-brand;
+    border-color: tokens.$color-brand-primary;
+    font-weight: tokens.$font-weight-bold;
+    
+    &:hover {
+      background-color: tokens.$color-brand-primary-hover;
+    }
+  }
+}

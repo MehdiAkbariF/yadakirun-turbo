@@ -1,0 +1,2337 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+سلام
+
+
+
+این پروژه منه میخوام که کامل توش حرفه ای بشی که با هم بریم توسعه بدیم
+
+code
+Code
+download
+content_copy
+expand_less
+Directory: C:\Users\Raven\New folder (2)\monorepo
+
+Mode                 LastWriteTime         Length Name
+
+d-----        11/20/2025   8:22 AM                .turbo
+d-----        11/15/2025   8:54 AM                apps
+d-----        11/15/2025   2:11 PM                node_modules
+d-----        11/15/2025   8:24 AM                packages
+d-----        11/15/2025   8:24 AM                patches
+d-----        11/15/2025   8:24 AM                src
+-a----        11/15/2025   8:24 AM            280 .gitignore
+-a----        11/15/2025   8:24 AM              0 .npmrc
+-a----        11/15/2025   2:11 PM         469760 package-lock.json
+-a----        11/15/2025   2:11 PM            666 package.json
+-a----        11/15/2025   8:24 AM             39 pnpm-workspace.yaml
+-a----        11/15/2025   8:24 AM           5020 README.md
+-a----        11/15/2025   8:24 AM            648 tsconfig.base.json
+-a----        11/15/2025   9:44 AM            554 turbo.json
+
+code
+Code
+download
+content_copy
+expand_less
+Directory: C:\Users\Raven\New folder (2)\monorepo\packages
+
+Mode                 LastWriteTime         Length Name
+
+d-----        11/15/2025   8:25 AM                api-client
+d-----        11/15/2025  11:10 AM                design-system
+d-----        11/15/2025   8:25 AM                eslint-config-custom
+d-----        11/15/2025   8:24 AM                typescript-config
+
+Mode                 LastWriteTime         Length Name
+
+d-----        11/15/2025   8:24 AM                .storybook
+d-----        11/15/2025   9:47 AM                .turbo
+d-----        11/15/2025   8:46 AM                node_modules
+d-----        11/15/2025  11:10 AM                public
+d-----        11/15/2025   8:24 AM                src
+-a----        11/15/2025   8:24 AM            752 package.json
+-a----        11/15/2025   8:24 AM            268 tsconfig.json
+-a----        11/15/2025   8:24 AM            623 vitest.config.ts
+-a----        11/15/2025   8:24 AM             80 vitest.setup.ts
+-a----        11/15/2025   8:24 AM             62 vitest.shims.d.ts
+
+code
+Code
+download
+content_copy
+expand_less
+Directory: C:\Users\Raven\New folder (2)\monorepo\packages\design-system\src
+
+Mode                 LastWriteTime         Length Name
+
+d-----        11/15/2025  12:51 PM                components
+d-----        11/15/2025  11:10 AM                styles
+d-----        11/15/2025   8:24 AM                test
+d-----        11/15/2025   8:24 AM                theme
+-a----        11/15/2025   8:24 AM              0 index.ts
+
+code
+Code
+download
+content_copy
+expand_less
+Directory: C:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components
+
+Mode                 LastWriteTime         Length Name
+
+d-----        11/15/2025   5:33 PM                atoms
+d-----        11/15/2025   5:34 PM                molecules
+d-----        11/15/2025   5:37 PM                organisms
+
+code
+Code
+download
+content_copy
+expand_less
+Directory: C:\Users\Raven\New folder (2)\monorepo\apps\yadakirun-front
+
+Mode                 LastWriteTime         Length Name
+
+d-----        11/15/2025   8:55 AM                .next
+d-----        11/15/2025  11:09 AM                app
+d-----        11/15/2025   8:54 AM                node_modules
+d-----        11/15/2025   3:27 PM                public
+d-----        11/15/2025   4:04 PM                src
+-a----        11/15/2025   8:54 AM            480 .gitignore
+-a----        11/15/2025   8:54 AM            465 eslint.config.mjs
+-a----        11/15/2025   8:55 AM            251 next-env.d.ts
+-a----        11/15/2025  11:12 AM            700 next.config.ts
+-a----        11/15/2025  11:13 AM            597 package.json
+-a----        11/15/2025   8:54 AM             94 postcss.config.mjs
+-a----        11/15/2025   8:54 AM           1450 README.md
+-a----        11/15/2025   8:54 AM            666 tsconfig.json
+
+code
+Code
+download
+content_copy
+expand_less
+Directory: C:\Users\Raven\New folder (2)\monorepo\apps\yadakirun-front\app
+
+Mode                 LastWriteTime         Length Name
+
+d-----        11/15/2025   9:03 AM                (auth)
+d-----        11/15/2025   9:15 AM                (main)
+d-----        11/15/2025   9:03 AM                about-us
+d-----        11/15/2025   9:04 AM                blog
+d-----        11/15/2025   9:04 AM                cars-category
+d-----        11/15/2025   9:05 AM                checkout
+d-----        11/15/2025   9:05 AM                faq
+d-----        11/15/2025   9:06 AM                product
+d-----        11/15/2025   9:06 AM                products-category
+d-----        11/15/2025   9:07 AM                User
+-a----        11/15/2025   8:54 AM          25931 favicon.ico
+-a----        11/15/2025  10:22 AM             23 globals.css
+-a----        11/15/2025  11:18 AM            976 layout.tsx
+
+& 'c:\Users\Raven\New folder (2)\monorepo\apps\yadakirun-front\app(main)\layout.tsx'
+import React from 'react';
+import Image from 'next/image';
+import { Wrench, ShieldCheck, Headphones } from 'lucide-react'; // آیکون‌های استاندارد از lucide-react
+
+// ایمپورت کردن کامپوننت‌های اصلی از محل صحیح
+import { MainHeader } from '@/src/components/layout/MainHeader';
+import { VideoBanner } from '@/src/components/layout/VideoBanner';
+import { Footer } from '@monorepo/design-system/src/components/organisms/Footer/Footer'; // ✅ ایمپورت فوتر جدید
+
+// ✅ داده‌های فوتر را در لی‌اوت تعریف می‌کنیم
+const footerData = {
+logo: <Image src="/logo.webp" alt="لوگوی یاداکیرون" width={80} height={80} />,
+companyName: "فروشگاه آنلاین لوازم یدکی خودرو",
+tagline: "یدکی ران",
+description: "یدکی‌ران، دسترسی به قطعات یدکی تمامی خودروهای موجود در بازار ایران، آسان‌تر از همیشه است! ما متعهد هستیم که با ارائه‌ی قطعات اصلی، قیمت‌های رقابتی و ارسال سریع، تجربه‌ای مطمئن و راحت برای شما رقم بزنیم.",
+supportPhone1: "021-33988013",
+supportPhone2: "09357744749",
+workHours: ["شنبه تا چهارشنبه، ۹ الی ۱۷", "پنجشنبه ها، ۹ الی ۱۳"],
+serviceCards: [
+{ icon: <Wrench />, title: "نصب فوری", description: "نصب توسط تکنسین‌های مجرب" },
+{ icon: <ShieldCheck />, title: "گارانتی اصالت", description: "ضمانت کیفیت تمامی قطعات" },
+{ icon: <Headphones />, title: "پشتیبانی ۲۴/۷", description: "پشتیبانی تلفنی و آنلاین" },
+],
+footerButtons: [
+{ text: "مجوزها", href: "/licenses" },
+{ text: "درباره ما", href: "/about-us" },
+{ text: "تماس با ما", href: "/contact" },
+{ text: "سوالات متداول", href: "/faq" },
+{ text: "دسته بندی ها", href: "/categories" },
+{ text: "نحوه ارسال و مرجوعی", href: "/shipping-policy" },
+],
+trustSeals: [
+{ src: "/eanjoman-1.png", alt: "انجمن صنفی کسب و کارهای اینترنتی", href:"#" },
+{ src: "/enamad-1.png", alt: "نماد اعتماد الکترونیکی", href:"#" },
+{ src: "/jokmmpnlmlpk-1.png", alt: "نشان ملی ثبت رسانه‌های دیجیتال", href:"#" },
+{ src: "/samandehi-1.png", alt: "ساماندهی", href:"#" },
+],
+copyrightText: "تمام حقوق برای یدکی‌ران محفوظ بوده و استفاده از محتوای این وبسایت تنها با ذکر نام و درج لینک مستقیم مجاز است.",
+};
+
+export default function MainLayout({
+children,
+}: {
+children: React.ReactNode;
+}) {
+return (
+<div className="">
+<VideoBanner />
+<div className="relative flex-1  z-10 flex flex-col">
+<div className="sticky top-0 z-20">
+<MainHeader />
+</div>
+
+code
+Code
+download
+content_copy
+expand_less
+<main className="py-8 flex-grow">
+      {children}
+    </main>
+  </div>
+
+  {/* ✅✅✅ استفاده از کامپوننت Footer جدید با پاس دادن داده‌ها ✅✅✅ */}
+  <Footer {...footerData} />
+</div>
+
+);
+}
+
+& 'c:\Users\Raven\New folder (2)\monorepo\apps\yadakirun-front\src\components\layout\MainHeader.tsx'
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { ShoppingCart, User, Search } from 'lucide-react';
+
+import { Header } from '@monorepo/design-system/src/components/organisms/Header/Header';
+import { MegaMenu } from '@monorepo/design-system/src/components/organisms/MegaMenu/MegaMenu';
+import { ThemeToggle } from '@monorepo/design-system/src/components/atoms/ThemeToggle/ThemeToggle';
+import { Input } from '@monorepo/design-system/src/components/atoms/Input/Input';
+import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
+import { useTheme } from '@/src/context/ThemeProvider';
+
+// منبع داده واحد برای تمام آیتم‌های منو
+const navigationItems = [
+{
+id: "categories",
+title: "دسته‌بندی فروشگاه",
+href: "/products-category",
+children: [
+{
+id: "parts",
+title: "قطعات خودرو",
+href: "/parts",
+children: [
+{ id: "cat-1", title: "کمک فنر", href: "/category/shocks" },
+{ id: "cat-2", title: "دیسک و صفحه", href: "/category/disc-plate" },
+]
+},
+{
+id: "brands",
+title: "برند خودرو",
+href: "/brands",
+children: [
+{
+id: "brand-1", title: "رنو", href: "/brand/renault",
+children: [
+{ id: "sub-1-1", title: "مگان", href: "/car/renault-megane" },
+{ id: "sub-1-2", title: "ال 90", href: "/car/renault-l90" },
+{ id: "sub-1-3", title: "ال 90", href: "/car/renault-l90" },
+{ id: "sub-1-4", title: "ال 90", href: "/car/renault-l90" },
+{ id: "sub-1-5", title: "ال 90", href: "/car/renault-l90" },
+{ id: "sub-1-6", title: "ال 90", href: "/car/renault-l90" },
+],
+},
+]
+}
+]
+},
+{ id: "blog", title: "بلاگ", href: "/blog" },
+{ id: "about", title: "درباره ما", href: "/about-us" },
+{ id: "faq", title: "تماس با ما", href: "/faq" },
+{ id: "track-order", title: "پیگیری سفارش", href: "/track-order", mobileOnly: true },
+{ id: "support", title: "پشتیبانی آنلاین", href: "/support", mobileOnly: true },
+];
+
+export const MainHeader = () => {
+const pathname = usePathname();
+const { theme, toggleTheme } = useTheme();
+const [isScrolled, setIsScrolled] = useState(false);
+
+useEffect(() => {
+const handleScroll = () => setIsScrolled(window.scrollY > 10);
+window.addEventListener("scroll", handleScroll);
+return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
+const isHomePage = pathname === "/";
+const headerClassName = isHomePage && !isScrolled ? "bg-[#E5E3DF]" : "";
+
+// کامپوننت‌های اسلات‌ها
+const searchComponent = (
+<div className="header-action header-action--search">
+<Input
+id="header-search"
+type="search"
+placeholder="جستجو..."
+leftIcon={<Search size={18} />}
+containerClassName="w-48 xl:w-72"
+/>
+</div>
+);
+
+const cartComponent = (
+<button className="header-action header-action--cart">
+<ShoppingCart size={22} />
+<Label as="span" size="xs" weight="bold" color="on-brand" className="cart-badge">
+3
+</Label>
+</button>
+);
+
+const themeToggleComponent = (
+<>
+<div className="lg:hidden">
+<ThemeToggle
+variant="icon"
+className="header-action header-action--theme-toggle"
+isDarkMode={theme === 'dark-blue'}
+onToggle={toggleTheme}
+/>
+</div>
+<div className="hidden lg:flex">
+<ThemeToggle
+variant="slider"
+className="header-action header-action--theme-toggle"
+isDarkMode={theme === 'dark-blue'}
+onToggle={toggleTheme}
+/>
+</div>
+</>
+);
+
+const userLinkComponent = (
+<Link href="/login" className="header-action header-action--user-link">
+<User size={22} />
+<Label as="span" size="sm" weight="semi-bold" color="primary" className="hidden md:inline">
+ورود | ثبت‌نام
+</Label>
+</Link>
+);
+
+// استخراج داده‌های مورد نیاز برای MegaMenu
+const megaMenuItem = navigationItems.find(item => item.id === 'categories');
+const categoriesForMegaMenu = megaMenuItem?.children?.find(c => c.id === 'parts')?.children || [];
+const brandsForMegaMenu = megaMenuItem?.children?.find(c => c.id === 'brands')?.children || [];
+
+return (
+<Header
+isScrolled={isScrolled}
+activePath={pathname}
+className={headerClassName}
+logo={
+<Link href="/">
+<Image src="/logo.webp" alt="لوگوی یاداکیرون" width={150} height={50} className="h-auto"/>
+</Link>
+}
+megaMenuSlot={
+megaMenuItem && (
+<MegaMenu
+triggerText={megaMenuItem.title}
+categories={categoriesForMegaMenu}
+// ✅✅✅ اصلاح اصلی و نهایی اینجاست ✅✅✅
+// ما در اینجا ساختار داده را برای MegaMenu تطبیق می‌دهیم
+brands={brandsForMegaMenu.map(brand => ({
+...brand,
+subItems: brand.children || [] // پراپرتی 'children' را به 'subItems' تبدیل می‌کنیم
+}))}
+/>
+)
+}
+navLinks={navigationItems}
+searchSlot={searchComponent}
+cartSlot={cartComponent}
+themeToggleSlot={themeToggleComponent}
+userSlot={userLinkComponent}
+/>
+);
+};
+
+& 'c:\Users\Raven\New folder (2)\monorepo\apps\yadakirun-front\src\components\layout\VideoBanner.tsx'
+// مسیر: apps/yadakirun-front/src/components/layout/VideoBanner.tsx
+
+export const VideoBanner = () => {
+return (
+// این کانتینر اصلی است که موقعیت و اندازه بنر را مشخص می‌کند
+// overflow-hidden اضافه شد تا بخش‌های اضافی ویدیو بیرون نزند
+<div className="relative top-0 left-0 w-full h-10 z-0 overflow-hidden">
+
+code
+Code
+download
+content_copy
+expand_less
+{/* 
+    یک لایه تیره روی ویدیو برای خوانایی بهتر متن‌هایی که ممکن است روی آن قرار بگیرند
+    این بخش اختیاری است اما ظاهر حرفه‌ای‌تری ایجاد می‌کند
+  */}
+
+  
+  <video
+    // استایل‌ها برای پوشاندن کامل کانتینر
+    className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+    
+    // مسیر ویدیو از پوشه public
+    src="/gif-site-header.mp4" 
+    
+    // اتریبیوت‌های لازم برای پخش خودکار و تکرار شونده
+    autoPlay
+    loop
+    muted
+    playsInline
+  />
+  
+  {/* 
+    در اینجا می‌توانید هر محتوای دیگری مثل متن یا لوگو را روی ویدیو قرار دهید
+    <div className="relative z-10 flex items-center justify-center h-full">
+      <p className="text-white font-bold text-xl">متن روی ویدیو</p>
+    </div>
+  */}
+</div>
+
+);
+};
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\organisms\Footer\Footer.tsx'
+"use client"
+import React from 'react';
+import { IoMdArrowRoundUp } from 'react-icons/io';
+import { PhoneIcon, ClockIcon } from 'lucide-react'; // جایگزینی آیکون‌های SVG با کتابخانه
+import { FooterProps } from './Footer.types';
+import { Label } from '../../atoms/Label/Label';
+import { ServiceCard } from '../../atoms/ServiceCard/ServiceCard';
+import { TrustSeal } from '../../atoms/TrustSeal/TrustSeal';
+import { NewsletterForm } from '../../molecules/NewsletterForm/NewsletterForm';
+import { Container } from '../Container/Container';
+import './Footer.scss';
+
+export const Footer = (props: FooterProps) => {
+const scrollToTop = () => {
+window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+return (
+<footer className="footer" dir="rtl">
+<div className="footer__scroll-to-top">
+<button onClick={scrollToTop} aria-label="برو به بالای صفحه">
+<IoMdArrowRoundUp size={24} />
+</button>
+</div>
+
+code
+Code
+download
+content_copy
+expand_less
+<Container>
+    <div className="footer__main-content">
+      {/* بخش معرفی و خدمات */}
+      <div className="footer__grid-top">
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            {props.logo}
+            <Label as="p" size="lg" weight="semi-bold">
+              {props.companyName} | <span className="text-accent">{props.tagline}</span>
+            </Label>
+          </div>
+          <Label as="p" color="secondary" className="leading-relaxed">{props.description}</Label>
+        </div>
+        <div>
+          <Label as="h3" weight="semi-bold" className="mb-4">خدمات ما</Label>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {props.serviceCards.map((card, i) => <ServiceCard key={i} {...card} />)}
+          </div>
+        </div>
+      </div>
+      
+      {/* بخش تماس و خبرنامه */}
+      <div className="footer__grid-middle">
+        <div className="flex flex-col sm:flex-row gap-8">
+          <div className="flex items-start gap-3">
+            <PhoneIcon className="w-6 h-6 text-gray-500 mt-1" />
+            <div>
+              <Label as="span" weight="semi-bold">تلفن پشتیبانی</Label>
+              <a href={`tel:${props.supportPhone1}`}><Label size="sm">{props.supportPhone1}</Label></a>
+              <a href={`tel:${props.supportPhone2}`}><Label size="sm">{props.supportPhone2}</Label></a>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <ClockIcon className="w-6 h-6 text-gray-500 mt-1" />
+            <div>
+              <Label as="span" weight="semi-bold">ساعات کاری</Label>
+              {props.workHours.map(line => <Label key={line} size="sm">{line}</Label>)}
+            </div>
+          </div>
+        </div>
+        <NewsletterForm title="با ثبت ایمیل، از تخفیف‌ها با‌خبر شوید" />
+      </div>
+
+      {/* بخش دکمه‌های لینک */}
+      <div className="footer__grid-links">
+        {props.footerButtons.map((button, i) => (
+          <a key={i} href={button.href} className="footer__link-button">
+            {button.text}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    {/* بخش کپی‌رایت و نمادها */}
+    <div className="footer__bottom">
+      <Label as="p" size="xs" color="secondary">{props.copyrightText}</Label>
+      <div className="flex items-center justify-center gap-4">
+        {props.trustSeals.map((seal, i) => <TrustSeal key={i} {...seal} />)}
+      </div>
+    </div>
+  </Container>
+</footer>
+
+);
+};
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\organisms\Footer\Footer.tsx'& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\organisms\Footer\Footer.types.ts'
+import { ReactNode } from 'react';
+
+export interface FooterLink { text: string; href: string; }
+export interface ServiceCardData { icon: ReactNode; title: string; description: string; }
+export interface TrustSealData { src: string; alt: string; href: string; }
+
+export interface FooterProps {
+logo: ReactNode;
+companyName: string;
+tagline: string;
+description: string;
+supportPhone1: string;
+supportPhone2: string;
+workHours: string[];
+serviceCards: ServiceCardData[];
+footerButtons: FooterLink[];
+trustSeals: TrustSealData[];
+copyrightText: string;
+}
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\organisms\Footer\Footer.tsx'
+"use client"
+import React from 'react';
+import { IoMdArrowRoundUp } from 'react-icons/io';
+import { PhoneIcon, ClockIcon } from 'lucide-react'; // جایگزینی آیکون‌های SVG با کتابخانه
+import { FooterProps } from './Footer.types';
+import { Label } from '../../atoms/Label/Label';
+import { ServiceCard } from '../../atoms/ServiceCard/ServiceCard';
+import { TrustSeal } from '../../atoms/TrustSeal/TrustSeal';
+import { NewsletterForm } from '../../molecules/NewsletterForm/NewsletterForm';
+import { Container } from '../Container/Container';
+import './Footer.scss';
+
+export const Footer = (props: FooterProps) => {
+const scrollToTop = () => {
+window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+return (
+<footer className="footer" dir="rtl">
+<div className="footer__scroll-to-top">
+<button onClick={scrollToTop} aria-label="برو به بالای صفحه">
+<IoMdArrowRoundUp size={24} />
+</button>
+</div>
+
+code
+Code
+download
+content_copy
+expand_less
+<Container>
+    <div className="footer__main-content">
+      {/* بخش معرفی و خدمات */}
+      <div className="footer__grid-top">
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            {props.logo}
+            <Label as="p" size="lg" weight="semi-bold">
+              {props.companyName} | <span className="text-accent">{props.tagline}</span>
+            </Label>
+          </div>
+          <Label as="p" color="secondary" className="leading-relaxed">{props.description}</Label>
+        </div>
+        <div>
+          <Label as="h3" weight="semi-bold" className="mb-4">خدمات ما</Label>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {props.serviceCards.map((card, i) => <ServiceCard key={i} {...card} />)}
+          </div>
+        </div>
+      </div>
+      
+      {/* بخش تماس و خبرنامه */}
+      <div className="footer__grid-middle">
+        <div className="flex flex-col sm:flex-row gap-8">
+          <div className="flex items-start gap-3">
+            <PhoneIcon className="w-6 h-6 text-gray-500 mt-1" />
+            <div>
+              <Label as="span" weight="semi-bold">تلفن پشتیبانی</Label>
+              <a href={`tel:${props.supportPhone1}`}><Label size="sm">{props.supportPhone1}</Label></a>
+              <a href={`tel:${props.supportPhone2}`}><Label size="sm">{props.supportPhone2}</Label></a>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <ClockIcon className="w-6 h-6 text-gray-500 mt-1" />
+            <div>
+              <Label as="span" weight="semi-bold">ساعات کاری</Label>
+              {props.workHours.map(line => <Label key={line} size="sm">{line}</Label>)}
+            </div>
+          </div>
+        </div>
+        <NewsletterForm title="با ثبت ایمیل، از تخفیف‌ها با‌خبر شوید" />
+      </div>
+
+      {/* بخش دکمه‌های لینک */}
+      <div className="footer__grid-links">
+        {props.footerButtons.map((button, i) => (
+          <a key={i} href={button.href} className="footer__link-button">
+            {button.text}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    {/* بخش کپی‌رایت و نمادها */}
+    <div className="footer__bottom">
+      <Label as="p" size="xs" color="secondary">{props.copyrightText}</Label>
+      <div className="flex items-center justify-center gap-4">
+        {props.trustSeals.map((seal, i) => <TrustSeal key={i} {...seal} />)}
+      </div>
+    </div>
+  </Container>
+</footer>
+
+);
+};
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\organisms\Footer\Footer.scss'
+@use '../../../styles/_variables.scss' as tokens;
+
+.footer {
+background-color: tokens.
+𝑐
+𝑜
+𝑙
+𝑜
+𝑟
+−
+𝑏
+𝑔
+−
+𝑠
+𝑢
+𝑟
+𝑓
+𝑎
+𝑐
+𝑒
+;
+𝑝
+𝑎
+𝑑
+𝑑
+𝑖
+𝑛
+𝑔
+−
+𝑡
+𝑜
+𝑝
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+color−bg−surface;padding−top:tokens.
+spacing-12; // فضای بالای دکمه
+position: relative;
+border-top: 1px solid tokens.$color-border-secondary;
+
+&__scroll-to-top {
+position: absolute;
+top: 0;
+left: 50%;
+transform: translate(-50%, -50%); // دقیقاً در مرکز و بالا
+
+code
+Code
+download
+content_copy
+expand_less
+button {
+  background-color: tokens.$color-brand-primary;
+  color: tokens.$color-text-on-brand;
+  width: 60px;
+  height: 60px;
+  border-radius: tokens.$radius-full;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: tokens.$shadow-lg;
+  transition: tokens.$transition-base;
+
+  &:hover {
+    background-color: tokens.$color-brand-primary-hover;
+    transform: scale(1.1) translateY(-2px);
+  }
+}
+
+}
+
+&__main-content {
+display: flex;
+flex-direction: column;
+gap: tokens.$spacing-10;
+}
+
+&__grid-top {
+display: grid;
+grid-template-columns: 1fr;
+gap: tokens.$spacing-10;
+
+code
+Code
+download
+content_copy
+expand_less
+@media (min-width: tokens.$breakpoint-lg) {
+  grid-template-columns: repeat(2, 1fr);
+  align-items: start;
+}
+
+}
+
+&__grid-middle {
+display: grid;
+grid-template-columns: 1fr;
+gap: tokens.
+𝑠
+𝑝
+𝑎
+𝑐
+𝑖
+𝑛
+𝑔
+−
+10
+;
+𝑝
+𝑎
+𝑑
+𝑑
+𝑖
+𝑛
+𝑔
+−
+𝑡
+𝑜
+𝑝
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+spacing−10;padding−top:tokens.
+spacing-10;
+border-top: 1px solid tokens.$color-border-secondary;
+
+code
+Code
+download
+content_copy
+expand_less
+@media (min-width: tokens.$breakpoint-lg) {
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+}
+
+}
+
+&__grid-links {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: tokens.
+𝑠
+𝑝
+𝑎
+𝑐
+𝑖
+𝑛
+𝑔
+−
+4
+;
+𝑝
+𝑎
+𝑑
+𝑑
+𝑖
+𝑛
+𝑔
+−
+𝑡
+𝑜
+𝑝
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+spacing−4;padding−top:tokens.
+spacing-10;
+border-top: 1px solid tokens.$color-border-secondary;
+
+code
+Code
+download
+content_copy
+expand_less
+@media (min-width: tokens.$breakpoint-md) {
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (min-width: tokens.$breakpoint-lg) {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+}
+
+&__link-button {
+text-align: center;
+background-color: tokens.
+𝑐
+𝑜
+𝑙
+𝑜
+𝑟
+−
+𝑏
+𝑔
+−
+𝑠
+𝑒
+𝑐
+𝑜
+𝑛
+𝑑
+𝑎
+𝑟
+𝑦
+;
+𝑐
+𝑜
+𝑙
+𝑜
+𝑟
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+color−bg−secondary;color:tokens.
+color-text-primary;
+font-weight: tokens.
+𝑓
+𝑜
+𝑛
+𝑡
+−
+𝑤
+𝑒
+𝑖
+𝑔
+ℎ
+𝑡
+−
+𝑠
+𝑒
+𝑚
+𝑖
+−
+𝑏
+𝑜
+𝑙
+𝑑
+;
+𝑓
+𝑜
+𝑛
+𝑡
+−
+𝑠
+𝑖
+𝑧
+𝑒
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+font−weight−semi−bold;font−size:tokens.
+font-size-sm;
+padding: tokens.
+𝑠
+𝑝
+𝑎
+𝑐
+𝑖
+𝑛
+𝑔
+−
+3
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+spacing−3tokens.
+spacing-4;
+border-radius: tokens.
+𝑟
+𝑎
+𝑑
+𝑖
+𝑢
+𝑠
+−
+𝑙
+𝑔
+;
+𝑏
+𝑜
+𝑥
+−
+𝑠
+ℎ
+𝑎
+𝑑
+𝑜
+𝑤
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+radius−lg;box−shadow:tokens.
+shadow-md;
+transition: tokens.$transition-base;
+text-decoration: none;
+
+code
+Code
+download
+content_copy
+expand_less
+&:hover {
+  background-color: tokens.$color-brand-primary;
+  color: tokens.$color-text-on-brand;
+  transform: translateY(-2px);
+  box-shadow: tokens.$shadow-md;
+}
+
+}
+
+&__bottom {
+margin-top: tokens.
+𝑠
+𝑝
+𝑎
+𝑐
+𝑖
+𝑛
+𝑔
+−
+10
+;
+𝑝
+𝑎
+𝑑
+𝑑
+𝑖
+𝑛
+𝑔
+−
+𝑡
+𝑜
+𝑝
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+spacing−10;padding−top:tokens.
+spacing-6;
+border-top: 1px solid tokens.
+𝑐
+𝑜
+𝑙
+𝑜
+𝑟
+−
+𝑏
+𝑜
+𝑟
+𝑑
+𝑒
+𝑟
+−
+𝑠
+𝑒
+𝑐
+𝑜
+𝑛
+𝑑
+𝑎
+𝑟
+𝑦
+;
+𝑑
+𝑖
+𝑠
+𝑝
+𝑙
+𝑎
+𝑦
+:
+𝑓
+𝑙
+𝑒
+𝑥
+;
+𝑓
+𝑙
+𝑒
+𝑥
+−
+𝑑
+𝑖
+𝑟
+𝑒
+𝑐
+𝑡
+𝑖
+𝑜
+𝑛
+:
+𝑐
+𝑜
+𝑙
+𝑢
+𝑚
+𝑛
+−
+𝑟
+𝑒
+𝑣
+𝑒
+𝑟
+𝑠
+𝑒
+;
+𝑎
+𝑙
+𝑖
+𝑔
+𝑛
+−
+𝑖
+𝑡
+𝑒
+𝑚
+𝑠
+:
+𝑐
+𝑒
+𝑛
+𝑡
+𝑒
+𝑟
+;
+𝑔
+𝑎
+𝑝
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+color−border−secondary;display:flex;flex−direction:column−reverse;align−items:center;gap:tokens.
+spacing-6;
+
+code
+Code
+download
+content_copy
+expand_less
+@media (min-width: tokens.$breakpoint-lg) {
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+}
+}
+
+// استایل برای رنگ نارنجی در متن (از کد قبلی شما)
+.text-accent {
+color: tokens.$color-brand-accent;
+}
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\atoms\Label\Label.tsx'
+import React from 'react';
+import { LabelProps } from './Label.types';
+import './Label.scss';
+
+export const Label = ({
+as: Component = 'p',
+size = 'base',
+weight = 'normal',
+color = 'primary',
+children,
+className,
+...props
+}: LabelProps) => {
+const classNames = [
+'label',
+label--size-${size},
+label--weight-${weight},
+label--color-${color},
+className,
+].filter(Boolean).join(' ');
+
+return (
+<Component className={classNames} {...props}>
+{children}
+</Component>
+);
+};
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\atoms\Label\Label.types.ts'
+import { ReactNode, ElementType, HTMLAttributes, LabelHTMLAttributes } from 'react';
+
+// لیستی از سایزها و وزن‌های موجود در توکن‌ها
+type FontSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2x' | '3x' | '4x' | '5xl';
+type FontWeight = 'light' | 'normal' | 'medium' | 'semi-bold' | 'bold' | 'extra-bold' | 'black';
+type FontColor = 'primary' | 'secondary' | 'placeholder' | 'on-brand' | 'link' | 'heading' | 'disabled';
+
+// ✅ از LabelHTMLAttributes استفاده می‌کنیم که شامل htmlFor است
+export interface LabelProps extends HTMLAttributes<HTMLElement> {
+/**
+
+محتوای متنی که نمایش داده می‌شود
+*/
+children: ReactNode;
+
+/**
+
+تگ HTML که باید برای لیبل استفاده شود
+
+@default 'p'
+*/
+as?: ElementType;
+
+/**
+
+سایز فونت
+
+@default 'base'
+*/
+size?: FontSize;
+
+/**
+
+وزن فونت
+
+@default 'normal'
+*/
+weight?: FontWeight;
+
+/**
+
+رنگ متن بر اساس متغیرهای معنایی
+
+@default 'primary'
+*/
+color?: FontColor;
+
+/**
+
+✅ پراپرتی htmlFor را به صورت اختیاری اضافه می‌کنیم
+
+این پراپرتی فقط زمانی استفاده می‌شود که as="label" باشد
+*/
+htmlFor?: string;
+}
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\atoms\Label\Label.test.tsx'
+import { render, screen } from '@testing-library/react';
+import { describe, test, expect } from 'vitest';
+import { Label } from './Label';
+
+describe('Label Component', () => {
+test('should render with default props (p tag, base size, normal weight, primary color)', () => {
+render(<Label>Default Label</Label>);
+
+code
+Code
+download
+content_copy
+expand_less
+const labelElement = screen.getByText('Default Label');
+expect(labelElement.tagName).toBe('P');
+expect(labelElement).toHaveClass('label');
+expect(labelElement).toHaveClass('label--size-base');
+expect(labelElement).toHaveClass('label--weight-normal');
+expect(labelElement).toHaveClass('label--color-primary');
+
+});
+
+test('should render as a different HTML element when "as" prop is provided', () => {
+render(<Label as="h1">Heading 1</Label>);
+
+code
+Code
+download
+content_copy
+expand_less
+const headingElement = screen.getByRole('heading', { level: 1, name: 'Heading 1' });
+expect(headingElement.tagName).toBe('H1');
+
+});
+
+test('should apply correct size, weight, and color classes', () => {
+render(
+<Label size="3x" weight="bold" color="secondary">
+Custom Label
+</Label>
+);
+
+code
+Code
+download
+content_copy
+expand_less
+const labelElement = screen.getByText('Custom Label');
+expect(labelElement).toHaveClass('label--size-3x');
+expect(labelElement).toHaveClass('label--weight-bold');
+expect(labelElement).toHaveClass('label--color-secondary');
+
+});
+
+test('should apply additional className', () => {
+render(<Label className="my-custom-class">With custom class</Label>);
+
+code
+Code
+download
+content_copy
+expand_less
+const labelElement = screen.getByText('With custom class');
+expect(labelElement).toHaveClass('my-custom-class');
+
+});
+});
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\atoms\Label\Label.scss'
+@use '../../../styles/_variables.scss' as tokens;
+
+.label {
+font-family: tokens.
+𝑓
+𝑜
+𝑛
+𝑡
+−
+𝑓
+𝑎
+𝑚
+𝑖
+𝑙
+𝑦
+−
+𝑏
+𝑎
+𝑠
+𝑒
+;
+𝑙
+𝑖
+𝑛
+𝑒
+−
+ℎ
+𝑒
+𝑖
+𝑔
+ℎ
+𝑡
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+font−family−base;line−height:tokens.
+line-height-normal;
+margin: 0; // ریست کردن مارجین پیش‌فرض تگ‌ها
+
+// --- Font Sizes ---
+&--size-xs { font-size: tokens.
+font-size-sm; }
+&--size-base { font-size: tokens.
+font-size-lg; }
+&--size-xl { font-size: tokens.
+font-size-2x; }
+&--size-3x { font-size: tokens.
+font-size-4x; }
+&--size-5xl { font-size: tokens.$font-size-5xl; }
+
+// --- Font Weights ---
+&--weight-light { font-weight: tokens.
+font-weight-normal; }
+&--weight-medium { font-weight: tokens.
+font-weight-semi-bold; }
+&--weight-bold { font-weight: tokens.
+font-weight-extra-bold; }
+&--weight-black { font-weight: tokens.$font-weight-black; }
+
+// --- Font Colors (Semantic) ---
+&--color-primary { color: tokens.
+color-text-secondary; }
+&--color-placeholder { color: tokens.
+color-text-on-brand; }
+&--color-link { color: tokens.
+color-heading; }
+&--color-disabled { color: tokens.$color-text-disabled; }
+}
+
+& 'c:\Users\Raven\New folder (2)\monorepo\apps\yadakirun-front\app(main)\page.tsx'
+import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
+import { Container } from '@monorepo/design-system/src/components/organisms/Container/Container';
+import { CardGrid } from '@monorepo/design-system/src/components/molecules/CardGrid/CardGrid';
+import { CardSlider } from '@monorepo/design-system/src/components/molecules/CardSlider/CardSlider';
+import { SpecialOffers } from '@/src/components/layout/SpecialOffers';
+import { BestSellersSlider } from '@/src/components/layout/BestSellersSlider';
+import { ImageCard } from '@monorepo/design-system/src/components/atoms/ImageCard/ImageCard';
+import { NewsSection } from '@/src/components/layout/NewsSection';// ایمپورت کامپوننت
+import { ContentSection } from '@monorepo/design-system/src/components/molecules/ContentSection/ContentSection';
+import { Footer } from '@monorepo/design-system/src/components/organisms/Footer/Footer';
+// داده‌های نمونه برای کارت‌های دسته‌بندی
+const textContentData = [
+{ id: 'sec-1', title: "قطعات یکی خودروهای رنو", content: <><p>اگه صاحب یکی از خودروهای رنو باشی، حتماً می‌دونی که این ماشینا چه کیفیت خوبی دارن؛ چه از نظر سواری، چه از لحاظ مصرف سوخت و حتی دوام موتور. اما با همه‌ی این خوبی‌ها، مثل هر خودروی دیگه‌ای، بالاخره یه روزی به قطعات یدکی نیاز پیدا می‌کنن.</p><p>مخصوصاً وقتی زمان تعویض لنت ترمز، تسمه تایم یا فیلتر روغن می‌رسه، تازه می‌فهمی که انتخاب قطعه درست چقدر مهمه. چون استفاده از یه قطعه نامرغوب می‌تونه به کل سیستم ماشین آسیب بزنه و کلی هزینه رو دستت بذاره.</p></> },
+{ id: 'sec-1', title: "قطعات یکی خودروهای رنو", content: <><p>اگه صاحب یکی از خودروهای رنو باشی، حتماً می‌دونی که این ماشینا چه کیفیت خوبی دارن؛ چه از نظر سواری، چه از لحاظ مصرف سوخت و حتی دوام موتور. اما با همه‌ی این خوبی‌ها، مثل هر خودروی دیگه‌ای، بالاخره یه روزی به قطعات یدکی نیاز پیدا می‌کنن.</p><p>مخصوصاً وقتی زمان تعویض لنت ترمز، تسمه تایم یا فیلتر روغن می‌رسه، تازه می‌فهمی که انتخاب قطعه درست چقدر مهمه. چون استفاده از یه قطعه نامرغوب می‌تونه به کل سیستم ماشین آسیب بزنه و کلی هزینه رو دستت بذاره.</p></> },
+{ id: 'sec-1', title: "قطعات یکی خودروهای رنو", content: <><p>اگه صاحب یکی از خودروهای رنو باشی، حتماً می‌دونی که این ماشینا چه کیفیت خوبی دارن؛ چه از نظر سواری، چه از لحاظ مصرف سوخت و حتی دوام موتور. اما با همه‌ی این خوبی‌ها، مثل هر خودروی دیگه‌ای، بالاخره یه روزی به قطعات یدکی نیاز پیدا می‌کنن.</p><p>مخصوصاً وقتی زمان تعویض لنت ترمز، تسمه تایم یا فیلتر روغن می‌رسه، تازه می‌فهمی که انتخاب قطعه درست چقدر مهمه. چون استفاده از یه قطعه نامرغوب می‌تونه به کل سیستم ماشین آسیب بزنه و کلی هزینه رو دستت بذاره.</p></> },
+{ id: 'sec-1', title: "قطعات یکی خودروهای رنو", content: <><p>اگه صاحب یکی از خودروهای رنو باشی، حتماً می‌دونی که این ماشینا چه کیفیت خوبی دارن؛ چه از نظر سواری، چه از لحاظ مصرف سوخت و حتی دوام موتور. اما با همه‌ی این خوبی‌ها، مثل هر خودروی دیگه‌ای، بالاخره یه روزی به قطعات یدکی نیاز پیدا می‌کنن.</p><p>مخصوصاً وقتی زمان تعویض لنت ترمز، تسمه تایم یا فیلتر روغن می‌رسه، تازه می‌فهمی که انتخاب قطعه درست چقدر مهمه. چون استفاده از یه قطعه نامرغوب می‌تونه به کل سیستم ماشین آسیب بزنه و کلی هزینه رو دستت بذاره.</p></> },
+// ... بقیه داده‌ها
+];
+const categoryData = [
+{ href: "/cat/1", imgSrc: "/geely.webp", title: "جیلی" },
+{ href: "/cat/2", imgSrc: "/jack.png", title: "جک" },
+{ href: "/cat/3", imgSrc: "/LandRover.svg", title: "لندرور" },
+{ href: "/cat/4", imgSrc: "/Renault.svg", title: "رنو" },
+{ href: "/cat/5", imgSrc: "/ssangyong.svg", title: "سانگ یانگ" },
+{ href: "/cat/6", imgSrc: "/Renault.svg", title: "پژو" },
+];
+const newsData = [
+{
+href: '#',
+title: 'عنوان مقاله اول: نکات مهم در خرید لوازم یدکی اصلی',
+imgSrc: '/SGA-banner.webp',
+date: '۲۵ آبان ۱۴۰۴',
+description: 'در این مقاله به بررسی روش‌های تشخیص قطعات اصلی از تقلبی و اهمیت استفاده از لوازم یدکی با کیفیت می‌پردازیم.'
+},
+{
+href: '#',
+title: 'عنوان مقاله دوم: چطور از جلوبندی خودروی خود مراقبت کنیم؟',
+imgSrc: '/aisin-clutch-banner.webp',
+date: '۲۲ آبان ۱۴۰۴',
+description: 'جلوبندی یکی از بخش‌های حیاتی خودرو است. با رعایت چند نکته ساده، عمر قطعات آن را افزایش دهید.'
+},
+{
+href: '#',
+title: 'عنوان مقاله سوم: همه چیز درباره شمع‌های ایریدیوم و پلاتینیوم',
+imgSrc: '/SGA-banner.webp',
+date: '۲۰ آبان ۱۴۰۴',
+description: 'تفاوت شمع‌های مختلف در چیست و کدام یک برای خودروی شما مناسب‌تر است؟ پاسخ را در این مطلب بخوانید.'
+},
+{
+href: '#',
+title: 'عنوان مقاله چهارم: راهنمای کامل انتخاب دیسک و صفحه کلاچ',
+imgSrc: '/aisin-clutch-banner.webp',
+date: '۱۸ آبان ۱۴۰۴',
+description: 'علائم زمان تعویض دیسک و صفحه و معرفی بهترین برندهای موجود در بازار.'
+},
+{
+href: '#',
+title: 'عنوان مقاله پنجم: سیستم ترمز ABS چگونه کار می‌کند؟',
+imgSrc: '/SGA-banner.webp',
+date: '۱۵ آبان ۱۴۰۴',
+description: 'آشنایی با مکانیزم ترمز ضد قفل و نقش حیاتی آن در ایمنی خودرو.'
+},
+{
+href: '#',
+title: 'عنوان مقاله ششم: روغن موتور مناسب برای فصل سرما',
+imgSrc: '/aisin-clutch-banner.webp',
+date: '۱۲ آبان ۱۴۰۴',
+description: 'با شروع فصل سرما، انتخاب ویسکوزیته مناسب برای روغن موتور اهمیت دوچندان پیدا می‌کند.'
+},
+];
+const bestSellersData = [
+{ id: '1', title: 'کمک فنر حرفه‌ای رنو', href: '#', imgSrc: '/Renault.svg', price: 1250000, originalPrice: 1500000, rating: 4, badgeText: 'رنو' },
+{ id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg',  rating: 5, badgeText: 'پژو' },
+{ id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, rating: 5, badgeText: 'پژو' },
+{ id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, rating: 5, badgeText: 'پژو' },
+{ id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, rating: 5, badgeText: 'پژو' },
+{ id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, rating: 5, badgeText: 'پژو' },
+{ id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, rating: 5, badgeText: 'پژو' },
+// ... بقیه
+];
+
+// ✅ داده‌های نمونه برای گرید جدید در انتهای صفحه
+const brandCardsData = [
+{ href: "/brand/1", imgSrc: "/geely.webp", title: "برند ۱" },
+{ href: "/brand/2", imgSrc: "/jack.png", title: "برند ۲" },
+{ href: "/brand/3", imgSrc: "/LandRover.svg", title: "برند ۳" },
+{ href: "/brand/4", imgSrc: "/Renault.svg", title: "برند ۴" },
+{ href: "/brand/5", imgSrc: "/ssangyong.svg", title: "برند ۵" },
+{ href: "/brand/6", imgSrc: "/Renault.svg", title: "برند ۶" },
+{ href: "/brand/7", imgSrc: "/geely.webp", title: "برند ۷" },
+{ href: "/brand/8", imgSrc: "/jack.png", title: "برند ۸" },
+{ href: "/brand/9", imgSrc: "/LandRover.svg", title: "برند ۹" },
+{ href: "/brand/10", imgSrc: "/Renault.svg", title: "برند ۱۰" },
+{ href: "/brand/11", imgSrc: "/ssangyong.svg", title: "برند ۱۱" },
+{ href: "/brand/12", imgSrc: "/Renault.svg", title: "برند ۱۲" },
+];
+
+export default function HomePage() {
+const moreCount = 10;
+const moreHref = "/categories";
+
+const desktopItems = [
+{ href: moreHref, title: ${moreCount}+ بیشتر, isMore: true },
+...categoryData.slice(0, 6)
+];
+
+const mobileItems = [
+...categoryData,
+{ href: moreHref, title: ${moreCount}+ بیشتر, isMore: true }
+];
+
+return (
+<>
+<section className="w-full h-64 flex items-center justify-center mb-20">
+<Label as="h2" size="3x" weight="bold" color="primary">
+بنر صفحه اصلی
+</Label>
+</section>
+
+code
+Code
+download
+content_copy
+expand_less
+<Container>
+    <section className="my-10">
+      <div className="hidden lg:block">
+        <CardGrid items={desktopItems} columns={7} />
+      </div>
+      <div className="lg:hidden">
+        <CardSlider items={mobileItems} />
+      </div>
+    </section>
+  </Container>
+  
+  <Container>
+    <SpecialOffers />
+    <BestSellersSlider title="پرفروش‌ترین محصولات" items={bestSellersData} uniqueId="bestsellers" />
+  </Container>
+  
+  <Container className="my-16">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ImageCard
+        href="/category/offroad"
+        src="/SGA-banner.webp"
+        alt="لوازم آفرودی"
+        aspectRatio="5 / 1"
+      />
+      <ImageCard
+        href="/category/tuning"
+        src="/aisin-clutch-banner.webp"
+        alt="لوازم تیونینگ"
+        aspectRatio="5 / 1"
+      />
+    </div>
+  </Container>
+ <Container>
+
+code
+Code
+download
+content_copy
+expand_less
+<BestSellersSlider title="پرفروش‌ترین محصولات" items={bestSellersData} uniqueId="bestsellers" />
+  </Container>
+
+   <Container className="my-16">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <ImageCard
+        href="/category/offroad"
+        src="/SGA-banner.webp"
+        alt="لوازم آفرودی"
+        aspectRatio="6 / 3" // بنر مربعی
+      />
+      <ImageCard
+        href="/category/tuning"
+        src="/aisin-clutch-banner.webp"
+        alt="لوازم تیونینگ"
+     aspectRatio="6 / 3"
+      />
+          <ImageCard
+        href="/category/offroad"
+        src="/SGA-banner.webp"
+        alt="لوازم آفرودی"
+      aspectRatio="6 / 3"
+      />
+      <ImageCard
+        href="/category/tuning"
+        src="/aisin-clutch-banner.webp"
+        alt="لوازم تیونینگ"
+     aspectRatio="6 / 3"
+      />
+    </div>
+  </Container>
+
+
+  {/* ✅✅✅ بخش جدید: گرید ریسپانسیو برندها ✅✅✅ */}
+  <Container className="my-16">
+     <section>
+        <div className="mb-8 text-right border-r-4 border-accent pr-4 pt-2">
+            <Label as="h2" size="xl" weight="extra-bold">برندهای منتخب</Label>
+        </div>
+        {/* 
+          از CardGrid استفاده می‌کنیم و تعداد ستون‌ها را به صورت ریسپانسیو در CSS کنترل خواهیم کرد.
+          یک کلاس جدید `card-grid--responsive` به آن می‌دهیم.
+        */}
+        <CardGrid items={brandCardsData} className="card-grid--responsive" />
+     </section>
+
+
+  </Container>
+   <NewsSection title="آخرین اخبار و مقالات" items={newsData} uniqueId="homepage-news" />
+  <Container asSection className="my-16">
+    {textContentData.map((section, index) => (
+      <div key={section.id + index} className={index > 0 ? 'mt-12' : ''}>
+        <ContentSection title={section.title}>
+          {section.content}
+        </ContentSection>
+      </div>
+    ))}
+  </Container>
+</>
+
+);
+}
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\organisms\Container\Container.tsx'
+// packages/design-system/src/components/organisms/Container/Container.tsx
+import React from 'react';
+import { ContainerProps } from './Container.types';
+import './Container.scss';
+
+export const Container = ({
+children,
+asSection = false,
+as: Component = 'div',
+className,
+}: ContainerProps) => {
+const classNames = [
+'container',
+asSection ? 'container--section' : '', // کلاس جدید برای حالت بخش
+className,
+].filter(Boolean).join(' ');
+
+// اگر asSection فعال است، همیشه از تگ <section> استفاده می‌کنیم
+const FinalComponent = asSection ? 'section' : Component;
+
+return <FinalComponent className={classNames}>{children}</FinalComponent>;
+};
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\organisms\Container\Container.scss'
+// packages/design-system/src/components/organisms/Container/Container.scss
+@use '../../../styles/_variables.scss' as tokens;
+
+.container {
+width: 100%;
+max-width: tokens.
+𝑏
+𝑟
+𝑒
+𝑎
+𝑘
+𝑝
+𝑜
+𝑖
+𝑛
+𝑡
+−
+2
+𝑥
+𝑙
+;
+𝑚
+𝑎
+𝑟
+𝑔
+𝑖
+𝑛
+−
+𝑙
+𝑒
+𝑓
+𝑡
+:
+𝑎
+𝑢
+𝑡
+𝑜
+;
+𝑚
+𝑎
+𝑟
+𝑔
+𝑖
+𝑛
+−
+𝑟
+𝑖
+𝑔
+ℎ
+𝑡
+:
+𝑎
+𝑢
+𝑡
+𝑜
+;
+𝑝
+𝑎
+𝑑
+𝑑
+𝑖
+𝑛
+𝑔
+−
+𝑙
+𝑒
+𝑓
+𝑡
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+breakpoint−2xl;margin−left:auto;margin−right:auto;padding−left:tokens.
+spacing-4;
+padding-right: tokens.$spacing-4;
+
+@media (min-width: tokens.
+spacing-6;
+padding-right: tokens.$spacing-6;
+}
+
+@media (min-width: tokens.
+spacing-8;
+padding-right: tokens.$spacing-8;
+}
+
+// ✅✅✅ استایل‌های جدید برای حالت بخش ✅✅✅
+&--section {
+background-color: tokens.
+𝑐
+𝑜
+𝑙
+𝑜
+𝑟
+−
+𝑏
+𝑔
+−
+𝑠
+𝑢
+𝑟
+𝑓
+𝑎
+𝑐
+𝑒
+;
+𝑝
+𝑎
+𝑑
+𝑑
+𝑖
+𝑛
+𝑔
+−
+𝑡
+𝑜
+𝑝
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+color−bg−surface;padding−top:tokens.
+spacing-16;    // 64px
+padding-bottom: tokens.
+𝑠
+𝑝
+𝑎
+𝑐
+𝑖
+𝑛
+𝑔
+−
+16
+;
+/
+/
+64
+𝑝
+𝑥
+𝑏
+𝑜
+𝑟
+𝑑
+𝑒
+𝑟
+−
+𝑟
+𝑎
+𝑑
+𝑖
+𝑢
+𝑠
+:
+𝑡
+𝑜
+𝑘
+𝑒
+𝑛
+𝑠
+.
+spacing−16;//64pxborder−radius:tokens.
+radius-2xl;  // 24px
+
+code
+Code
+download
+content_copy
+expand_less
+// در صفحات بزرگتر، پدینگ را بیشتر می‌کنیم
+@media (min-width: tokens.$breakpoint-md) {
+  padding-top: tokens.$spacing-24;    // 96px
+  padding-bottom: tokens.$spacing-24; // 96px
+}
+
+}
+}
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\organisms\Container\Container.types.ts'& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\organisms\Container\Container.types.ts
+
+// packages/design-system/src/components/organisms/Container/Container.types.ts
+import { ReactNode, ElementType } from 'react';
+
+export interface ContainerProps {
+children: ReactNode;
+/**
+
+آیا این کانتینر باید به عنوان یک بخش مجزا با پس‌زمینه و پدینگ عمودی رندر شود؟
+
+@default false
+/
+asSection?: boolean;
+/*
+
+تگ HTML که باید برای کانتینر استفاده شود
+
+@default 'div'
+*/
+as?: ElementType;
+className?: string;
+}
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\molecules\CardGrid\CardGrid.tsx'
+import React from 'react';
+import { Card } from '../../atoms/Card/Card';
+import { CardGridProps } from './CardGrid.types';
+import './CardGrid.scss';
+
+export const CardGrid = ({ items, columns = 7, className }: CardGridProps) => {
+const classNames = ['card-grid', className].filter(Boolean).join(' ');
+
+return (
+<div className={classNames} style={{ '--grid-columns': columns } as React.CSSProperties}>
+{items.map((item, index) => (
+<Card key={item.href + index} {...item} />
+))}
+</div>
+);
+};
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\molecules\CardGrid\CardGrid.types.ts'
+import { CardProps } from "../../atoms/Card/Card.types";
+
+export interface CardGridProps {
+/**
+
+آرایه‌ای از آیتم‌های کارت
+/
+items: Omit<CardProps, 'className'>[];
+/*
+
+تعداد ستون‌ها در حالت دسکتاپ
+
+@default 7
+*/
+columns?: number;
+className?: string;
+}
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\molecules\CardGrid\CardGrid.scss'
+@use '../../../styles/_variables.scss' as tokens;
+
+.card-grid {
+display: grid;
+// تعداد ستون‌های پیش‌فرض برای گریدهایی که ریسپانسیو نیستند
+grid-template-columns: repeat(var(--grid-columns, 7), minmax(0, 1fr));
+gap: 1.5rem;
+
+// استایل‌های ریسپانسیو برای گرید جدید
+&--responsive {
+// ✅✅✅ اصلاح شد: موبایل با ۳ ستون شروع می‌شود
+grid-template-columns: repeat(3, minmax(0, 1fr));
+gap: tokens.$spacing-3; // فاصله کمتر برای ستون‌های بیشتر در موبایل
+
+code
+Code
+download
+content_copy
+expand_less
+// تبلت کوچک: ۴ ستون
+@media (min-width: tokens.$breakpoint-sm) {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: tokens.$spacing-4;
+}
+
+// تبلت بزرگ: ۵ ستون
+@media (min-width: tokens.$breakpoint-md) {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+// دسکتاپ: ۶ ستون
+@media (min-width: tokens.$breakpoint-lg) {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: tokens.$spacing-6;
+}
+
+}
+}
+
+& 'c:\Users\Raven\New folder (2)\monorepo\apps\yadakirun-front\src\components\layout\SpecialOffers.tsx'
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Clock } from "lucide-react";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, FreeMode } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/free-mode";
+
+import { ProductCard } from "@monorepo/design-system/src/components/atoms/ProductCard/ProductCard";
+import { CountdownTimer } from "@monorepo/design-system/src/components/molecules/CountdownTimer/CountdownTimer";
+import { Label } from "@monorepo/design-system/src/components/atoms/Label/Label";
+
+const specialOfferData = [
+{
+id: 1,
+title: "کمک فنر حرفه‌ای رنو تالیسمان",
+href: "/product/item-1",
+imgSrc: "/Renault.svg",
+price: "۱,۲۵۰,۰۰۰ تومان",
+carName: "رنو تالیسمان",
+},
+{
+id: 2,
+title: "دیسک ترمز خنک شونده پژو",
+href: "/product/item-2",
+imgSrc: "/Renault.svg",
+price: "۸۹۰,۰۰۰ تومان",
+carName: "پژو 206",
+},
+{
+id: 3,
+title: "کیت کامل جلوبندی MVM",
+href: "/product/item-3",
+imgSrc: "/Renault.svg",
+price: "۳,۴۰۰,۰۰۰ تومان",
+carName: "MVM X33",
+},
+{
+id: 4,
+title: "چراغ ال‌ای‌دی آفرودی Pro",
+href: "/product/item-4",
+imgSrc: "/Renault.svg",
+price: "۲,۱۰۰,۰۰۰ تومان",
+carName: "تویوتا هایلوکس",
+},
+{
+id: 5,
+title: "پمپ بنزین اصلی جک S5",
+href: "/product/item-5",
+imgSrc: "/Renault.svg",
+price: "۱,۷۰۰,۰۰۰ تومان",
+carName: "جک S5",
+},
+{
+id: 6,
+title: "شمع ایریدیوم سوزنی NGK",
+href: "/product/item-6",
+imgSrc: "/Renault.svg",
+price: "۶۵۰,۰۰۰ تومان",
+carName: "کیا سراتو",
+},
+];
+
+export const SpecialOffers = () => {
+const [timeLeft, setTimeLeft] = useState({
+days: 1,
+hours: 10,
+minutes: 24,
+seconds: 59,
+});
+
+useEffect(() => {
+const targetDate = new Date();
+targetDate.setDate(targetDate.getDate() + 1);
+targetDate.setHours(23, 59, 59, 999);
+
+code
+Code
+download
+content_copy
+expand_less
+const timer = setInterval(() => {
+  const now = new Date();
+  const difference = targetDate.getTime() - now.getTime();
+
+  if (difference > 0) {
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((difference / 1000 / 60) % 60);
+    const seconds = Math.floor((difference / 1000) % 60);
+    setTimeLeft({ days, hours, minutes, seconds });
+  } else {
+    clearInterval(timer);
+  }
+}, 1000);
+
+return () => clearInterval(timer);
+
+}, []);
+
+return (
+<section className="w-full">
+<div className="bg-highlight rounded-2xl shadow-lg overflow-hidden my-10">
+<div className="p-4 lg:p-8">
+<Swiper
+dir="rtl"
+modules={[Navigation, FreeMode]}
+navigation
+spaceBetween={16}
+slidesPerView="auto"
+freeMode={true}
+className="!py-4"
+>
+<SwiperSlide key="special-offer-intro" className="!w-auto">
+<div className="">
+<Image
+src="/takhfif.webp"
+alt="تخفیفات ویژه"
+width={120}
+height={120}
+priority={true}
+/>
+<Label as="h2" size="3x" weight="extra-bold" className="mt-4" color="on-brand">
+تخفیفات ویژه
+</Label>
+<div className="mt-6 flex items-center justify-center gap-x-2">
+<Clock size={20} />
+<Label as="span" size="base" weight="semi-bold" color="on-brand">
+زمان باقی مانده:
+</Label>
+</div>
+<CountdownTimer {...timeLeft} />
+</div>
+</SwiperSlide>
+
+code
+Code
+download
+content_copy
+expand_less
+{specialOfferData.map((product) => (
+          <SwiperSlide key={product.id} className="!w-64">
+            <ProductCard
+              href={product.href}
+              title={product.title}
+              imgSrc={product.imgSrc}
+              price={product.price}
+              badgeText={product.carName}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  </div>
+  
+  <style jsx>{`
+    .bg-highlight {
+      /* ✅✅✅ اصلاح اصلی اینجاست ✅✅✅ */
+      /* از متغیرهای CSS که در دیزاین سیستم تعریف شده‌اند، استفاده می‌کنیم */
+      background: linear-gradient(135deg, var(--color-brand-accent), var(--color-brand-primary));
+    }
+    .intro-card {
+      width: 18rem;
+      color: var(--color-text-on-brand); /* ✅ رنگ متن هم داینامیک شد */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      height: 100%;
+      justify-content: center;
+      padding: 1rem;
+    }
+    
+    :global(.swiper-button-next),
+    :global(.swiper-button-prev) {
+      color: var(--color-text-on-brand); /* ✅ رنگ آیکون‌ها هم داینامیک شد */
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+    }
+    :global(.swiper-button-next::after),
+    :global(.swiper-button-prev::after) {
+      font-size: 1.25rem;
+      font-weight: 900;
+    }
+  `}</style>
+</section>
+
+);
+};
+
+& 'c:\Users\Raven\New folder (2)\monorepo\apps\yadakirun-front\src\components\layout\BestSellersSlider.tsx'
+"use client";
+
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+
+// ✅✅✅ ایمپورت کامپوننت جدید
+import { SliderProductCard } from "@monorepo/design-system/src/components/atoms/SliderProductCard/SliderProductCard";
+import { Label } from "@monorepo/design-system/src/components/atoms/Label/Label";
+import { SliderProductCardProps } from "@monorepo/design-system/src/components/atoms/SliderProductCard/SliderProductCard.types";
+
+interface BestSellersSliderProps {
+title: string;
+items: Omit<SliderProductCardProps, 'className'>[];
+uniqueId: string;
+}
+
+// داده‌های نمونه را می‌توانیم خارج از کامپوننت نگه داریم
+const sampleData = [
+{ id: '1', title: 'کمک فنر حرفه‌ای رنو', href: '#', imgSrc: '/feshangi.webp', price: 1250000, originalPrice: 1500000, rating: 4, badgeText: 'رنو' },
+// ...
+];
+
+export const BestSellersSlider = ({ title, items = sampleData, uniqueId }: BestSellersSliderProps) => {
+if (!items || items.length === 0) return null;
+
+const nextButtonClass = swiper-button-next-${uniqueId};
+const prevButtonClass = swiper-button-prev-${uniqueId};
+
+return (
+// ✅✅✅ اصلاح اصلی اینجاست ✅✅✅
+<section className="bestsellers-section">
+<div className="container mx-auto px-4">
+<div className="mb-8 text-right border-r-4 border-accent pr-4 pt-2">
+<Label as="h2" size="xl" weight="extra-bold">{title}</Label>
+</div>
+</div>
+<div className="w-full relative container mx-auto" dir="rtl">
+<Swiper
+modules={[Autoplay, Navigation]}
+loop={true}
+autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+navigation={{
+nextEl: .${nextButtonClass},
+prevEl: .${prevButtonClass}
+}}
+spaceBetween={0}
+breakpoints={{
+320: { slidesPerView: 1.3 },
+480: { slidesPerView: 2.1 },
+768: { slidesPerView: 3 },
+1024: { slidesPerView: 4 },
+1280: { slidesPerView: 5 },
+}}
+className="!px-10"
+>
+{items.map((item, index) => (
+<SwiperSlide key={item.id || index}>
+<SliderProductCard
+href={item.href}
+title={item.title}
+imgSrc={item.imgSrc}
+price={item.price}
+originalPrice={item.originalPrice}
+rating={item.rating}
+badgeText={item.badgeText}
+/>
+</SwiperSlide>
+))}
+</Swiper>
+<div className={${nextButtonClass} swiper-button-next}></div>
+<div className={${prevButtonClass} swiper-button-prev}></div>
+</div>
+<style jsx global>{`
+/* ✅ استایل برای بخش اصلی با استفاده از متغیر CSS /
+.bestsellers-section {
+width: 100%;
+padding-top: 1rem;
+padding-bottom: 1rem;
+margin-top: 2rem;
+margin-bottom: 2rem;
+background-color: var(--color-bg-surface);
+border-radius: 1rem; / 16px */
+}
+
+code
+Code
+download
+content_copy
+expand_less
+/* استایل برای عنوان "پرفروش‌ترین‌ها" */
+    .border-accent {
+      border-color: var(--color-brand-accent);
+    }
+
+    .swiper-button-next, .swiper-button-prev {
+        color: var(--color-text-primary);
+        transition: color 0.2s;
+    }
+    .swiper-button-next:hover, .swiper-button-prev:hover {
+        color: var(--color-brand-primary);
+    }
+   `}</style>
+</section>
+
+);
+};
+
+& 'c:\Users\Raven\New folder (2)\monorepo\apps\yadakirun-front\src\components\layout\NewsSection.tsx'
+"use client";
+
+import React from "react";
+import { NewsSlider } from "@monorepo/design-system/src/components/molecules/NewsSlider/NewsSlider";
+import { Label } from "@monorepo/design-system/src/components/atoms/Label/Label";
+import { useMediaQuery } from "@/src/hooks/useMediaQuery";
+import { NewsCardProps } from "@monorepo/design-system/src/components/atoms/NewsCard/NewsCard.types";
+
+interface NewsSectionProps {
+title: string;
+items: Omit<NewsCardProps, 'className'>[];
+uniqueId: string;
+}
+
+export const NewsSection = ({ title, items, uniqueId }: NewsSectionProps) => {
+const isMobile = useMediaQuery("(max-width: 1023px)");
+
+if (!items || items.length === 0) {
+return null;
+}
+
+return (
+<section className="container mx-auto py-12">
+<div className="mb-8 text-right border-r-4 border-accent pr-4 pt-2">
+<Label as="h2" size="xl" weight="extra-bold">{title}</Label>
+</div>
+<NewsSlider
+items={items}
+direction={isMobile ? 'vertical' : 'horizontal'}
+uniqueId={uniqueId}
+/>
+{/* ✅✅✅ استایل‌های اضافی حذف شدند ✅✅✅ */}
+<style jsx global>{.swiper-button-next, .swiper-button-prev { color: var(--color-text-primary); transition: color 0.2s; } .swiper-button-next:hover, .swiper-button-prev:hover { color: var(--color-brand-primary); }}</style>
+</section>
+);
+};
+
+و به همین ترتیب بقیه کد ها  ...
+
+همونطور که میبینی باید متوجه معماری پروژه شده باشی و بدونی که هر کامپوننتی در دیزاین سیستم ساخته میشه باید قابل استفاده مجدد و بدون هیچگونه وابستگی خارجی باشه کاملا حرفه ای و قابل استفاده مجدد
+
+خب متجه کامل پروژه شدی اماده ای برای توسعه؟

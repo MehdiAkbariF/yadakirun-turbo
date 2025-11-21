@@ -1,0 +1,48 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.label {
+  font-family: tokens.$font-family-base;
+  line-height: tokens.$line-height-normal;
+  margin: 0; // ریست کردن مارجین پیش‌فرض تگ‌ها
+  transition: color 0.2s ease; // انیمیشن نرم برای تغییر رنگ
+
+  // --- Font Sizes ---
+  &--size-xs { font-size: tokens.$font-size-xs; }
+  &--size-sm { font-size: tokens.$font-size-sm; }
+  &--size-base { font-size: tokens.$font-size-base; }
+  &--size-lg { font-size: tokens.$font-size-lg; }
+  &--size-xl { font-size: tokens.$font-size-xl; }
+  &--size-2x { font-size: tokens.$font-size-2x; }
+  &--size-3x { font-size: tokens.$font-size-3x; }
+  &--size-4x { font-size: tokens.$font-size-4x; }
+  &--size-5xl { font-size: tokens.$font-size-5xl; }
+
+  // --- Font Weights ---
+  &--weight-light { font-weight: tokens.$font-weight-light; }
+  &--weight-normal { font-weight: tokens.$font-weight-normal; }
+  &--weight-medium { font-weight: tokens.$font-weight-medium; }
+  &--weight-semi-bold { font-weight: tokens.$font-weight-semi-bold; }
+  &--weight-bold { font-weight: tokens.$font-weight-bold; }
+  &--weight-extra-bold { font-weight: tokens.$font-weight-extra-bold; }
+  &--weight-black { font-weight: tokens.$font-weight-black; }
+  
+  // --- Font Colors (Semantic Text) ---
+  &--color-primary { color: tokens.$color-text-primary; }
+  &--color-secondary { color: tokens.$color-text-secondary; }
+  &--color-placeholder { color: tokens.$color-text-placeholder; }
+  &--color-on-brand { color: tokens.$color-text-on-brand; }
+  &--color-link { color: tokens.$color-text-link; }
+  &--color-heading { color: tokens.$color-heading; }
+  &--color-disabled { color: tokens.$color-text-disabled; }
+
+  // --- Brand Colors ---
+  &--color-brand-primary { color: tokens.$color-brand-primary; }
+  &--color-brand-secondary { color: tokens.$color-brand-secondary; }
+  &--color-brand-accent { color: tokens.$color-brand-accent; }
+
+  // --- Utility Colors ---
+  &--color-success { color: tokens.$color-utility-success; }
+  &--color-error { color: tokens.$color-utility-error; }
+  &--color-warning { color: tokens.$color-utility-warning; }
+  &--color-info { color: tokens.$color-utility-info; }
+}

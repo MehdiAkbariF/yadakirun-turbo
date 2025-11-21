@@ -1,0 +1,37 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.newsletter-form {
+  width: 100%;
+  border: 2px dashed tokens.$color-border-primary;
+  padding: tokens.$spacing-5;
+  border-radius: tokens.$radius-md;
+
+  &__title {
+    margin-bottom: tokens.$spacing-2;
+  }
+
+  &__wrapper {
+    position: relative;
+    margin-top: tokens.$spacing-2;
+    display: flex;
+    align-items: center;
+  }
+  
+  // برای اینکه دکمه روی اینپوت قرار بگیرد
+  .input-container {
+    width: 100%;
+  }
+
+  &__submit-button {
+    position: absolute;
+    left: tokens.$spacing-1;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: tokens.$spacing-2 !important; // برای override کردن پدینگ پیش‌فرض دکمه
+    
+    [dir="rtl"] & {
+      left: auto;
+      right: tokens.$spacing-1;
+    }
+  }
+}

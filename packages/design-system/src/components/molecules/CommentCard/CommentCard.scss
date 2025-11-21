@@ -1,0 +1,88 @@
+@use '../../../styles/variables' as tokens;
+
+.comment-card {
+  background-color: tokens.$color-bg-surface;
+  border: 1px solid tokens.$color-border-secondary;
+  border-radius: tokens.$radius-lg;
+  padding: tokens.$spacing-5;
+  transition: tokens.$transition-base;
+
+  &:hover {
+    border-color: tokens.$color-border-primary;
+    box-shadow: tokens.$shadow;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: tokens.$spacing-3;
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: tokens.$radius-full;
+    background-color: tokens.$color-bg-secondary;
+    color: tokens.$color-text-secondary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__buyer-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background-color: rgba(tokens.$color-utility-success, 0.1);
+    color: tokens.$color-utility-success;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: tokens.$radius-full;
+    font-weight: tokens.$font-weight-bold;
+  }
+
+  &__more-btn {
+    color: tokens.$color-text-placeholder;
+    padding: 4px;
+    border-radius: tokens.$radius-md;
+    &:hover {
+      background-color: tokens.$color-bg-secondary;
+      color: tokens.$color-text-primary;
+    }
+  }
+
+  &__rating {
+    margin-bottom: tokens.$spacing-3;
+  }
+
+  &__content {
+    margin-bottom: tokens.$spacing-4;
+    color: tokens.$color-text-secondary;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid tokens.$color-bg-secondary;
+    padding-top: tokens.$spacing-3;
+  }
+
+  &__action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: tokens.$font-size-xs;
+    color: tokens.$color-text-secondary;
+    font-weight: tokens.$font-weight-medium;
+    transition: color 0.2s;
+
+    &:hover {
+      color: tokens.$color-utility-success;
+    }
+
+    &--dislike:hover {
+      color: tokens.$color-utility-error;
+    }
+  }
+}

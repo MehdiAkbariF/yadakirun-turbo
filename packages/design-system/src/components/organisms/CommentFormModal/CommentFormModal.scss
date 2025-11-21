@@ -1,0 +1,157 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+// --- Keyframes ---
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes modalSlideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px) scale(0.95); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+@keyframes modalSlideDown {
+  from { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+  to { 
+    opacity: 0; 
+    transform: translateY(20px) scale(0.95); 
+  }
+}
+
+// --- Styles ---
+
+.comment-modal-overlay {
+  position: fixed;
+  inset: 0; // top, right, bottom, left: 0
+  z-index: tokens.$z-index-50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: tokens.$spacing-4;
+}
+
+.comment-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px); // افکت بلر شیشه‌ای
+  
+  // انیمیشن پیش‌فرض
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+
+  &--entering {
+    animation-name: modalFadeIn;
+  }
+
+  &--exiting {
+    animation-name: modalFadeOut;
+  }
+}
+
+.comment-modal {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-2xl;
+  box-shadow: tokens.$shadow-2xl;
+  overflow: hidden;
+  z-index: 10;
+  
+  // انیمیشن پیش‌فرض
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); // حرکت نرم
+  animation-fill-mode: forwards;
+
+  &--entering {
+    animation-name: modalSlideUp;
+  }
+
+  &--exiting {
+    animation-name: modalSlideDown;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: tokens.$spacing-5;
+    border-bottom: 1px solid tokens.$color-border-secondary;
+    background-color: tokens.$color-bg-secondary;
+  }
+
+  &__close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: tokens.$color-text-secondary;
+    transition: color 0.2s;
+    
+    &:hover { 
+      color: tokens.$color-utility-error; 
+    }
+  }
+
+  &__body {
+    padding: tokens.$spacing-6;
+  }
+}
+
+// --- کلاس‌های داخلی (Input و Button) ---
+// این‌ها را می‌توانید به صورت اتم‌های جداگانه ایمپورت کنید، اما برای سادگی اینجا استایل دهی شده‌اند
+.ds-input, .ds-textarea {
+  width: 100%;
+  padding: tokens.$spacing-3;
+  border: 1px solid tokens.$color-border-primary;
+  border-radius: tokens.$radius-lg;
+  background-color: tokens.$color-bg-surface;
+  color: tokens.$color-text-primary;
+  font-family: tokens.$font-family-base;
+  font-size: tokens.$font-size-sm;
+  transition: all 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-brand-primary;
+    box-shadow: 0 0 0 3px rgba(tokens.$color-brand-primary, 0.1);
+  }
+  
+  &::placeholder {
+    color: tokens.$color-text-placeholder;
+  }
+}
+
+.ds-btn-primary {
+  background-color: tokens.$color-brand-primary;
+  color: tokens.$color-text-on-brand;
+  padding: tokens.$spacing-3;
+  border-radius: tokens.$radius-lg;
+  font-weight: tokens.$font-weight-bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  
+  &:hover {
+    background-color: tokens.$color-brand-primary-hover;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}

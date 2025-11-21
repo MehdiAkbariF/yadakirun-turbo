@@ -1,0 +1,25 @@
+.card-slider {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  // چسبیدن اسکرول به آیتم‌ها
+  scroll-snap-type: x mandatory;
+  padding: 0.5rem 1rem; // پدینگ برای زیبایی
+  
+  // مخفی کردن اسکرول‌بار
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &__item {
+    flex-shrink: 0;
+    width: 40%; // عرض هر کارت در کوچکترین حالت
+    scroll-snap-align: start; // هر آیتم به ابتدای کانتینر می‌چسبد
+    
+    @media (min-width: 480px) {
+      width: 30%;
+    }
+  }
+}

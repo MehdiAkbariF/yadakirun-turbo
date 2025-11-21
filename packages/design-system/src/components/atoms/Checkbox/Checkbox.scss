@@ -1,0 +1,29 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: tokens.$spacing-2;
+  cursor: pointer;
+}
+
+.checkbox-box {
+  width: 20px;
+  height: 20px;
+  border: 2px solid tokens.$color-border-primary;
+  border-radius: tokens.$radius-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  background-color: tokens.$color-bg-surface;
+
+  &--checked {
+    background-color: tokens.$color-brand-primary;
+    border-color: tokens.$color-brand-primary;
+  }
+}
+
+.hidden-input {
+  display: none;
+}

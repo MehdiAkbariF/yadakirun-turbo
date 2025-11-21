@@ -1,0 +1,84 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.filter-sidebar {
+  background-color: tokens.$color-bg-surface;
+  border: 1px solid tokens.$color-border-secondary;
+  border-radius: tokens.$radius-xl;
+  overflow: hidden;
+  position: sticky; 
+  top: 100px; 
+  box-shadow: tokens.$shadow-md;
+
+  &__header {
+    padding: tokens.$spacing-5;
+    border-bottom: 1px solid tokens.$color-border-secondary;
+    background-color: tokens.$color-bg-surface;
+  }
+
+  &__content {
+    padding: tokens.$spacing-5;
+    display: flex;
+    flex-direction: column;
+    gap: tokens.$spacing-2;
+  }
+
+  &__divider {
+    height: 1px;
+    background-color: tokens.$color-border-secondary;
+    margin: tokens.$spacing-2 0;
+  }
+}
+
+// ✅✅✅ استایل اسکرول‌بار سفارشی ✅✅✅
+.custom-scrollbar {
+  // 1. اجبار ارتفاع حداکثری برای فعال شدن اسکرول
+  max-height: 200px; 
+  overflow-y: auto; // حتماً باید auto باشد
+  padding-right: 4px; // فاصله برای اینکه اسکرول روی محتوا نیفتد
+
+  // 2. استایل ظاهری (Firefox)
+  scrollbar-width: thin;
+  scrollbar-color: tokens.$color-brand-primary transparent;
+
+  // 3. استایل ظاهری (Webkit)
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    margin: 4px 0;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: tokens.$color-brand-primary;
+    border-radius: tokens.$radius-full;
+    border: 2px solid transparent; // تکنیک برای فاصله انداختن
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: tokens.$color-brand-primary-hover;
+  }
+}
+
+// استایل‌های آکاردئون
+.filter-sidebar .accordion {
+  border: none;
+  margin-bottom: 0;
+  background-color: transparent;
+
+  &__header {
+    padding-left: 0;
+    padding-right: 0;
+    background-color: transparent;
+    &:hover { background-color: transparent; }
+  }
+
+  &__content {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    border-top: none;
+  }
+}

@@ -1,0 +1,45 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.product-info-card {
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-2xl;
+  padding: tokens.$spacing-6;
+  box-shadow: tokens.$shadow;
+  position: sticky;
+  top: 100px; // چسبان در اسکرول
+
+  &__stats {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: tokens.$spacing-4;
+    border-bottom: 1px solid tokens.$color-border-secondary;
+    margin-bottom: tokens.$spacing-4;
+  }
+
+  &__price-box {
+    background-color: tokens.$color-bg-secondary;
+    padding: tokens.$spacing-4;
+    border-radius: tokens.$radius-lg;
+  }
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  border: 1px solid tokens.$color-border-primary;
+  border-radius: tokens.$radius-lg;
+  overflow: hidden;
+  
+  button {
+    padding: 8px 12px;
+    background: tokens.$color-bg-secondary;
+    transition: background 0.2s;
+    &:hover { background: tokens.$color-border-secondary; }
+  }
+  
+  span {
+    width: 40px;
+    text-align: center;
+    font-weight: bold;
+  }
+}

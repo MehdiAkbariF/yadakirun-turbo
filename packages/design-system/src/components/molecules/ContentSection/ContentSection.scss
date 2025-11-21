@@ -1,0 +1,71 @@
+// packages/design-system/src/components/molecules/ContentSection/ContentSection.scss
+@use '../../../styles/_variables.scss' as tokens;
+
+.content-section {
+  width: 100%;
+}
+
+.content-section__title-wrapper {
+  margin-bottom: tokens.$spacing-6;
+  border-right: 4px solid tokens.$color-brand-accent;
+  padding-right: tokens.$spacing-4;
+
+  [dir="ltr"] & {
+    border-right: none;
+    border-left: 4px solid tokens.$color-brand-accent;
+    padding-right: 0;
+    padding-left: tokens.$spacing-4;
+  }
+}
+
+// استایل‌های شبیه به `prose` برای خوانایی بهتر محتوا
+.content-section__body {
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$font-size-lg;
+  line-height: tokens.$line-height-relaxed;
+  text-align: justify; // برای زیبایی متن‌های طولانی
+
+  // استایل برای پاراگراف‌ها
+  p {
+    margin-bottom: 1.25em;
+  }
+
+  // استایل برای لیست‌ها
+  ul,
+  ol {
+    margin-bottom: 1.25em;
+    padding-right: 1.5em;
+    [dir="ltr"] & {
+      padding-right: 0;
+      padding-left: 1.5em;
+    }
+  }
+
+  li {
+    margin-bottom: 0.5em;
+  }
+  
+  // استایل برای متن‌های bold
+  strong {
+    color: tokens.$color-text-primary;
+    font-weight: tokens.$font-weight-bold;
+  }
+
+  // استایل برای لینک‌ها
+  a {
+    color: tokens.$color-text-link;
+    text-decoration: none;
+    font-weight: tokens.$font-weight-medium;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // استایل برای تیترهای داخلی
+  h2, h3, h4, h5, h6 {
+    color: tokens.$color-text-primary;
+    font-weight: tokens.$font-weight-bold;
+    margin-top: 2em;
+    margin-bottom: 1em;
+  }
+}

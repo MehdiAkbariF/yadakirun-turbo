@@ -1,0 +1,329 @@
+// فایل: packages/design-system/src/styles/_variables.scss
+// نسخه V5.7: اضافه شدن تم‌های سبز (روشن و تاریک)
+
+@use 'sass:color';
+
+//================================================
+// Design Tokens V5.7
+//================================================
+
+// --- 1. Raw Color Palette ---
+
+// Brand Colors (برای لایت مود نارنجی)
+$primary-blue-light:   #FF5000;
+$secondary-blue-light: #ffe8dc;
+$primary-blue-dark:    #FF7A33;
+$secondary-teal:       #FF7A33;
+$accent-orange:        #FF5000;
+
+
+// رنگ‌های دارک مود آبی
+$dark-navy-900: #0d1117;
+$dark-navy-800: #161b22;
+$bright-blue-400: #58a6ff;
+$bright-blue-500: #388bfd;
+
+// پالت رنگی برای تم‌های سبز
+$primary-green-light: #00875A; // یک سبز قوی و حرفه‌ای
+$secondary-green-light: #e6f3ec; // سبز بسیار روشن برای پس‌زمینه‌های ثانویه
+$bright-green-400: #34d399;    // سبز روشن و درخشان برای لینک‌ها و هایلایت‌ها
+$bright-green-500: #10b981;    // سبز کمی تیره‌تر و قوی‌تر برای دکمه‌ها در تم تاریک
+$secondary-green-dark: rgba(54, 179, 126, 0.15); // پس‌زمینه ثانویه شفاف برای تم تاریک
+$dark-green-900: #064e3b;      // پس‌زمینه اصلی برای تم تاریک سبز
+$dark-green-1000: #042f2e;     // پس‌زمینه سطوح (surfaces) برای تم تاریک سبز
+
+// Neutral Colors
+$gray-0:    #ffffff;
+$gray-100:  #f8f9fa;
+$gray-200:  #e9ecef;
+$gray-300:  #dee2e6;
+$gray-400:  #ced4da;
+$gray-500:  #adb5bd;
+$gray-600:  #6c757d;
+$gray-700:  #495057;
+$gray-800:  #343a40;
+$gray-900:  #212529;
+$gray-1000: #121212;
+
+// Utility Colors
+$utility-green:  #198754;
+$utility-red:    #dc3545;
+$utility-yellow: #ffc107;
+$utility-blue:   #0d6efd;
+
+// Background Colors
+$secondary-bg-light: #f8f9fa;
+$secondary-bg-dark:  rgba(255, 255, 255, 0.05);
+$accent-bg-light:    rgba(255, 255, 255, 0.993);
+$accent-bg-dark:     #00000056;
+
+// Hover Colors
+$primary-blue-hover-light:   #E64800;
+$primary-blue-hover-dark:    #FF8C52;
+$secondary-blue-hover-light: color.adjust($secondary-blue-light, $lightness: 5%);
+$secondary-blue-hover-dark:  color.adjust(#5c85ad, $lightness: 8%);
+$accent-orange-hover:        #E64800;
+
+
+//================================================
+// Semantic Theme Variables (متغیرهای معنایی CSS)
+//================================================
+
+// تم پیش‌فرض (روشن نارنجی)
+:root,
+.light,
+.light-orange {
+  --color-brand-primary:   #{$primary-blue-light};
+  --color-text-disabled:   #{$gray-400};
+  --color-brand-secondary:   #{$secondary-blue-light};
+  --color-brand-accent:    #{$accent-orange};
+  --color-brand-primary-hover: #{$primary-blue-hover-light};
+  --color-brand-secondary-hover: #{$secondary-blue-hover-light};
+  --color-brand-accent-hover: #{$accent-orange-hover};
+  --color-text-primary:    #{$gray-800};
+  --color-text-secondary:  #{$gray-600};
+  --color-text-placeholder:#{$gray-500};
+  --color-text-on-brand:   #{$gray-0};
+  --color-text-link:       #{$primary-blue-light};
+  --color-bg-body:         #{$gray-100};
+  --color-bg-surface:      #{$gray-0};
+  --color-bg-surface-hover:#{$gray-200};
+  --color-bg-secondary:    #{$secondary-bg-light};
+  --color-bg-accent:       #{$accent-bg-light};
+  --color-border-primary:  #{$gray-300};
+  --color-border-secondary:#{$gray-200};
+  --color-utility-success: #{$utility-green};
+  --color-utility-error:   #{$utility-red};
+  --color-utility-warning: #{$utility-yellow};
+  --color-utility-info:    #{$utility-blue};
+  --color-heading:         #{$secondary-blue-light};
+  --auth-overlay-start: rgba(255, 255, 255, 0.2);
+  --auth-overlay-end:   rgba(255, 232, 220, 0.7);
+  --shadow-color-rgb:      10, 37, 64;
+}
+
+// تم آبی-تاریک
+.dark,
+.dark-blue {
+  --color-brand-primary:   #{$bright-blue-500};
+  --color-text-disabled:   #{$gray-600}; 
+  --color-brand-secondary:   #{rgba($bright-blue-400, 0.15)};
+  --color-brand-accent:    #{$primary-blue-dark};
+  --color-brand-primary-hover: #{color.adjust($bright-blue-500, $lightness: 10%)};
+  --color-brand-secondary-hover: #{rgba($bright-blue-400, 0.25)};
+  --color-brand-accent-hover: #{$primary-blue-hover-dark};
+  --color-text-primary:    #{$gray-200};
+  --color-text-secondary:  #{$gray-500};
+  --color-text-placeholder:#{$gray-600};
+  --color-text-on-brand:   #{$gray-0};
+  --color-text-link:       #{$bright-blue-400};
+  --color-bg-body:         #{$dark-navy-900};
+  --color-bg-surface:      #{$dark-navy-800};
+  --color-bg-surface-hover:#{color.adjust($dark-navy-800, $lightness: 5%)};
+  --color-bg-secondary:    #{rgba($gray-0, 0.05)};
+  --color-bg-accent:       #{$accent-bg-dark};
+  --color-border-primary:  #{$gray-800};
+  --color-border-secondary:#{$gray-900};
+  --color-utility-success: #{color.adjust($utility-green, $lightness: 15%)};
+  --color-utility-error:   #{color.adjust($utility-red, $lightness: 10%)};
+  --color-utility-warning: #{color.adjust($utility-yellow, $lightness: 5%)};
+  --color-utility-info:    #{$bright-blue-400};
+  --color-heading:         #{$gray-0};
+  --auth-overlay-start: rgba(18, 18, 18, 0.7);
+  --auth-overlay-end:   rgba(33, 37, 41, 0.9);
+  --shadow-color-rgb:      0, 0, 0;
+}
+
+// ✅✅✅ شروع تم جدید: سبز روشن ✅✅✅
+.light-green {
+  --color-brand-primary:   #{$primary-green-light};
+  --color-text-disabled:   #{$gray-400};
+  --color-brand-secondary:   #{$secondary-green-light};
+  --color-brand-accent:    #{$primary-green-light};
+  --color-brand-primary-hover: #{color.adjust($primary-green-light, $lightness: -8%)};
+  --color-brand-secondary-hover: #{color.adjust($secondary-green-light, $lightness: -3%)};
+  --color-brand-accent-hover: #{color.adjust($primary-green-light, $lightness: -8%)};
+  --color-text-primary:    #{$gray-800};
+  --color-text-secondary:  #{$gray-600};
+  --color-text-placeholder:#{$gray-500};
+  --color-text-on-brand:   #{$gray-0};
+  --color-text-link:       #{$primary-green-light};
+  --color-bg-body:         #{$gray-100};
+  --color-bg-surface:      #{$gray-0};
+  --color-bg-surface-hover:#{$gray-200};
+  --color-bg-secondary:    #{$secondary-bg-light};
+  --color-bg-accent:       #{$accent-bg-light};
+  --color-border-primary:  #{$gray-300};
+  --color-border-secondary:#{$gray-200};
+  --color-utility-success: #{$utility-green};
+  --color-utility-error:   #{$utility-red};
+  --color-utility-warning: #{$utility-yellow};
+  --color-utility-info:    #{$utility-blue};
+  --color-heading:         #{$secondary-green-light};
+  --auth-overlay-start: rgba(255, 255, 255, 0.2);
+  --auth-overlay-end:   rgba(230, 243, 236, 0.7);
+  --shadow-color-rgb:      10, 37, 64;
+}
+
+// ✅✅✅ شروع تم جدید: سبز تاریک ✅✅✅
+.dark-green {
+  --color-brand-primary:   #{$bright-green-500};
+  --color-text-disabled:   #{$gray-700}; 
+  --color-brand-secondary:   #{$secondary-green-dark};
+  --color-brand-accent:    #{$bright-green-400};
+  --color-brand-primary-hover: #{color.adjust($bright-green-500, $lightness: 10%)};
+  --color-brand-secondary-hover: #{rgba($bright-green-400, 0.25)};
+  --color-brand-accent-hover: #{color.adjust($bright-green-400, $lightness: 10%)};
+  --color-text-primary:    #{$gray-200};
+  --color-text-secondary:  #{$gray-500};
+  --color-text-placeholder:#{$gray-600};
+  --color-text-on-brand:   #{$dark-green-1000}; // کنتراست بهتر روی دکمه‌های سبز روشن
+  --color-text-link:       #{$bright-green-400};
+  --color-bg-body:         #{$dark-green-1000};
+  --color-bg-surface:      #{$dark-green-900};
+  --color-bg-surface-hover:#{color.adjust($dark-green-900, $lightness: 5%)};
+  --color-bg-secondary:    #{rgba($gray-0, 0.05)};
+  --color-bg-accent:       #{$accent-bg-dark};
+  --color-border-primary:  #{$gray-800};
+  --color-border-secondary:#{color.adjust($dark-green-900, $lightness: -5%)};
+  --color-utility-success: #{$bright-green-400};
+  --color-utility-error:   #{color.adjust($utility-red, $lightness: 10%)};
+  --color-utility-warning: #{color.adjust($utility-yellow, $lightness: 5%)};
+  --color-utility-info:    #{$bright-blue-400};
+  --color-heading:         #{$gray-0};
+  --auth-overlay-start: rgba(4, 47, 46, 0.7);
+  --auth-overlay-end:   rgba(6, 78, 59, 0.9);
+  --shadow-color-rgb:      0, 0, 0;
+}
+
+
+// SCSS Variables mapping to CSS Variables
+$color-brand-primary: var(--color-brand-primary);
+$color-brand-secondary: var(--color-brand-secondary);
+$color-brand-accent: var(--color-brand-accent);
+$color-brand-primary-hover: var(--color-brand-primary-hover);
+$color-brand-secondary-hover: var(--color-brand-secondary-hover);
+$color-brand-accent-hover: var(--color-brand-accent-hover);
+$color-text-primary: var(--color-text-primary);
+$color-text-secondary: var(--color-text-secondary);
+$color-text-placeholder: var(--color-text-placeholder);
+$color-text-on-brand: var(--color-text-on-brand);
+$color-text-link: var(--color-text-link);
+$color-bg-body: var(--color-bg-body);
+$color-bg-surface: var(--color-bg-surface);
+$color-bg-surface-hover: var(--color-bg-surface-hover);
+$color-border-primary: var(--color-border-primary);
+$color-border-secondary: var(--color-border-secondary);
+$color-utility-success: var(--color-utility-success);
+$color-utility-error: var(--color-utility-error);
+$color-utility-warning: var(--color-utility-warning);
+$color-utility-info: var(--color-utility-info);
+$color-bg-secondary: var(--color-bg-secondary);
+$color-bg-accent: var(--color-bg-accent);
+$color-heading: var(--color-heading);
+$color-text-disabled: var(--color-text-disabled); 
+
+
+//================================================
+// Typography
+//================================================
+$font-family-base: 'IRANYekan', sans-serif;
+$font-family-heading: 'IRANYekan', sans-serif;
+$font-family-mono: 'Fira Code', monospace;
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+$font-size-2x: 1.5rem;
+$font-size-3x: 1.875rem;
+$font-size-4x: 2.25rem;
+$font-size-5xl: 3rem;
+$font-weight-thin: 100;
+$font-weight-extra-light: 200;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semi-bold: 600;
+$font-weight-bold: 700;
+$font-weight-extra-bold: 800;
+$font-weight-black: 900;
+$line-height-tight: 1.2;
+$line-height-snug: 1.375;
+$line-height-normal: 1.6;
+$line-height-relaxed: 1.75;
+$line-height-loose: 2;
+
+//================================================
+// Spacing
+//================================================
+$base-spacing: 0.25rem;
+$spacing-0: 0;
+$spacing-1: $base-spacing;
+$spacing-2: $base-spacing * 2;
+$spacing-3: $base-spacing * 3;
+$spacing-4: $base-spacing * 4;
+$spacing-5: $base-spacing * 5;
+$spacing-6: $base-spacing * 6;
+$spacing-7: $base-spacing * 7;
+$spacing-8: $base-spacing * 8;
+$spacing-10: $base-spacing * 10;
+$spacing-12: $base-spacing * 12;
+$spacing-16: $base-spacing * 16;
+$spacing-20: $base-spacing * 20;
+$spacing-24: $base-spacing * 24;
+$spacing-32: $base-spacing * 32;
+
+// Border Radius
+$radius-none: 0;
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
+$radius-2xl: 24px;
+$radius-full: 9999px;
+
+// Breakpoints
+$breakpoint-xs: 480px;
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+$breakpoint-3xl: 1715px;
+
+// Z-index
+$z-index-auto: auto;
+$z-index-0: 0;
+$z-index-10: 10;
+$z-index-20: 20;
+$z-index-30: 30;
+$z-index-40: 40;
+$z-index-50: 50;
+$z-index-max: 9999;
+
+// Shadows
+$shadow:
+  0 1px 2px 0 rgba(var(--shadow-color-rgb), 0.05);
+$shadow-md:
+  0 1px 3px 0 rgba(var(--shadow-color-rgb), 0.1),
+  0 1px 2px -1px rgba(var(--shadow-color-rgb), 0.1);
+$shadow-lg:
+  0 4px 6px -1px rgba(var(--shadow-color-rgb), 0.1),
+  0 2px 4px -2px rgba(var(--shadow-color-rgb), 0.1);
+$shadow-xl:
+  0 10px 15px -3px rgba(var(--shadow-color-rgb), 0.1),
+  0 4px 6px -4px rgba(var(--shadow-color-rgb), 0.1);
+$shadow-2xl: 
+  0 20px 25px -5px rgba(var(--shadow-color-rgb), 0.1),
+  0 8px 10px -6px rgba(var(--shadow-color-rgb), 0.1);
+$shadow-inner: 
+  inset 0 2px 4px 0 rgba(var(--shadow-color-rgb), 0.05);
+
+//================================================
+// Transitions
+//================================================
+$transition-base: all 0.2s ease-in-out;
+$font-family-base: 'IRANYekan', sans-serif; 
+$font-family-heading: var(--font-iranyekan), sans-serif;
+$font-family-mono: 'Fira Code', monospace;

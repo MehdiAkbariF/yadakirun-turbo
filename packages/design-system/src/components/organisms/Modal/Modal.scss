@@ -1,0 +1,57 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: tokens.$z-index-50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: tokens.$spacing-4;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.modal-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-2xl;
+  box-shadow: tokens.$shadow-2xl;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: tokens.$spacing-5;
+  border-bottom: 1px solid tokens.$color-border-secondary;
+  background-color: tokens.$color-bg-secondary;
+}
+
+.modal-close-btn {
+  color: tokens.$color-text-secondary;
+  transition: color 0.2s;
+  &:hover { color: tokens.$color-utility-error; }
+}
+
+.modal-content {
+  padding: tokens.$spacing-6;
+}
+
+.modal-footer {
+  padding: tokens.$spacing-4 tokens.$spacing-6;
+  border-top: 1px solid tokens.$color-border-secondary;
+  background-color: tokens.$color-bg-secondary;
+  display: flex;
+  justify-content: flex-end;
+  gap: tokens.$spacing-3;
+}

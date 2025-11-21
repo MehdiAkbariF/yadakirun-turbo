@@ -1,0 +1,26 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.price-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  // کمی فاصله بین خطوط
+  
+  // ✅✅✅ اصلاح اصلی اینجاست ✅✅✅
+  // یک حداقل ارتفاع برای کانتینر در نظر می‌گیریم تا همیشه فضای دو خط را اشغال کند.
+  // این مقدار باید به صورت تجربی و بر اساس سایز فونت و line-height تنظیم شود.
+  // مثلاً (1rem * 1.6) + (0.875rem * 1.6) + 0.25rem gap ~= 2.5rem
+  min-height: 2.8rem; 
+  justify-content: flex-end; // محتوا را به پایین کانتینر می‌چسباند
+}
+
+.price-display__discount-section {
+  display: flex;
+  align-items: center;
+  gap: tokens.$spacing-2;
+}
+
+.price-display__original-price {
+  text-decoration: line-through;
+  font-size: tokens.$font-size-sm; // سایز فونت قیمت اصلی را کمی کوچکتر می‌کنیم
+}

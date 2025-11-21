@@ -1,0 +1,48 @@
+// packages/design-system/src/components/atoms/ProductCard/ProductCard.scss
+@use '../../../styles/_variables.scss' as tokens;
+
+.product-card {
+  display: block;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: tokens.$radius-lg;
+  background-color: tokens.$color-bg-surface;
+  box-shadow: tokens.$shadow-md;
+  transition: tokens.$transition-base;
+
+  &:hover {
+    box-shadow: tokens.$shadow-lg;
+    transform: translateY(-2px);
+  }
+
+  &__badge {
+    // ✅✅✅ فقط استایل‌های مربوط به موقعیت‌دهی باقی می‌مانند
+    position: absolute;
+    top: tokens.$spacing-3;
+    right: tokens.$spacing-3;
+    z-index: 1;
+  }
+  
+  &__image-container {
+    position: relative;
+    height: 14rem;
+    width: 100%;
+  }
+
+  &__image {
+    object-fit: contain;
+    padding: tokens.$spacing-3;
+  }
+
+  &__details {
+    padding: tokens.$spacing-4;
+    text-align: right;
+  }
+  
+  &__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

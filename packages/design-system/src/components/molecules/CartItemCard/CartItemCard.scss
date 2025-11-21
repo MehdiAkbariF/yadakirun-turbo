@@ -1,0 +1,109 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.cart-item {
+  display: flex;
+  flex-direction: row;
+  gap: tokens.$spacing-4;
+  padding: tokens.$spacing-5;
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-xl;
+  box-shadow: tokens.$shadow-md;
+  transition: box-shadow 0.3s;
+  border: 1px solid tokens.$color-border-secondary;
+
+  &:hover {
+    box-shadow: tokens.$shadow-lg;
+    border-color: tokens.$color-border-primary;
+  }
+
+  &__image-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    border-radius: tokens.$radius-lg;
+    overflow: hidden;
+    background-color: tokens.$color-bg-secondary;
+    
+    @media (min-width: tokens.$breakpoint-sm) {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  &__image {
+    object-fit: contain;
+    padding: tokens.$spacing-2;
+  }
+
+  &__content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__title {
+    line-height: 1.5;
+    margin-bottom: tokens.$spacing-2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: tokens.$spacing-2;
+    margin-bottom: tokens.$spacing-4;
+
+    @media (min-width: tokens.$breakpoint-sm) {
+      flex-direction: row;
+      gap: tokens.$spacing-4;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+  }
+
+  &__price {
+    display: flex;
+    align-items: center;
+    gap: tokens.$spacing-1;
+    color: tokens.$color-text-primary;
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    background-color: tokens.$color-bg-secondary;
+    border-radius: tokens.$radius-full;
+    padding: 2px;
+  }
+}
+
+.cart-control-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: tokens.$radius-full;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.cart-quantity {
+  width: 24px;
+  text-align: center;
+  font-weight: bold;
+  font-size: tokens.$font-size-sm;
+}

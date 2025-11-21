@@ -1,0 +1,92 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.ad-banner {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 200px; // ارتفاع استاندارد بنر کناری
+  border-radius: tokens.$radius-xl;
+  overflow: hidden;
+  text-decoration: none;
+  border: 2px dashed tokens.$color-border-secondary; // بوردر خط‌چین برای حس پلیس‌هولدر
+  background-color: tokens.$color-bg-surface;
+  transition: all 0.3s ease;
+
+  // پترن پس‌زمینه راه‌راه (Stripe Pattern)
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(tokens.$color-bg-secondary, 0.4) 0,
+    rgba(tokens.$color-bg-secondary, 0.4) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+
+  &:hover {
+    border-color: tokens.$color-brand-primary;
+    border-style: solid; // تبدیل خط‌چین به خط صاف
+    transform: translateY(-2px);
+    box-shadow: tokens.$shadow-md;
+
+    // افکت آیکون
+    .ad-banner__icon-wrapper {
+      background-color: tokens.$color-brand-primary;
+      color: tokens.$color-text-on-brand;
+      transform: scale(1.1) rotate(-10deg);
+    }
+
+    // افکت دکمه
+    .ad-banner__cta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // --- حالت عکس‌دار ---
+  &__image {
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  // --- حالت بدون عکس (Placeholder) ---
+  &__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: tokens.$spacing-3;
+    padding: tokens.$spacing-4;
+    z-index: 1; // روی پترن قرار بگیرد
+  }
+
+  &__icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: tokens.$radius-full;
+    background-color: tokens.$color-bg-secondary;
+    color: tokens.$color-text-secondary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  &__title {
+    color: tokens.$color-text-primary;
+  }
+
+  // دکمه CTA مخفی
+  &__cta {
+    position: absolute;
+    bottom: tokens.$spacing-4;
+    background-color: tokens.$color-brand-primary;
+    color: tokens.$color-text-on-brand;
+    font-size: tokens.$font-size-xs;
+    font-weight: tokens.$font-weight-bold;
+    padding: 4px 12px;
+    border-radius: tokens.$radius-full;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+  }
+}

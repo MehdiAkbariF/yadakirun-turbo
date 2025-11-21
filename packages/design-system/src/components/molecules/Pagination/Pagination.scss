@@ -1,0 +1,47 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: tokens.$spacing-2;
+  padding: tokens.$spacing-4 0;
+
+  &__btn,
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 tokens.$spacing-2;
+    border-radius: tokens.$radius-lg;
+    background-color: tokens.$color-bg-surface;
+    color: tokens.$color-text-primary;
+    font-weight: tokens.$font-weight-medium;
+    font-size: tokens.$font-size-sm;
+    transition: tokens.$transition-base;
+    text-decoration: none;
+    border: 1px solid tokens.$color-border-secondary;
+
+    &:hover {
+      background-color: tokens.$color-bg-secondary;
+      border-color: tokens.$color-border-primary;
+      color: tokens.$color-brand-primary;
+    }
+  }
+
+  // استایل صفحه فعال
+  &__item--active {
+    background-color: tokens.$color-brand-primary;
+    color: tokens.$color-text-on-brand;
+    border-color: tokens.$color-brand-primary;
+    font-weight: tokens.$font-weight-bold;
+    box-shadow: tokens.$shadow-md;
+
+    &:hover {
+      background-color: tokens.$color-brand-primary-hover;
+      color: tokens.$color-text-on-brand;
+    }
+  }
+}

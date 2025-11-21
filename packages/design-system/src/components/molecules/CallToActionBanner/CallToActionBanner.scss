@@ -1,0 +1,25 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.cta-banner {
+  background-color: tokens.$color-bg-surface;
+  border: 1px solid tokens.$color-border-secondary;
+  border-radius: tokens.$radius-lg;
+  padding: tokens.$spacing-5;
+  margin: tokens.$spacing-8 0;
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: tokens.$color-brand-primary;
+    color: tokens.$color-text-on-brand;
+    padding: tokens.$spacing-4;
+    border-radius: tokens.$radius-lg;
+    text-decoration: none;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: tokens.$color-brand-primary-hover;
+    }
+  }
+}
