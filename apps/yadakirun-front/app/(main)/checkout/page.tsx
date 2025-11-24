@@ -12,6 +12,7 @@ import { CartItemCard } from "@monorepo/design-system/src/components/molecules/C
 import { OrderSummary } from "@monorepo/design-system/src/components/organisms/OrderSummary/OrderSummary";
 import { Modal } from "@monorepo/design-system/src/components/organisms/Modal/Modal";
 import { BestSellersSlider } from "@/src/components/layout/BestSellersSlider";
+import { CartDrawer } from '@monorepo/design-system/src/components/organisms/CartDrawer/CartDrawer'; // ✅ ایمپورت جدید
 
 // --- Mock Data & Types ---
 interface CartItem {
@@ -107,7 +108,7 @@ export default function CheckoutPage() {
   return (
     <div className="bg-body min-h-screen pb-20">
       <Container>
-        <div className="py-8 border-b border-border-secondary mb-8 flex justify-between items-center">
+        <div className=" border-b border-border-secondary mb-4 flex justify-between items-center ">
           <div className="flex items-center gap-3">
              <Label as="h1" size="xl" weight="extra-bold">سبد خرید</Label>
              <span className="bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1 rounded-full">

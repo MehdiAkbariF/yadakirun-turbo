@@ -1,15 +1,14 @@
 @use '../../../styles/_variables.scss' as tokens;
 
 .countdown-timer {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: tokens.$spacing-2;
-  text-align: center;
-  color: tokens.$color-text-on-brand;
+display: flex;
+gap: 10;
+flex-direction: row-reverse;
 
   &__block {
     padding: tokens.$spacing-2;
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: tokens.$radius-md;
+    
   }
 }

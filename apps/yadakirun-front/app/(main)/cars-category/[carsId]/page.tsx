@@ -98,12 +98,12 @@ export default function CarsCategoryPage() {
   const currentProducts = processedProducts.slice((currentPage - 1) * PRODUCTS_PER_PAGE, currentPage * PRODUCTS_PER_PAGE);
 
   return (
-    <div className="bg-body min-h-screen pb-20">
+    <div className="bg-body min-h-screen pb-15">
       <Container>
         
         {/* --- Top Categories --- */}
-        <section className="py-8">
-           <div className="mb-8">
+        <section className="py-1">
+           <div className="mb-6">
              <Label as="h1" size="xl" weight="bold" className="mb-6">دسته‌بندی‌های مرتبط</Label>
              
              {/* ✅ اصلاح: استفاده از CardGrid در دسکتاپ */}

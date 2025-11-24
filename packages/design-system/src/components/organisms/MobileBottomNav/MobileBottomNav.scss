@@ -1,10 +1,20 @@
 @use '../../../styles/_variables.scss' as tokens;
 
-.mobile-bottom-nav {
+.mobile-bottom-nav-wrapper {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 10;
+  pointer-events: none; 
+
+  @media (min-width: tokens.$breakpoint-lg) {
+    display: none;
+  }
+}
+
+// نوار نویگیشن اصلی (پایین)
+.mobile-bottom-nav {
   height: 4rem; // 64px
   background-color: tokens.$color-bg-surface;
   border-top: 1px solid tokens.$color-border-secondary;
@@ -12,22 +22,13 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  
-  // ✅ اصلاح: کاهش z-index به 20
-  // سلسله مراتب: 
-  // محتوا: 0-10
-  // نویگیشن پایین: 20
-  // سایدبار موبایل: 50
-  // هدر: 60
-  // مودال‌ها: 100+
-z-index: 10;
-  
   padding-bottom: env(safe-area-inset-bottom);
-
-  // در دسکتاپ مخفی شود
-  @media (min-width: tokens.$breakpoint-lg) {
-    display: none;
-  }
+  position: relative;
+  
+  // ✅ اصلاح: این لایه باید بالاتر از کانتینر سبد خرید باشد
+  z-index: 20; 
+  
+  pointer-events: auto; 
 
   &__item {
     flex: 1;
@@ -45,13 +46,10 @@ z-index: 10;
     position: relative;
     padding-top: 4px;
 
-    &:hover {
-      color: tokens.$color-brand-primary;
-    }
+    &:hover { color: tokens.$color-brand-primary; }
 
     &--active {
       color: tokens.$color-brand-primary;
-      
       &::after {
         content: '';
         position: absolute;
@@ -88,4 +86,106 @@ z-index: 10;
     justify-content: center;
     border: 2px solid tokens.$color-bg-surface;
   }
+}
+
+// ✅ کانتینر شناور سبد خرید
+.floating-cart {
+  position: absolute; 
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: tokens.$color-bg-surface;
+  border-top: 1px solid tokens.$color-border-secondary;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: tokens.$radius-xl tokens.$radius-xl 0 0;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  // ✅ اصلاح: این لایه باید پایین‌تر از نویگیشن بار باشد
+  z-index: 15; 
+  
+  pointer-events: auto;
+  
+  // پدینگ پایین: ارتفاع نویگیشن + سیف اریا + کمی فاصله اضافی (1rem)
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom) + 1rem);
+
+  // حالت بسته 
+  &--collapsed {
+    transform: translateY(110%); 
+  }
+
+  // حالت باز
+  &--expanded {
+    transform: translateY(0);
+    padding-top: tokens.$spacing-4;
+    padding-left: tokens.$spacing-4;
+    padding-right: tokens.$spacing-4;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: tokens.$spacing-3;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // ✅ دکمه باز کردن (Tab Button)
+  &__toggle-btn {
+    position: absolute;
+    bottom: calc(4rem + env(safe-area-inset-bottom)); 
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background-color: tokens.$color-brand-primary;
+    color: tokens.$color-text-on-brand;
+    padding: 6px 16px;
+    border-radius: tokens.$radius-lg tokens.$radius-lg 0 0;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    
+    // ✅ اصلاح: دکمه باید بالاترین لایه باشد تا روی نویگیشن کلیک شود
+    z-index: 30; 
+    
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    pointer-events: auto;
+    animation: slideUp 0.3s ease-out;
+
+    &:hover {
+      background-color: tokens.$color-brand-primary-hover;
+    }
+  }
+
+  &__checkout-btn {
+    width: 100%;
+    background-color: tokens.$color-brand-primary;
+    color: tokens.$color-text-on-brand;
+    padding: tokens.$spacing-3;
+    border-radius: tokens.$radius-lg;
+    font-weight: bold;
+    font-size: tokens.$font-size-sm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translate(-50%, 100%); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
 }

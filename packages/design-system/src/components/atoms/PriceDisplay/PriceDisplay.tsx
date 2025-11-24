@@ -5,7 +5,7 @@ import './PriceDisplay.scss';
 
 const formatPrice = (num?: number) => {
   if (typeof num !== 'number') return "";
-  return `${num.toLocaleString("fa-IR")} تومان`;
+  return `${num.toLocaleString("fa-IR")} `;
 };
 
 export const PriceDisplay = ({ price, originalPrice, className }: { price?: number; originalPrice?: number; className?: string }) => {

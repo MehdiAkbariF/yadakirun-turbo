@@ -221,7 +221,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       <Container>
         {/* --- Featured Posts Section --- */}
         {currentPage === 1 && (
-          <section className="mb-20">
+          <section className="mb-10">
             {/* ✅ استفاده از کامپوننت اسلایدر به جای گرید */}
             <BlogSlider items={blogSliderItems} uniqueId="featured-posts-slider" />
           </section>

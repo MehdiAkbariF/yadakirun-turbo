@@ -4,34 +4,56 @@
   width: 100%;
   border: 2px dashed tokens.$color-border-primary;
   padding: tokens.$spacing-5;
-  border-radius: tokens.$radius-md;
+  border-radius: tokens.$radius-xl; // کمی گردتر برای زیبایی
+  background-color: tokens.$color-bg-surface;
 
   &__title {
-    margin-bottom: tokens.$spacing-2;
+    margin-bottom: tokens.$spacing-3;
   }
 
   &__wrapper {
     position: relative;
-    margin-top: tokens.$spacing-2;
     display: flex;
     align-items: center;
   }
   
-  // برای اینکه دکمه روی اینپوت قرار بگیرد
-  .input-container {
-    width: 100%;
+  // استایل اختصاصی برای اینپوت داخل خبرنامه
+  &__input {
+    // در حالت RTL (فارسی):
+    // دکمه سمت چپ است، پس باید از سمت چپ متن فاصله بگیریم
+    [dir="rtl"] & {
+      padding-left: 3.5rem !important; // فضای خالی برای دکمه
+      padding-right: tokens.$spacing-4;
+    }
+
+    // در حالت LTR (انگلیسی):
+    // دکمه سمت راست است
+    [dir="ltr"] & {
+      padding-right: 3.5rem !important;
+      padding-left: tokens.$spacing-4;
+    }
   }
 
   &__submit-button {
     position: absolute;
-    left: tokens.$spacing-1;
     top: 50%;
     transform: translateY(-50%);
-    padding: tokens.$spacing-2 !important; // برای override کردن پدینگ پیش‌فرض دکمه
+    z-index: 2;
+    height: 36px !important; // تنظیم ارتفاع متناسب با اینپوت
+    width: 36px !important;
+    padding: 0 !important;
+    border-radius: tokens.$radius-lg;
     
+    // موقعیت دکمه در RTL (سمت چپ)
     [dir="rtl"] & {
+      left: tokens.$spacing-0;
+      right: auto;
+    }
+
+    // موقعیت دکمه در LTR (سمت راست)
+    [dir="ltr"] & {
+      right: tokens.$spacing-2;
       left: auto;
-      right: tokens.$spacing-1;
     }
   }
 }

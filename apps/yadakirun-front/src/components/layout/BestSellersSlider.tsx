@@ -45,7 +45,7 @@ export const BestSellersSlider = ({ title, items = sampleData, uniqueId }: BestS
           }}
           spaceBetween={0}
           breakpoints={{
-            320: { slidesPerView: 1.3 },
+            320: { slidesPerView: 1.2 },
             480: { slidesPerView: 2.1 },
             768: { slidesPerView: 3 },
             1024: { slidesPerView: 4 },

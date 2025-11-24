@@ -383,10 +383,14 @@ $header-height: 5rem;
     display: flex;
     flex-direction: column;
     gap: 0;
-    background-color: tokens.$color-bg-secondary;
+    background-color: tokens.$color-bg-secondary; // پس‌زمینه متمایز
     border-radius: tokens.$radius-lg;
-    padding: tokens.$spacing-2 0;
     margin-top: tokens.$spacing-2;
+    overflow: hidden; // مهم: برای اینکه محتوا بیرون نزند
+    
+    // پدینگ فقط وقتی باز است اعمال شود (در AccordionMenu کنترل می‌شود)
+    // اما چون AccordionMenu با state کنترل می‌شود، اینجا استایل پایه را می‌دهیم
+    padding: tokens.$spacing-2 0;
   }
   
   &__footer {
@@ -397,6 +401,60 @@ $header-height: 5rem;
     justify-content: space-between;
     align-items: center;
     background-color: tokens.$color-bg-surface;
-    z-index: 30;
+    z-index: 2;
+  }
+}
+
+// ===================================
+// استایل Accordion Menu (مخصوص موبایل)
+// ===================================
+// این کلاس‌ها باید با ساختار AccordionMenu.tsx هماهنگ باشند
+.accordion-menu {
+  border-bottom: 1px solid tokens.$color-border-secondary;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: tokens.$spacing-4 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    color: tokens.$color-text-primary;
+    transition: color 0.2s;
+
+    &:hover {
+      color: tokens.$color-brand-primary;
+    }
+  }
+
+  &__icon {
+    transition: transform 0.3s ease;
+    color: tokens.$color-text-secondary;
+  }
+
+  &--open {
+    .accordion-menu__header {
+      color: tokens.$color-brand-primary;
+    }
+    .accordion-menu__icon {
+      transform: rotate(180deg);
+      color: tokens.$color-brand-primary;
+    }
+  }
+
+  &__content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    
+    // وقتی باز است
+    &--open {
+      max-height: 500px; // ارتفاع تقریبی کافی
+      opacity: 1;
+      padding-bottom: tokens.$spacing-4;
+    }
   }
 }

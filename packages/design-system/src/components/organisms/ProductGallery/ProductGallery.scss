@@ -1,6 +1,8 @@
 @use '../../../styles/_variables.scss' as tokens;
 
 .product-gallery {
+  // ... (بدون تغییر تا پایان بخش کارت اصلی) ...
+  
   display: flex;
   flex-direction: column;
   gap: tokens.$spacing-4;
@@ -8,22 +10,16 @@
   &__main {
     position: relative;
     width: 100%;
-    
-    // ✅ اصلاح شده: در سایز lg و پایین‌تر (موبایل و تبلت) نسبت تصویر 2 به 1 است
-    aspect-ratio: 2 / 1; 
-
-    // ✅ در سایزهای خیلی بزرگ (XL به بالا) تصویر مربعی می‌شود تا زیباتر دیده شود
-    @media (min-width: tokens.$breakpoint-lg) {
+    aspect-ratio: 2 / 1;
+    @media (min-width: tokens.$breakpoint-xl) { // اصلاح: XL برای مانیتورهای بزرگ
       aspect-ratio: 1 / 1;
     }
-
     background-color: tokens.$color-bg-surface;
     border: 1px solid tokens.$color-border-secondary;
     border-radius: tokens.$radius-xl;
     overflow: hidden;
     cursor: zoom-in;
     
-    // برای نمایش صحیح دکمه روی عکس
     &:hover .product-gallery__expand-btn {
       opacity: 1;
       transform: translateY(0);
@@ -42,20 +38,17 @@
     bottom: tokens.$spacing-4;
     right: tokens.$spacing-4; 
     z-index: 10; 
-    
     width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    
     background-color: rgba(tokens.$color-bg-surface, 0.8);
     backdrop-filter: blur(4px);
     border: 1px solid tokens.$color-border-secondary;
     border-radius: tokens.$radius-full;
     color: tokens.$color-text-primary;
     cursor: pointer;
-    
     opacity: 0; 
     transform: translateY(10px);
     transition: all 0.3s ease;
@@ -66,7 +59,6 @@
       border-color: tokens.$color-brand-primary;
     }
 
-    // در موبایل همیشه نمایش داده شود
     @media (max-width: tokens.$breakpoint-sm) {
       opacity: 1;
       transform: translateY(0);
@@ -78,11 +70,7 @@
     gap: tokens.$spacing-2;
     overflow-x: auto;
     padding-bottom: tokens.$spacing-2;
-    
-    // مخفی کردن اسکرول بار
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    &::-webkit-scrollbar { display: none; }
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
@@ -99,22 +87,20 @@
     background-color: tokens.$color-bg-surface;
     padding: 0;
 
-    &--active {
-      border-color: tokens.$color-brand-primary;
-    }
-
-    &:hover {
-      border-color: tokens.$color-brand-primary-hover;
-    }
+    &--active { border-color: tokens.$color-brand-primary; }
+    &:hover { border-color: tokens.$color-brand-primary-hover; }
   }
 }
 
 // --- Fullscreen Modal Styles ---
 .product-gallery-modal {
   position: fixed;
-  inset: 0; // top: 0, right: 0, bottom: 0, left: 0
-  z-index: tokens.$z-index-max; // بالاترین اولویت
-  background-color: rgba(0, 0, 0, 0.9);
+  inset: 0; 
+  z-index: tokens.$z-index-max; 
+  
+  // ✅ تغییر کلیدی: پس‌زمینه کاملاً سیاه
+  background-color: #000; 
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -127,26 +113,31 @@
     right: tokens.$spacing-6;
     background: transparent;
     border: none;
-    color: white;
+    color: white; // سفید روی سیاه همیشه خواناست
     cursor: pointer;
     z-index: 20;
     transition: transform 0.2s;
     
     &:hover {
       transform: scale(1.1);
-      color: tokens.$color-utility-error;
+      color: tokens.$color-utility-error; // قرمز در هاور
     }
   }
 
   &__content {
     position: relative;
-    width: 90%;
-    height: 70%;
+    width: 100%;
+    height: 80%; // افزایش ارتفاع برای نمایش بهتر
     margin-bottom: tokens.$spacing-6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__img {
-    object-fit: contain;
+    object-fit: contain; // حفظ نسبت تصویر
+    max-width: 100%;
+    max-height: 100%;
   }
 
   &__thumbs {
@@ -155,6 +146,10 @@
     overflow-x: auto;
     max-width: 90%;
     padding: tokens.$spacing-2;
+    
+    // اسکرول بار سفارشی برای حالت تاریک
+    &::-webkit-scrollbar { height: 4px; }
+    &::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
   }
 
   &__thumb-btn {
@@ -163,7 +158,7 @@
     border-radius: tokens.$radius-md;
     border: 2px solid transparent;
     overflow: hidden;
-    opacity: 0.6;
+    opacity: 0.5;
     transition: all 0.2s;
     cursor: pointer;
     flex-shrink: 0;
@@ -175,7 +170,7 @@
     }
 
     &:hover {
-      opacity: 1;
+      opacity: 0.8;
     }
   }
 }

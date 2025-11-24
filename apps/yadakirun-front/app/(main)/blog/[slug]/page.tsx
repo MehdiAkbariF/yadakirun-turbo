@@ -117,8 +117,8 @@ export default async function BlogPostPage({ params }: PageProps) {
               
               {/* Hero Header */}
               <header className="p-6 md:p-8">
-                 <div className="flex flex-col md:flex-row gap-6 mb-6">
-                    <div className="relative w-full md:w-1/3 h-64 md:h-48 rounded-xl overflow-hidden flex-shrink-0 bg-secondary-bg">
+                 <div className="flex flex-col md:flex-row gap-6 mb-6 " >
+                    <div className="relative w-full md:w-1/3 h-64 md:h-48 rounded-xl overflow-hidden  bg-secondary-bg ">
                        <Image 
                          src={currentPost.imageUrl} 
                          alt={currentPost.title} 

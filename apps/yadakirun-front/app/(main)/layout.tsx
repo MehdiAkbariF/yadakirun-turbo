@@ -30,8 +30,8 @@ const footerData = {
     { text: "نحوه ارسال و مرجوعی", href: "/shipping-policy" },
   ],
   trustSeals: [
-    { src: "/eanjoman-1.png", alt: "انجمن صنفی کسب و کارهای اینترنتی", href:"#" },
-    { src: "/enamad-1.png", alt: "نماد اعتماد الکترونیکی", href:"#" },
+    { src: "/samandehi-1.png", alt: "انجمن صنفی کسب و کارهای اینترنتی", href:"#" },
+    { src: "/samandehi-1.png", alt: "نماد اعتماد الکترونیکی", href:"#" },
     { src: "/jokmmpnlmlpk-1.png", alt: "نشان ملی ثبت رسانه‌های دیجیتال", href:"#" },
     { src: "/samandehi-1.png", alt: "ساماندهی", href:"#" },
   ],

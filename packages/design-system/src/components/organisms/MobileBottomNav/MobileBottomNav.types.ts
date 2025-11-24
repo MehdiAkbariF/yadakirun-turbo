@@ -4,13 +4,27 @@ export interface MobileNavItem {
   id: string;
   label: string;
   icon: ReactNode;
-  href?: string; // اگر لینک باشد
-  onClick?: () => void; // اگر دکمه باشد (مثل سبد خرید که شاید مودال باز کند)
+  href?: string;
+  onClick?: () => void;
   badgeCount?: number;
+}
+
+export interface CartSummaryProps {
+  totalPrice: number;
+  itemCount: number;
+  onCheckout: () => void;
+  
+  /**
+   * آیا کانتینر همیشه باز باشد و بسته نشود؟ (برای صفحه چک‌اوت)
+   * @default false
+   */
+  alwaysOpen?: boolean;
 }
 
 export interface MobileBottomNavProps {
   items: MobileNavItem[];
-  activeId?: string; // آیدی آیتم فعال
+  activeId?: string;
   className?: string;
+  // ✅ پراپ جدید برای خلاصه سبد خرید
+  cartSummary?: CartSummaryProps;
 }

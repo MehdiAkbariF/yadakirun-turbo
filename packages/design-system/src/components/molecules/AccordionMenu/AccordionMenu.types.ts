@@ -6,4 +6,5 @@ export interface AccordionMenuProps {
   children: ReactNode;
   isOpen: boolean;
   onToggle: () => void;
+  className : string
 }

@@ -1,19 +1,112 @@
 @import "tailwindcss";
 
+/* =========================================
+   1. تعریف فونت‌ها (Font Face)
+   مسیر فایل‌ها نسبت به پوشه public است: /fonts/...
+   ========================================= */
+
+/* وزن 100: Thin */
+@font-face {
+  font-family: 'Ravi';
+  src: url('/fonts/Ravi-Thin.woff2') format('woff2'),
+       url('/fonts/Ravi-Thin.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* وزن 300: Light */
+@font-face {
+  font-family: 'Ravi';
+  src: url('/fonts/Ravi-Light.woff2') format('woff2'),
+       url('/fonts/Ravi-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* وزن 400: Regular */
+@font-face {
+  font-family: 'Ravi';
+  src: url('/fonts/Ravi-Regular.woff2') format('woff2'),
+       url('/fonts/Ravi-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* وزن 500: Medium */
+@font-face {
+  font-family: 'Ravi';
+  src: url('/fonts/Ravi-Medium.woff2') format('woff2'),
+       url('/fonts/Ravi-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* وزن 600: SemiBold */
+@font-face {
+  font-family: 'Ravi';
+  src: url('/fonts/Ravi-SemiBold.woff2') format('woff2'),
+       url('/fonts/Ravi-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* وزن 700: Bold */
+@font-face {
+  font-family: 'Ravi';
+  src: url('/fonts/Ravi-Bold.woff2') format('woff2'),
+       url('/fonts/Ravi-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* وزن 900: Black */
+@font-face {
+  font-family: 'Ravi';
+  src: url('/fonts/Ravi-Black.woff2') format('woff2'),
+       url('/fonts/Ravi-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* وزن 950: ExtraBlack */
+@font-face {
+  font-family: 'Ravi';
+  src: url('/fonts/Ravi-ExtraBlack.woff2') format('woff2'),
+       url('/fonts/Ravi-ExtraBlack.woff') format('woff');
+  font-weight: 950;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* =========================================
+   2. کانفیگ تم (Tailwind v4)
+   ========================================= */
 @theme {
-  /* --- Background Tokens (Clean Names) --- */
-  /* این‌ها کلاس‌های bg-surface, bg-body و... را می‌سازند */
+  /* --- Font Family --- */
+  /* 
+     با این خط، کلاس font-sans پیش‌فرض تیلویند به فونت Ravi تغییر می‌کند.
+     همچنین فونت‌های سیستم به عنوان جایگزین (fallback) قرار می‌گیرند.
+  */
+  --font-sans: "Ravi", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  /* --- Background Tokens --- */
   --color-surface: var(--color-bg-surface);
   --color-body: var(--color-bg-body);
   --color-surface-hover: var(--color-bg-surface-hover);
-  --color-secondary-bg: var(--color-bg-secondary); /* کلاس bg-secondary-bg برای جلوگیری از تداخل */
+  --color-secondary-bg: var(--color-bg-secondary);
   --color-accent-bg: var(--color-bg-accent);
 
   /* --- Text Tokens --- */
-  /* نکته مهم: ما توکن primary را به رنگ متن وصل می‌کنیم تا text-primary خاکستری باشد */
-  /* برای رنگ برند از brand-primary استفاده می‌کنیم */
-  --color-primary: var(--color-text-primary);      /* کلاس: text-primary */
-  --color-secondary: var(--color-text-secondary);  /* کلاس: text-secondary */
+  --color-primary: var(--color-text-primary);
+  --color-secondary: var(--color-text-secondary);
   --color-placeholder: var(--color-text-placeholder);
   --color-on-brand: var(--color-text-on-brand);
   --color-link: var(--color-text-link);
@@ -50,9 +143,12 @@
   --radius-2xl: 24px;
 }
 
+/* =========================================
+   3. استایل‌های پایه
+   ========================================= */
 @layer base {
   body {
-    /* استفاده از توکن‌های جدید و تمیز */
+    /* اعمال فونت و رنگ پس‌زمینه به کل بادی */
     @apply bg-body text-primary font-sans;
   }
 }

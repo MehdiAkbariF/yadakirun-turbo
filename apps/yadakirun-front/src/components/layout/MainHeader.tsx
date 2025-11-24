@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ShoppingCart, User, Search } from 'lucide-react';
 
 import { Header } from '@monorepo/design-system/src/components/organisms/Header/Header';
@@ -11,6 +11,7 @@ import { MegaMenu } from '@monorepo/design-system/src/components/organisms/MegaM
 import { ThemeToggle } from '@monorepo/design-system/src/components/atoms/ThemeToggle/ThemeToggle';
 import { Input } from '@monorepo/design-system/src/components/atoms/Input/Input';
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
+import { CartDrawer } from '@monorepo/design-system/src/components/organisms/CartDrawer/CartDrawer'; // ✅ ایمپورت CartDrawer
 import { useTheme } from '@/src/context/ThemeProvider';
 
 // منبع داده واحد برای تمام آیتم‌های منو
@@ -56,16 +57,46 @@ const navigationItems = [
   { id: "support", title: "پشتیبانی آنلاین", href: "/support", mobileOnly: true },
 ];
 
+// داده‌های اولیه سبد خرید (برای نمایش عملکرد)
+const initialCartItems = [
+  { id: "1", title: "کیت تسمه تایم اصلی رنو تندر 90", price: 2300000, imgSrc: "/disk.webp", quantity: 1 },
+  { id: "2", title: "لنت ترمز جلو پراید سرامیکی", price: 750000, imgSrc: "/news4.webp", quantity: 2 },
+];
+
 export const MainHeader = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // --- State مدیریت سبد خرید ---
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState(initialCartItems);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // --- هندلرهای سبد خرید ---
+  const handleIncrease = (id: string | number) => {
+    setCartItems(items => items.map(item => item.id === id ? { ...item, quantity: item.quantity + 1 } : item));
+  };
+
+  const handleDecrease = (id: string | number) => {
+    setCartItems(items => items.map(item => item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item));
+  };
+
+  const handleRemove = (id: string | number) => {
+    setCartItems(items => items.filter(item => item.id !== id));
+  };
+
+  const handleClearCart = () => {
+    setCartItems([]);
+  };
+
+  const totalPrice = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
   const isHomePage = pathname === "/";
   const headerClassName = isHomePage && !isScrolled ? "bg-[#E5E3DF]" : "";
@@ -84,11 +115,17 @@ export const MainHeader = () => {
   );
 
   const cartComponent = (
-    <button className="header-action header-action--cart">
+    // ✅ اتصال دکمه به State باز شدن دراور
+    <button 
+      className="header-action header-action--cart relative" 
+      onClick={() => setIsCartOpen(true)}
+    >
       <ShoppingCart size={22} />
-      <Label as="span" size="xs" weight="bold" color="on-brand" className="cart-badge">
-        3
-      </Label>
+      {cartItems.length > 0 && (
+        <span className="cart-badge">
+          {cartItems.length}
+        </span>
+      )}
     </button>
   );
   
@@ -121,34 +158,52 @@ export const MainHeader = () => {
   const brandsForMegaMenu = megaMenuItem?.children?.find(c => c.id === 'brands')?.children || [];
 
   return (
-    <Header
-      isScrolled={isScrolled}
-      activePath={pathname}
-      className={headerClassName}
-      logo={
-        <Link href="/">
-          <Image src="/logo.webp" alt="لوگوی یاداکیرون" width={150} height={50} className="h-auto"/>
-        </Link>
-      }
-      megaMenuSlot={
-        megaMenuItem && (
-          <MegaMenu 
-            triggerText={megaMenuItem.title} 
-            categories={categoriesForMegaMenu}
-            // ✅✅✅ اصلاح اصلی و نهایی اینجاست ✅✅✅
-            // ما در اینجا ساختار داده را برای MegaMenu تطبیق می‌دهیم
-            brands={brandsForMegaMenu.map(brand => ({
-              ...brand,
-              subItems: brand.children || [] // پراپرتی 'children' را به 'subItems' تبدیل می‌کنیم
-            }))}
-          />
-        )
-      }
-      navLinks={navigationItems}
-      searchSlot={searchComponent}
-      cartSlot={cartComponent}
-      themeToggleSlot={themeToggleComponent}
-      userSlot={userLinkComponent}
-    />
+    <>
+      <Header
+        isScrolled={isScrolled}
+        activePath={pathname}
+        className={headerClassName}
+        logo={
+          <Link href="/">
+            <Image src="/logo.webp" alt="لوگوی یاداکیرون" width={150} height={50} className="h-auto"/>
+          </Link>
+        }
+        megaMenuSlot={
+          megaMenuItem && (
+            <MegaMenu 
+              triggerText={megaMenuItem.title} 
+              categories={categoriesForMegaMenu}
+              brands={brandsForMegaMenu.map(brand => ({
+                ...brand,
+                subItems: brand.children || []
+              }))}
+            />
+          )
+        }
+        navLinks={navigationItems}
+        searchSlot={searchComponent}
+        cartSlot={cartComponent}
+        themeToggleSlot={themeToggleComponent}
+        userSlot={userLinkComponent}
+      />
+
+      {/* ✅ رندر کردن کامپوننت CartDrawer */}
+      <CartDrawer 
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        items={cartItems.map(item => ({
+           ...item,
+           onIncrease: () => handleIncrease(item.id),
+           onDecrease: () => handleDecrease(item.id),
+           onRemove: () => handleRemove(item.id),
+        }))}
+        totalPrice={totalPrice}
+        onCheckout={() => {
+           setIsCartOpen(false);
+           router.push('/checkout');
+        }}
+        onClearCart={handleClearCart}
+      />
+    </>
   );
 };

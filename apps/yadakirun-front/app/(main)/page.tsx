@@ -5,17 +5,131 @@ import { CardSlider } from '@monorepo/design-system/src/components/molecules/Car
 import { SpecialOffers } from '@/src/components/layout/SpecialOffers';
 import { BestSellersSlider } from '@/src/components/layout/BestSellersSlider';
 import { ImageCard } from '@monorepo/design-system/src/components/atoms/ImageCard/ImageCard';
-import { NewsSection } from '@/src/components/layout/NewsSection';// ایمپورت کامپوننت
+import { NewsSection } from '@/src/components/layout/NewsSection';
 import { ContentSection } from '@monorepo/design-system/src/components/molecules/ContentSection/ContentSection'; 
 import { Footer } from '@monorepo/design-system/src/components/organisms/Footer/Footer';
-// داده‌های نمونه برای کارت‌های دسته‌بندی
-const textContentData = [
-    { id: 'sec-1', title: "قطعات یکی خودروهای رنو", content: <><p>اگه صاحب یکی از خودروهای رنو باشی، حتماً می‌دونی که این ماشینا چه کیفیت خوبی دارن؛ چه از نظر سواری، چه از لحاظ مصرف سوخت و حتی دوام موتور. اما با همه‌ی این خوبی‌ها، مثل هر خودروی دیگه‌ای، بالاخره یه روزی به قطعات یدکی نیاز پیدا می‌کنن.</p><p>مخصوصاً وقتی زمان تعویض لنت ترمز، تسمه تایم یا فیلتر روغن می‌رسه، تازه می‌فهمی که انتخاب قطعه درست چقدر مهمه. چون استفاده از یه قطعه نامرغوب می‌تونه به کل سیستم ماشین آسیب بزنه و کلی هزینه رو دستت بذاره.</p></> },
-     { id: 'sec-1', title: "قطعات یکی خودروهای رنو", content: <><p>اگه صاحب یکی از خودروهای رنو باشی، حتماً می‌دونی که این ماشینا چه کیفیت خوبی دارن؛ چه از نظر سواری، چه از لحاظ مصرف سوخت و حتی دوام موتور. اما با همه‌ی این خوبی‌ها، مثل هر خودروی دیگه‌ای، بالاخره یه روزی به قطعات یدکی نیاز پیدا می‌کنن.</p><p>مخصوصاً وقتی زمان تعویض لنت ترمز، تسمه تایم یا فیلتر روغن می‌رسه، تازه می‌فهمی که انتخاب قطعه درست چقدر مهمه. چون استفاده از یه قطعه نامرغوب می‌تونه به کل سیستم ماشین آسیب بزنه و کلی هزینه رو دستت بذاره.</p></> },
-      { id: 'sec-1', title: "قطعات یکی خودروهای رنو", content: <><p>اگه صاحب یکی از خودروهای رنو باشی، حتماً می‌دونی که این ماشینا چه کیفیت خوبی دارن؛ چه از نظر سواری، چه از لحاظ مصرف سوخت و حتی دوام موتور. اما با همه‌ی این خوبی‌ها، مثل هر خودروی دیگه‌ای، بالاخره یه روزی به قطعات یدکی نیاز پیدا می‌کنن.</p><p>مخصوصاً وقتی زمان تعویض لنت ترمز، تسمه تایم یا فیلتر روغن می‌رسه، تازه می‌فهمی که انتخاب قطعه درست چقدر مهمه. چون استفاده از یه قطعه نامرغوب می‌تونه به کل سیستم ماشین آسیب بزنه و کلی هزینه رو دستت بذاره.</p></> },
-       { id: 'sec-1', title: "قطعات یکی خودروهای رنو", content: <><p>اگه صاحب یکی از خودروهای رنو باشی، حتماً می‌دونی که این ماشینا چه کیفیت خوبی دارن؛ چه از نظر سواری، چه از لحاظ مصرف سوخت و حتی دوام موتور. اما با همه‌ی این خوبی‌ها، مثل هر خودروی دیگه‌ای، بالاخره یه روزی به قطعات یدکی نیاز پیدا می‌کنن.</p><p>مخصوصاً وقتی زمان تعویض لنت ترمز، تسمه تایم یا فیلتر روغن می‌رسه، تازه می‌فهمی که انتخاب قطعه درست چقدر مهمه. چون استفاده از یه قطعه نامرغوب می‌تونه به کل سیستم ماشین آسیب بزنه و کلی هزینه رو دستت بذاره.</p></> },
-    // ... بقیه داده‌ها
+const specialOfferData = [
+  {
+    id: 1,
+    title: "کمک فنر حرفه‌ای رنو تالیسمان",
+    href: "/product/item-1",
+    imgSrc: "/Renault.svg",
+    price: 1250000,       // قیمت با تخفیف
+    originalPrice: 1500000, // قیمت اصلی
+    rating: 4.5,
+    carName: "۲۰٪ تخفیف", // بج روی کارت
+  },
+  {
+    id: 2,
+    title: "دیسک ترمز خنک شونده پژو",
+    href: "/product/item-2",
+    imgSrc: "/Renault.svg",
+    price: 890000,
+    originalPrice: 980000,
+    rating: 4.2,
+    carName: "پژو ۲۰۶",
+  },
+  {
+    id: 3,
+    title: "کیت کامل جلوبندی MVM",
+    href: "/product/item-3",
+    imgSrc: "/Renault.svg",
+    price: 3400000,
+    originalPrice: 3800000,
+    rating: 4.8,
+    carName: "فروش ویژه",
+  },
+  {
+    id: 4,
+    title: "چراغ ال‌ای‌دی آفرودی Pro",
+    href: "/product/item-4",
+    imgSrc: "/Renault.svg",
+    price: 2100000,
+    originalPrice: 2500000,
+    rating: 4.6,
+    carName: "تویوتا",
+  },
+  {
+    id: 5,
+    title: "پمپ بنزین اصلی جک S5",
+    href: "/product/item-5",
+    imgSrc: "/Renault.svg",
+    price: 1700000,
+    originalPrice: 1950000,
+    rating: 4.4,
+    carName: "جک S5",
+  },
+  {
+    id: 6,
+    title: "شمع ایریدیوم سوزنی NGK",
+    href: "/product/item-6",
+    imgSrc: "/Renault.svg",
+    price: 650000,
+    originalPrice: 720000,
+    rating: 4.9,
+    carName: "ارسال رایگان",
+  },
 ];
+// ✅ داده‌های کامل و نهایی برای بخش توضیحات متنی (SEO)
+const textContentData = [
+    { 
+      id: 'sec-1', 
+      title: "خرید لوازم یدکی خودرو با ضمانت اصالت", 
+      content: (
+        <>
+          <Label as="p" size="base" className="mb-4 leading-loose text-justify">
+            اگه صاحب یکی از خودروهای رنو باشی، حتماً می‌دونی که این ماشینا چه کیفیت خوبی دارن؛ چه از نظر سواری، چه از لحاظ مصرف سوخت و حتی دوام موتور. اما با همه‌ی این خوبی‌ها، مثل هر خودروی دیگه‌ای، بالاخره یه روزی به قطعات یدکی نیاز پیدا می‌کنن.
+          </Label>
+          <Label as="p" size="base" className="mb-4 leading-loose text-justify">
+            مخصوصاً وقتی زمان تعویض لنت ترمز، تسمه تایم یا فیلتر روغن می‌رسه، تازه می‌فهمی که انتخاب قطعه درست چقدر مهمه. چون استفاده از یه قطعه نامرغوب می‌تونه به کل سیستم ماشین آسیب بزنه و کلی هزینه رو دستت بذاره.
+          </Label>
+        </>
+      ) 
+    },
+    { 
+      id: 'sec-2', 
+      title: "چرا یدکی‌ران؟", 
+      content: (
+        <>
+          <Label as="p" size="base" className="mb-4 leading-loose text-justify">
+            فروشگاه اینترنتی یدکی‌ران با هدف ارائه قطعات اصلی و باکیفیت برای انواع خودروهای داخلی و خارجی راه‌اندازی شده است. ما با حذف واسطه‌ها تلاش می‌کنیم تا محصولات را با بهترین قیمت به دست شما برسانیم.
+          </Label>
+          <ul className="list-disc pr-6 mb-4 space-y-2">
+            <li><Label as="span">ضمانت بازگشت وجه در صورت عدم رضایت</Label></li>
+            <li><Label as="span">ارسال سریع به سراسر کشور</Label></li>
+            <li><Label as="span">مشاوره تخصصی قبل از خرید</Label></li>
+            <li><Label as="span">تنوع بالای محصولات برای تمام برندها</Label></li>
+          </ul>
+        </>
+      ) 
+    },
+    { 
+      id: 'sec-3', 
+      title: "راهنمای خرید قطعات موتوری", 
+      content: (
+        <>
+          <Label as="p" size="base" className="mb-4 leading-loose text-justify">
+            موتور قلب تپنده خودروی شماست و استفاده از قطعات باکیفیت برای آن حیاتی است. در یدکی‌ران می‌توانید انواع تسمه تایم، شمع، وایر، فیلترها و روغن‌های موتور را با اطمینان از اصالت کالا تهیه کنید.
+          </Label>
+          <Label as="p" size="base" className="leading-loose text-justify">
+            پیشنهاد ما این است که همیشه قبل از خرید، مدل دقیق خودرو و سال ساخت آن را چک کنید تا قطعه‌ای کاملاً سازگار انتخاب نمایید.
+          </Label>
+        </>
+      ) 
+    },
+    { 
+      id: 'sec-4', 
+      title: "لوازم جانبی و تزئینی", 
+      content: (
+        <>
+          <Label as="p" size="base" className="mb-4 leading-loose text-justify">
+            علاوه بر قطعات فنی، زیبایی و راحتی خودرو نیز اهمیت زیادی دارد. ما مجموعه‌ای کامل از روکش صندلی، کفپوش، سیستم‌های صوتی و سایر لوازم جانبی را گردآوری کرده‌ایم تا خودروی شما همواره در بهترین وضعیت ظاهری باشد.
+          </Label>
+        </>
+      ) 
+    },
+];
+
 const categoryData = [
   { href: "/cat/1", imgSrc: "/geely.webp", title: "جیلی" },
   { href: "/cat/2", imgSrc: "/jack.png", title: "جک" },
@@ -24,77 +138,77 @@ const categoryData = [
   { href: "/cat/5", imgSrc: "/ssangyong.svg", title: "سانگ یانگ" },
   { href: "/cat/6", imgSrc: "/Renault.svg", title: "پژو" },
 ];
+
 const newsData = [
   { 
     href: '#', 
-    title: 'عنوان مقاله اول: نکات مهم در خرید لوازم یدکی اصلی', 
-    imgSrc: '/SGA-banner.webp',
+    title: 'نکات مهم در خرید لوازم یدکی اصلی', 
+    imgSrc: '/SGA-banner.webp', 
     date: '۲۵ آبان ۱۴۰۴',
     description: 'در این مقاله به بررسی روش‌های تشخیص قطعات اصلی از تقلبی و اهمیت استفاده از لوازم یدکی با کیفیت می‌پردازیم.'
   },
   { 
     href: '#', 
-    title: 'عنوان مقاله دوم: چطور از جلوبندی خودروی خود مراقبت کنیم؟', 
-    imgSrc: '/aisin-clutch-banner.webp',
+    title: 'چطور از جلوبندی خودروی خود مراقبت کنیم؟', 
+    imgSrc: '/aisin-clutch-banner.webp', 
     date: '۲۲ آبان ۱۴۰۴',
     description: 'جلوبندی یکی از بخش‌های حیاتی خودرو است. با رعایت چند نکته ساده، عمر قطعات آن را افزایش دهید.'
   },
   { 
     href: '#', 
-    title: 'عنوان مقاله سوم: همه چیز درباره شمع‌های ایریدیوم و پلاتینیوم', 
-    imgSrc: '/SGA-banner.webp',
+    title: 'همه چیز درباره شمع‌های ایریدیوم و پلاتینیوم', 
+    imgSrc: '/SGA-banner.webp', 
     date: '۲۰ آبان ۱۴۰۴',
     description: 'تفاوت شمع‌های مختلف در چیست و کدام یک برای خودروی شما مناسب‌تر است؟ پاسخ را در این مطلب بخوانید.'
   },
   { 
     href: '#', 
-    title: 'عنوان مقاله چهارم: راهنمای کامل انتخاب دیسک و صفحه کلاچ', 
-    imgSrc: '/aisin-clutch-banner.webp',
+    title: 'راهنمای کامل انتخاب دیسک و صفحه کلاچ', 
+    imgSrc: '/aisin-clutch-banner.webp', 
     date: '۱۸ آبان ۱۴۰۴',
     description: 'علائم زمان تعویض دیسک و صفحه و معرفی بهترین برندهای موجود در بازار.'
   },
   { 
     href: '#', 
-    title: 'عنوان مقاله پنجم: سیستم ترمز ABS چگونه کار می‌کند؟', 
-    imgSrc: '/SGA-banner.webp',
+    title: 'سیستم ترمز ABS چگونه کار می‌کند؟', 
+    imgSrc: '/SGA-banner.webp', 
     date: '۱۵ آبان ۱۴۰۴',
     description: 'آشنایی با مکانیزم ترمز ضد قفل و نقش حیاتی آن در ایمنی خودرو.'
   },
   { 
     href: '#', 
-    title: 'عنوان مقاله ششم: روغن موتور مناسب برای فصل سرما', 
-    imgSrc: '/aisin-clutch-banner.webp',
+    title: 'روغن موتور مناسب برای فصل سرما', 
+    imgSrc: '/aisin-clutch-banner.webp', 
     date: '۱۲ آبان ۱۴۰۴',
     description: 'با شروع فصل سرما، انتخاب ویسکوزیته مناسب برای روغن موتور اهمیت دوچندان پیدا می‌کند.'
   },
 ];
+
+// ✅ داده‌های دقیق با قیمت و قیمت اصلی برای نمایش تخفیف
 const bestSellersData = [
-    { id: '1', title: 'کمک فنر حرفه‌ای رنو', href: '#', imgSrc: '/Renault.svg', price: 1250000, originalPrice: 1500000, rating: 4, badgeText: 'رنو' },
-    { id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg',  rating: 5, badgeText: 'پژو' },
-     { id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, rating: 5, badgeText: 'پژو' },
-      { id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, rating: 5, badgeText: 'پژو' },
-       { id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, rating: 5, badgeText: 'پژو' },
-        { id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, rating: 5, badgeText: 'پژو' },
-         { id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, rating: 5, badgeText: 'پژو' },
-    // ... بقیه 
+    { id: '1', title: 'کمک فنر حرفه‌ای رنو', href: '#', imgSrc: '/Renault.svg', price: 1250000, originalPrice: 1500000, rating: 4.5, badgeText: 'رنو' },
+    { id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, originalPrice: 980000, rating: 4.2, badgeText: 'پژو' },
+    { id: '3', title: 'لنت ترمز سرامیکی', href: '#', imgSrc: '/Renault.svg', price: 450000, originalPrice: 520000, rating: 4.5, badgeText: 'کیا' },
+    { id: '4', title: 'فیلتر روغن اصلی', href: '#', imgSrc: '/Renault.svg', price: 120000, originalPrice: 150000, rating: 5, badgeText: 'هیوندای' },
+    { id: '5', title: 'شمع موتور بوش', href: '#', imgSrc: '/Renault.svg', price: 350000, originalPrice: 400000, rating: 4.8, badgeText: 'تویوتا' },
+    { id: '6', title: 'تسمه تایم کنتیننتال', href: '#', imgSrc: '/Renault.svg', price: 850000,  rating: 4.9, badgeText: 'رنو' },
+    { id: '7', title: 'واتر پمپ', href: '#', imgSrc: '/Renault.svg', price: 980000,  rating: 4.2, badgeText: 'پژو' },
 ];
 
-// ✅ داده‌های نمونه برای گرید جدید در انتهای صفحه
 const brandCardsData = [
-  { href: "/brand/1", imgSrc: "/geely.webp", title: "برند ۱" },
-  { href: "/brand/2", imgSrc: "/jack.png", title: "برند ۲" },
-  { href: "/brand/3", imgSrc: "/LandRover.svg", title: "برند ۳" },
-  { href: "/brand/4", imgSrc: "/Renault.svg", title: "برند ۴" },
-  { href: "/brand/5", imgSrc: "/ssangyong.svg", title: "برند ۵" },
-  { href: "/brand/6", imgSrc: "/Renault.svg", title: "برند ۶" },
-  { href: "/brand/7", imgSrc: "/geely.webp", title: "برند ۷" },
-  { href: "/brand/8", imgSrc: "/jack.png", title: "برند ۸" },
-  { href: "/brand/9", imgSrc: "/LandRover.svg", title: "برند ۹" },
-  { href: "/brand/10", imgSrc: "/Renault.svg", title: "برند ۱۰" },
-  { href: "/brand/11", imgSrc: "/ssangyong.svg", title: "برند ۱۱" },
-  { href: "/brand/12", imgSrc: "/Renault.svg", title: "برند ۱۲" },
+  { href: "/brand/1", imgSrc: "/geely.webp", title: "جیلی" },
+  { href: "/brand/2", imgSrc: "/jack.png", title: "جک" },
+  { href: "/brand/3", imgSrc: "/LandRover.svg", title: "لندرور" },
+  { href: "/brand/4", imgSrc: "/Renault.svg", title: "رنو" },
+  { href: "/brand/5", imgSrc: "/ssangyong.svg", title: "سانگ یانگ" },
+  { href: "/brand/6", imgSrc: "/Renault.svg", title: "پژو" },
+  { href: "/brand/7", imgSrc: "/geely.webp", title: "چری" },
+  { href: "/brand/8", imgSrc: "/jack.png", title: "لیفان" },
+  { href: "/brand/9", imgSrc: "/LandRover.svg", title: "هایما" },
+  { href: "/brand/10", imgSrc: "/Renault.svg", title: "برلیانس" },
+  { href: "/brand/11", imgSrc: "/ssangyong.svg", title: "مزدا" },
+  { href: "/brand/12", imgSrc: "/Renault.svg", title: "نیسان" },
 ];
-
 
 export default function HomePage() {
   const moreCount = 10;
@@ -130,11 +244,11 @@ export default function HomePage() {
       </Container>
       
       <Container>
-        <SpecialOffers />
+   <SpecialOffers products={specialOfferData} title="پیشنهادهای شگفت‌انگیز" />
         <BestSellersSlider title="پرفروش‌ترین محصولات" items={bestSellersData} uniqueId="bestsellers" />
       </Container>
       
-      <Container className="my-16">
+      <Container className="my-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ImageCard
             href="/category/offroad"
@@ -150,58 +264,53 @@ export default function HomePage() {
           />
         </div>
       </Container>
- <Container>
-      
-        <BestSellersSlider title="پرفروش‌ترین محصولات" items={bestSellersData} uniqueId="bestsellers" />
+
+      <Container>
+        <BestSellersSlider title="جدیدترین محصولات" items={bestSellersData} uniqueId="newest-products" />
       </Container>
 
-       <Container className="my-16">
+       <Container className="my-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <ImageCard
-            href="/category/offroad"
+            href="/category/body"
             src="/SGA-banner.webp"
-            alt="لوازم آفرودی"
-            aspectRatio="6 / 3" // بنر مربعی
+            alt="قطعات بدنه"
+            aspectRatio="6 / 3"
           />
           <ImageCard
-            href="/category/tuning"
+            href="/category/engine"
             src="/aisin-clutch-banner.webp"
-            alt="لوازم تیونینگ"
-         aspectRatio="6 / 3"
-          />
-              <ImageCard
-            href="/category/offroad"
-            src="/SGA-banner.webp"
-            alt="لوازم آفرودی"
-          aspectRatio="6 / 3"
+            alt="قطعات موتوری"
+            aspectRatio="6 / 3"
           />
           <ImageCard
-            href="/category/tuning"
+            href="/category/suspension"
+            src="/SGA-banner.webp"
+            alt="جلوبندی"
+            aspectRatio="6 / 3"
+          />
+          <ImageCard
+            href="/category/electrical"
             src="/aisin-clutch-banner.webp"
-            alt="لوازم تیونینگ"
-         aspectRatio="6 / 3"
+            alt="برقی"
+            aspectRatio="6 / 3"
           />
         </div>
       </Container>
 
-
-      {/* ✅✅✅ بخش جدید: گرید ریسپانسیو برندها ✅✅✅ */}
-      <Container className="my-16">
+      {/* بخش گرید ریسپانسیو برندها */}
+      <Container className="my-4">
          <section>
-            <div className="mb-8 text-right border-r-4 border-accent pr-4 pt-2">
+            <div className="mb-4 text-right border-r-4 border-brand-accent pr-4 pt-2">
                 <Label as="h2" size="xl" weight="extra-bold">برندهای منتخب</Label>
             </div>
-            {/* 
-              از CardGrid استفاده می‌کنیم و تعداد ستون‌ها را به صورت ریسپانسیو در CSS کنترل خواهیم کرد.
-              یک کلاس جدید `card-grid--responsive` به آن می‌دهیم.
-            */}
             <CardGrid items={brandCardsData} className="card-grid--responsive" />
          </section>
-
-
       </Container>
-       <NewsSection title="آخرین اخبار و مقالات" items={newsData} uniqueId="homepage-news" />
-      <Container asSection className="my-16">
+
+      <NewsSection title="آخرین اخبار و مقالات" items={newsData} uniqueId="homepage-news" />
+      
+      <Container asSection className="my-1">
         {textContentData.map((section, index) => (
           <div key={section.id + index} className={index > 0 ? 'mt-12' : ''}>
             <ContentSection title={section.title}>

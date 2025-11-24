@@ -1,36 +1,80 @@
-// packages/design-system/src/components/atoms/ProductCard/ProductCard.tsx
 import React from 'react';
 import Image from 'next/image';
 import { ProductCardProps } from './ProductCard.types';
 import { Label } from '../Label/Label';
-import { Badge } from '../Badge/Badge'; // ✅ ایمپورت کردن کامپوننت Badge
+import { Badge } from '../Badge/Badge';
 import './ProductCard.scss';
 
-export const ProductCard = ({ title, href, imgSrc, price, badgeText, className }: ProductCardProps) => {
+export const ProductCard = ({
+  title,
+  href,
+  imgSrc,
+  price,
+  originalPrice,
+  rating,
+  badgeText,
+  className,
+}: ProductCardProps) => {
   const classNames = ['product-card', className].filter(Boolean).join(' ');
+
+  // فرمت قیمت
+  const formatPrice = (val: string | number) => 
+    val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  // محاسبه درصد تخفیف
+  const discountPercent = originalPrice 
+    ? Math.round(((Number(originalPrice) - Number(price)) / Number(originalPrice)) * 100) 
+    : 0;
 
   return (
     <a href={href} className={classNames}>
-      {/* ✅✅✅ استفاده از کامپوننت Badge به جای div ساده */}
+      
       {badgeText && (
-        <Badge variant="primary" className="product-card__badge">
-          <Label size='xs' color='brand-secondarys'>
-             {badgeText}
-          </Label>
-         
-        </Badge>
+        <div className="product-card__badge">
+          <Badge variant="secondary" className="text-[10px] px-2 py-0.5 font-bold shadow-sm">
+            {badgeText}
+          </Badge>
+        </div>
       )}
       
       <div className="product-card__image-container">
-        <Image src={imgSrc} alt={title} fill className="product-card__image" />
+        <Image 
+          src={imgSrc} 
+          alt={title} 
+          fill 
+          className="product-card__image" 
+        />
       </div>
+      
       <div className="product-card__details">
-        <Label as="h3" size="sm" weight="semi-bold" className="product-card__title">
+        {/* تایتل: بالا سمت راست */}
+        <Label as="h3" className="product-card__title">
           {title}
         </Label>
-        <Label as="p" size="lg" weight="bold" color="primary" className="mt-2">
-          {price}
-        </Label>
+
+        <div className="product-card__footer">
+          
+          {/* سمت راست: قیمت خط‌خورده و بج تخفیف */}
+          {originalPrice && discountPercent > 0 && (
+            <div className="product-card__discount-section">
+              <Badge variant="error" className="product-card__discount-badge">
+                {discountPercent}%
+              </Badge>
+              <Label className="product-card__old-price">
+                {formatPrice(originalPrice)}
+              </Label>
+            </div>
+          )}
+
+          {/* سمت چپ: قیمت نهایی */}
+          <div className="product-card__price-section">
+            <Label className="product-card__price">
+              {formatPrice(price)}
+            </Label>
+            <span className="product-card__currency">تومان</span>
+          </div>
+
+        </div>
       </div>
     </a>
   );

@@ -1,0 +1,105 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.cart-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 90; // زیر پنل (100)
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  backdrop-filter: blur(2px);
+
+  &--open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  
+  // ✅ اصلاح: باز شدن از سمت راست
+  right: 0; 
+  left: auto; 
+  
+  height: 100vh;
+  width: 100%;
+  max-width: 450px; // عرض مناسب برای دسکتاپ
+  background-color: tokens.$color-bg-surface;
+  z-index: 100; // بالاترین لایه
+  display: flex;
+  flex-direction: column;
+  box-shadow: tokens.$shadow-2xl;
+  
+  // ✅ اصلاح: پوزیشن اولیه بیرون از صفحه (سمت راست)
+  transform: translateX(100%); 
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  // ✅ اصلاح: وقتی باز می‌شود به سر جای خود برگردد
+  &--open {
+    transform: translateX(0);
+  }
+
+  &__header {
+    padding: tokens.$spacing-5;
+    border-bottom: 1px solid tokens.$color-border-secondary;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: tokens.$color-bg-surface;
+  }
+
+  &__count {
+    background-color: tokens.$color-bg-secondary;
+    color: tokens.$color-text-primary;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: tokens.$radius-full;
+  }
+
+  &__close-btn {
+    padding: tokens.$spacing-2;
+    border-radius: tokens.$radius-full;
+    color: tokens.$color-text-secondary;
+    transition: all 0.2s;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      background-color: tokens.$color-bg-secondary;
+      color: tokens.$color-text-primary;
+    }
+  }
+
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: tokens.$spacing-5;
+  }
+
+  &__item {
+    .cart-item {
+      box-shadow: none;
+      border-color: tokens.$color-border-secondary;
+    }
+  }
+
+  &__empty {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+  }
+
+  &__footer {
+    padding: tokens.$spacing-5;
+    border-top: 1px solid tokens.$color-border-secondary;
+    background-color: tokens.$color-bg-surface;
+  }
+}

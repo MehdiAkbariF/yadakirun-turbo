@@ -49,9 +49,10 @@ export const BlogSlider = ({ items, uniqueId = 'blog-slider' }: BlogSliderProps)
           pauseOnMouseEnter: true,
         }}
         breakpoints={{
+            320: { slidesPerView: 1, spaceBetween: 5 },
           560: { slidesPerView: 2, spaceBetween: 20 },
           1024: { slidesPerView: 3, spaceBetween: 24 },
-          1280: { slidesPerView: 4, spaceBetween: 24 },
+          1280: { slidesPerView: 5, spaceBetween: 24 },
         }}
         className="blog-slider"
       >

@@ -16,7 +16,7 @@
   min-height: 140px; 
 
   @media (min-width: tokens.$breakpoint-md) {
-    height: 200px; // ارتفاع ثابت دسکتاپ
+    height: 100px; // ارتفاع ثابت دسکتاپ
   }
 
   &:hover {
@@ -40,7 +40,7 @@
     flex-shrink: 0;
     
     // ✅ استایل موبایل: عکس کوچک سمت راست
-    width: 110px; 
+    width: 80px; 
     height: auto; // ارتفاع خودکار تا کل ارتفاع کارت را بگیرد
     overflow: hidden;
 

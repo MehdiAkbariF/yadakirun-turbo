@@ -238,7 +238,7 @@ export default function ProductDetailsPage() {
                     <hr className="my-6 border-border-secondary" />
                     <div className="space-y-4">
                       <div className="flex items-baseline gap-4">
-                        <Label weight="bold" size="base">
+                        <Label weight="bold" size="base" >
                           بسته بندی:
                         </Label>
                         <Label size="sm" color="secondary">
@@ -252,14 +252,17 @@ export default function ProductDetailsPage() {
                           <button
                             key={option.id}
                             onClick={() => setSelectedPackage(option)}
-                            className={`px-4 py-2 rounded-lg border-2 transition-all text-xs md:text-sm font-semibold cursor-pointer
+                            className={`px-4 py-2 rounded-lg border-border-secondary border-1 transition-all text-xs md:text-sm font-semibold cursor-pointer
                                         ${
                                           selectedPackage?.id === option.id
                                             ? "bg-brand-primary border-brand-primary text-on-brand shadow-md"
-                                            : "bg-surface border-border-primary text-text-secondary hover:border-brand-primary"
+                                            : "bg-brand- border-border-primary text-text-secondary hover:border-brand-primary"
                                         }`}
                           >
-                            {option.label}
+                            <Label size="xs" weight="medium" color="primary">
+                              {option.label}
+                            </Label>
+                            
                           </button>
                         ))}
                         {selectedPackage && (
@@ -267,7 +270,8 @@ export default function ProductDetailsPage() {
                             onClick={() => setSelectedPackage(null)}
                             className="flex items-center gap-1 px-3 py-2 text-utility-error text-xs font-bold hover:bg-utility-error/5 rounded-lg transition-colors"
                           >
-                            <X size={16} /> لغو
+                            <X size={16} className="text-error border rounded-full"/> 
+                            <Label size="xs" weight="bold" color="error">لغو</Label>
                           </button>
                         )}
                       </div>
@@ -335,7 +339,7 @@ export default function ProductDetailsPage() {
                 </div>
 
                 {/* Suitable For */}
-                <div className="bg-bg-secondary border border-border-secondary rounded-lg p-4 mb-6 ">
+                <div className="bg-bg-secondary border border-border-secondary rounded-lg p-4  ">
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">
                       <Car size={20} className="text-text-placeholder" />
@@ -454,7 +458,7 @@ export default function ProductDetailsPage() {
         </div>
 
         {/* --- Similar Products --- */}
-        <div className="mt-24">
+        <div className="mt-10">
           <BestSellersSlider
             title="محصولات مشابه"
             items={similarProducts}

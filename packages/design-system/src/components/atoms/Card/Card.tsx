@@ -15,7 +15,7 @@ export const Card = ({ title, imgSrc, href, isMore = false, className }: CardPro
             src={imgSrc}
             alt={typeof title === 'string' ? title : ''}
             fill
-            sizes="(max-width: 768px) 40vw, (max-width: 1200px) 30vw, 20vw"
+          
             className="card__image"
           />
         )}
