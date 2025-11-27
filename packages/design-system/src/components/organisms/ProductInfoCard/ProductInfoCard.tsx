@@ -84,7 +84,7 @@ export const ProductInfoCard = ({
 
       {/* Seller */}
       <div className="flex justify-between text-sm mb-4">
-         <Label color="placeholder">فروشنده:</Label>
+         <Label color="secondary" weight='semi-bold' size='sm'>فروشنده:</Label>
          <Label color="link" weight="bold" size='sm'>{seller}</Label>
       </div>
 
@@ -93,17 +93,17 @@ export const ProductInfoCard = ({
          {originalPrice && (
            <div className="flex justify-between text-sm text-text-placeholder mb-2">
               <Label color='secondary' weight='bold' size='sm'>قیمت اصلی:</Label>
-              <Label color='primary' weight='bold' size='sm'>{formatPrice(originalPrice)}</Label>
+              <Label color='primary' weight='bold' >{formatPrice(originalPrice)}</Label>
            </div>
          )}
          {discountAmount && (
            <div className="flex justify-between text-sm text-utility-success mb-4">
               <Label color='secondary' weight='bold' size='sm'>سود شما:</Label>
-              <Label color='success' weight='bold' size='sm'>{formatPrice(discountAmount)}</Label>
+              <Label color='success' weight='bold' >{formatPrice(discountAmount)}</Label>
            </div>
          )}
-         <div className="flex justify-between items-center pt-4 border-t border-border-secondary">
-            <Label weight="bold">قیمت نهایی:</Label>
+         <div className="flex justify-between items-center pt-4 border-t border-border-secondary mt-10">
+            <Label weight="semi-bold" size='base'>قیمت نهایی:</Label>
             <div className="text-left">
                <Label size="lg" weight="extra-bold" color="brand-accent">{formatPrice(price)}</Label>
             </div>

@@ -218,7 +218,7 @@ export default function ProductDetailsPage() {
               <div className="flex flex-col w-full lg:w-2/3  sm:p-6 lg:p-8">
                 <Label
                   as="h1"
-                  size="xl"
+                  size="lg"
                   weight="extra-bold"
                   className="text-heading mb-2"
                 >
@@ -238,10 +238,10 @@ export default function ProductDetailsPage() {
                     <hr className="my-6 border-border-secondary" />
                     <div className="space-y-4">
                       <div className="flex items-baseline gap-4">
-                        <Label weight="bold" size="base" >
+                        <Label weight="bold" size="sm" >
                           بسته بندی:
                         </Label>
-                        <Label size="sm" color="secondary">
+                        <Label size="xs" color="secondary" weight="semi-bold">
                           {selectedPackage
                             ? selectedPackage.label
                             : "یک مورد را انتخاب کنید"}
@@ -314,24 +314,24 @@ export default function ProductDetailsPage() {
                 <div className=" border border-border-secondary rounded-lg p-4 mb-6">
                   <div className="flex items-center gap-3 mb-4">
                     <CheckCircle size={20} className="text-utility-success" />
-                    <Label weight="bold" size="base">
+                    <Label weight="bold" size="sm">
                       ویژگی‌ها
                     </Label>
                   </div>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <Label size="sm" color="secondary">
+                      <Label size="sm" color="secondary" weight="bold">
                         برند:
                       </Label>
-                      <Label size="sm" weight="bold">
+                      <Label size="sm" weight="bold" color="brand-primary">
                         {productData.brand}
                       </Label>
                     </div>
                     <div className="flex justify-between">
-                      <Label size="sm" color="secondary">
+                      <Label size="sm" color="secondary" weight="bold">
                         خودروساز:
                       </Label>
-                      <Label size="sm" weight="bold">
+                      <Label size="sm" weight="bold" color="brand-primary">
                         {productData.carMaker}
                       </Label>
                     </div>
