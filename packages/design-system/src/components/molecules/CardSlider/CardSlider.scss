@@ -1,27 +1,60 @@
 @use '../../../styles/_variables.scss' as tokens;
+
 .card-slider {
   display: flex;
   overflow-x: auto;
-  gap: 1rem;
-  // چسبیدن اسکرول به آیتم‌ها
-  scroll-snap-type: x mandatory;
-  padding: 0.5rem 1rem; // پدینگ برای زیبایی
+  gap: tokens.$spacing-4;
   
-  // مخفی کردن اسکرول‌بار
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  // چسبیدن اسکرول به آیتم‌ها (Snap)
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  
+  // پدینگ برای اینکه سایه کارت‌ها بریده نشود و جا برای اسکرول باشد
+  padding: tokens.$spacing-2 tokens.$spacing-4 tokens.$spacing-4; 
+  
+  // --- استایل اسکرول‌بار افقی (نازک و زیبا) ---
+  
+  // Firefox
+  scrollbar-width: thin;
+  scrollbar-color: tokens.$color-brand-primary tokens.$color-bg-secondary;
+
+  // Webkit (Chrome, Edge, Safari)
   &::-webkit-scrollbar {
-    display: none;
+    height: 6px; // ارتفاع اسکرول افقی
   }
 
+  &::-webkit-scrollbar-track {
+    background: tokens.$color-bg-secondary;
+    border-radius: tokens.$radius-full;
+    margin: 0 tokens.$spacing-4; // فاصله از طرفین
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: tokens.$color-brand-primary;
+    border-radius: tokens.$radius-full;
+    transition: background-color 0.3s;
+    
+    &:hover {
+      background-color: tokens.$color-brand-primary-hover;
+    }
+  }
+
+  // --- استایل آیتم‌ها ---
   &__item {
     flex-shrink: 0;
-    width: 40%; // عرض هر کارت در کوچکترین حالت
+    
+    // تنظیم عرض آیتم‌ها برای موبایل
+    width: 140px; 
+    
     scroll-snap-align: start; // هر آیتم به ابتدای کانتینر می‌چسبد
     
+    // در تبلت و دسکتاپ
+    @media (min-width: tokens.$breakpoint-sm) {
+      width: 160px;
+    }
+
     @media (min-width: tokens.$breakpoint-md) {
-      width: 15%;
+      width: 180px;
     }
   }
 }
-

@@ -21,7 +21,7 @@ export const Card = ({ title, imgSrc, href, isMore = false, className }: CardPro
         )}
       </div>
       <div className="card__title-container">
-        <Label as="h3" size="sm" weight="bold" color="primary">
+        <Label  size="xs" weight="bold" color="primary">
           {title}
         </Label>
       </div>

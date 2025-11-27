@@ -1,5 +1,6 @@
 import React from 'react';
 import { LabelProps } from './Label.types';
+import { toPersianDigits } from '../../../utils/persian';
 import './Label.scss';
 
 export const Label = ({
@@ -19,9 +20,17 @@ export const Label = ({
     className,
   ].filter(Boolean).join(' ');
 
+  // ✅ لاجیک ایمن و حرفه‌ای:
+  // فقط اگر فرزند "متن خالص" یا "عدد" بود، آن را فارسی کن.
+  // اگر فرزند یک کامپوننت دیگر (مثلاً یک آیکون یا div) بود، آن را دست‌نخورده رندر کن.
+  const content = 
+    typeof children === 'string' || typeof children === 'number'
+      ? toPersianDigits(children)
+      : children;
+
   return (
     <Component className={classNames} {...props}>
-      {children}
+      {content}
     </Component>
   );
 };

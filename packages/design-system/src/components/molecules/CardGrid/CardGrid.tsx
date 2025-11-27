@@ -3,8 +3,12 @@ import { Card } from '../../atoms/Card/Card';
 import { CardGridProps } from './CardGrid.types';
 import './CardGrid.scss';
 
-export const CardGrid = ({ items, columns = 7, className }: CardGridProps) => {
-  const classNames = ['card-grid', className].filter(Boolean).join(' ');
+export const CardGrid = ({ items, columns = 7, className, scrollable = false }: CardGridProps) => {
+  const classNames = [
+    'card-grid', 
+    scrollable ? 'card-grid--scrollable' : '',
+    className
+  ].filter(Boolean).join(' ');
   
   return (
     <div className={classNames} style={{ '--grid-columns': columns } as React.CSSProperties}>

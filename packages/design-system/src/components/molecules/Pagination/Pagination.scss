@@ -4,44 +4,103 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: tokens.$spacing-2;
-  padding: tokens.$spacing-4 0;
+  gap: tokens.$spacing-4;
+  padding: tokens.$spacing-6 0;
+  user-select: none;
 
-  &__btn,
+  // --- لیست اعداد ---
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: tokens.$spacing-2;
+    
+    // در موبایل فاصله کمتر باشد
+    @media (max-width: tokens.$breakpoint-sm) {
+      gap: tokens.$spacing-1;
+    }
+  }
+
+  // --- آیتم شماره صفحه ---
   &__item {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 40px;
+    
+    // سایز دکمه (کاملاً گرد)
+    width: 40px;
     height: 40px;
-    padding: 0 tokens.$spacing-2;
-    border-radius: tokens.$radius-lg;
-    background-color: tokens.$color-bg-surface;
-    color: tokens.$color-text-primary;
-    font-weight: tokens.$font-weight-medium;
+    border-radius: 50%;
+    
+    font-family: tokens.$font-family-mono; // فونت اعداد (یا بیس)
     font-size: tokens.$font-size-sm;
-    transition: tokens.$transition-base;
+    font-weight: tokens.$font-weight-bold;
+    color: tokens.$color-text-secondary;
     text-decoration: none;
-    border: 1px solid tokens.$color-border-secondary;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    // بوردر شفاف برای جلوگیری از پرش
+    border: 1px solid transparent;
 
-    &:hover {
+    // هاور معمولی
+    &:hover:not(&--active) {
       background-color: tokens.$color-bg-secondary;
-      border-color: tokens.$color-border-primary;
       color: tokens.$color-brand-primary;
+      transform: translateY(-2px);
+    }
+
+    // حالت فعال (Active)
+    &--active {
+      background-color: tokens.$color-brand-primary;
+      color: tokens.$color-text-on-brand;
+      box-shadow: 0 4px 12px rgba(tokens.$color-brand-primary, 0.3); // سایه رنگی
+      transform: scale(1.1);
+    }
+    
+    // تنظیم سایز در موبایل
+    @media (max-width: tokens.$breakpoint-sm) {
+      width: 32px;
+      height: 32px;
+      font-size: tokens.$font-size-xs;
     }
   }
 
-  // استایل صفحه فعال
-  &__item--active {
-    background-color: tokens.$color-brand-primary;
-    color: tokens.$color-text-on-brand;
-    border-color: tokens.$color-brand-primary;
-    font-weight: tokens.$font-weight-bold;
-    box-shadow: tokens.$shadow-md;
+  // --- نقاط (...) ---
+  &__dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    color: tokens.$color-text-placeholder;
+  }
 
-    &:hover {
-      background-color: tokens.$color-brand-primary-hover;
+  // --- دکمه‌های قبلی/بعدی ---
+  &__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: tokens.$color-bg-surface;
+    border: 1px solid tokens.$color-border-secondary;
+    color: tokens.$color-text-primary;
+    transition: all 0.2s ease;
+    text-decoration: none;
+
+    &:hover:not(&--disabled) {
+      background-color: tokens.$color-brand-primary;
+      border-color: tokens.$color-brand-primary;
       color: tokens.$color-text-on-brand;
+      transform: scale(1.05);
+    }
+
+    // حالت غیرفعال
+    &--disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      background-color: tokens.$color-bg-secondary;
+      border-color: transparent;
+      pointer-events: none; // غیرقابل کلیک
     }
   }
 }

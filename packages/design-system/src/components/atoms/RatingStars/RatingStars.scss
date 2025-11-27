@@ -3,14 +3,66 @@
 .rating-stars {
   display: flex;
   align-items: center;
+  gap: 1px; // فاصله خیلی کم بین ستاره‌ها
 
   &__star {
-    color: tokens.$color-border-primary;
-    fill: tokens.$color-border-primary; // رنگ ستاره خالی
+    transition: all 0.2s ease;
+    
+    // استایل ستاره خالی (فقط حاشیه دارد)
+    &--empty {
+      fill: transparent;
+      color: tokens.$color-text-placeholder; // رنگ حاشیه ستاره خالی
+    }
+  }
 
-    &--filled {
+  // --- Sizes ---
+  &--size-xs {
+    .rating-stars__star { width: 12px; height: 12px; }
+  }
+  &--size-sm {
+    .rating-stars__star { width: 16px; height: 16px; }
+  }
+  &--size-md {
+    .rating-stars__star { width: 20px; height: 20px; }
+  }
+  &--size-lg {
+    .rating-stars__star { width: 24px; height: 24px; }
+  }
+  &--size-xl {
+    .rating-stars__star { width: 32px; height: 32px; }
+  }
+
+  // --- Variants (Colors) ---
+  
+  // 1. Warning (زرد/طلایی - پیش‌فرض)
+  &--variant-warning {
+    .rating-stars__star--filled {
       color: tokens.$color-utility-warning;
-      fill: tokens.$color-utility-warning; // رنگ ستاره پر
+      fill: tokens.$color-utility-warning;
+    }
+  }
+
+  // 2. Primary (رنگ برند)
+  &--variant-primary {
+    .rating-stars__star--filled {
+      color: tokens.$color-brand-primary;
+      fill: tokens.$color-brand-primary;
+    }
+  }
+
+  // 3. Success (سبز)
+  &--variant-success {
+    .rating-stars__star--filled {
+      color: tokens.$color-utility-success;
+      fill: tokens.$color-utility-success;
+    }
+  }
+
+  // 4. Neutral (خاکستری تیره/مشکی)
+  &--variant-neutral {
+    .rating-stars__star--filled {
+      color: tokens.$color-text-primary;
+      fill: tokens.$color-text-primary;
     }
   }
 }

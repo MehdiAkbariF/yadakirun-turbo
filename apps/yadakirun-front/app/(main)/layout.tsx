@@ -32,7 +32,7 @@ const footerData = {
   trustSeals: [
     { src: "/samandehi-1.png", alt: "انجمن صنفی کسب و کارهای اینترنتی", href:"#" },
     { src: "/samandehi-1.png", alt: "نماد اعتماد الکترونیکی", href:"#" },
-    { src: "/jokmmpnlmlpk-1.png", alt: "نشان ملی ثبت رسانه‌های دیجیتال", href:"#" },
+    { src: "/samandehi-1.png", alt: "نشان ملی ثبت رسانه‌های دیجیتال", href:"#" },
     { src: "/samandehi-1.png", alt: "ساماندهی", href:"#" },
   ],
   copyrightText: "تمام حقوق برای یدکی‌ران محفوظ بوده و استفاده از محتوای این وبسایت تنها با ذکر نام و درج لینک مستقیم مجاز است.",
@@ -51,13 +51,15 @@ export default function MainLayout({
           <MainHeader />
         </div>
         
-        <main className="py-8 ">
+        <main className="py-1 ">
           {children}
         </main>
       </div>
 
-      {/* ✅✅✅ استفاده از کامپوننت Footer جدید با پاس دادن داده‌ها ✅✅✅ */}
-      <Footer {...footerData} />
+      <div className='mt-15'>
+        <Footer {...footerData} />
+      </div>
+      
        <AppMobileNav />
     </div>
   );

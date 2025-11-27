@@ -54,9 +54,7 @@
     transition: transform 0.3s ease;
   }
 
-  &:hover &__image {
-    transform: scale(1.05);
-  }
+ 
 
   // --- بخش محتوا (جدید) ---
   &__content {
@@ -120,9 +118,7 @@
     color: tokens.$color-text-placeholder;
     text-decoration: line-through;
 
-    @media (min-width: tokens.$breakpoint-sm) {
-      font-size: tokens.$font-size-xs;
-    }
+ 
   }
 
   &__price {
@@ -131,8 +127,8 @@
     color: tokens.$color-text-primary;
     
     span {
-      font-size: 10px;
-      font-weight: tokens.$font-weight-normal;
+      font-size: tokens.$font-size-base;
+      font-weight: tokens.$font-weight-bold;
       margin-right: 2px;
     }
 
@@ -140,7 +136,7 @@
       font-size: tokens.$font-size-base;
       
       span {
-        font-size: tokens.$font-size-xs;
+        font-size: tokens.$font-size-sm;
         margin-right: 4px;
       }
     }

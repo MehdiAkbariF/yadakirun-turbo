@@ -103,7 +103,7 @@ export default function CarsCategoryPage() {
         
         {/* --- Top Categories --- */}
         <section className="py-1">
-           <div className="mb-6">
+           <div className="mb-6 mt-6">
              <Label as="h1" size="xl" weight="bold" className="mb-6">دسته‌بندی‌های مرتبط</Label>
              
              {/* ✅ اصلاح: استفاده از CardGrid در دسکتاپ */}

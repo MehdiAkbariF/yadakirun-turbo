@@ -2,31 +2,88 @@
 
 .card-grid {
   display: grid;
-  // تعداد ستون‌های پیش‌فرض برای گریدهایی که ریسپانسیو نیستند
+  // حالت پیش‌فرض: گرید معمولی که می‌شکند (Wrap)
   grid-template-columns: repeat(var(--grid-columns, 7), minmax(0, 1fr));
   gap: 1.5rem;
+  width: 100%;
 
-  // استایل‌های ریسپانسیو برای گرید جدید
+  // --- حالت اسکرول افقی (Scrollable) ---
+  &--scrollable {
+    // تغییر رفتار گرید به ستونی (افقی)
+    grid-template-columns: none; // غیرفعال کردن ستون‌های ثابت
+    grid-auto-flow: column;      // چیدن آیتم‌ها در ستون‌های پشت سر هم
+    
+    // تنظیم عرض هر آیتم در حالت اسکرول
+    // minmax(160px, 1fr) یعنی حداقل 160 پیکسل عرض داشته باشد
+    grid-auto-columns: minmax(160px, 200px); 
+    
+    // فعال کردن اسکرول
+    overflow-x: auto;
+    overflow-y: hidden;
+    
+    // فاصله برای اینکه سایه کارت‌ها و اسکرول بار بریده نشود
+    padding-bottom: tokens.$spacing-4;
+    padding-top: tokens.$spacing-2; // برای سایه بالا
+    padding-left: 2px;
+    padding-right: 2px;
+    
+    // اسکرول نرم
+    scroll-behavior: smooth;
+
+    // تنظیم فاصله در حالت اسکرول
+    gap: tokens.$spacing-4;
+  }
+
+  // --- استایل اسکرول‌بار (نازک و زیبا) ---
+  // این استایل‌ها روی کلاس card-grid اعمال می‌شوند تا اگر اسکرول خورد زیبا باشد
+  
+  // Firefox
+  scrollbar-width: thin;
+  scrollbar-color: tokens.$color-brand-primary tokens.$color-bg-secondary;
+
+  // Webkit (Chrome, Edge, Safari)
+  &::-webkit-scrollbar {
+    height: 6px; // ارتفاع اسکرول افقی (نازک)
+  }
+
+  &::-webkit-scrollbar-track {
+    background: tokens.$color-bg-secondary;
+    border-radius: tokens.$radius-full;
+    margin: 0 tokens.$spacing-4; // کمی فاصله از طرفین
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: tokens.$color-brand-primary;
+    border-radius: tokens.$radius-full;
+    transition: background-color 0.3s;
+    
+    &:hover {
+      background-color: tokens.$color-brand-primary-hover;
+    }
+  }
+
+  // --- استایل‌های ریسپانسیو برای گرید معمولی (بدون اسکرول) ---
   &--responsive {
-    // ✅✅✅ اصلاح شد: موبایل با ۳ ستون شروع می‌شود
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: tokens.$spacing-3; // فاصله کمتر برای ستون‌های بیشتر در موبایل
+    // اگر حالت اسکرول فعال باشد، این مدیا کوئری‌ها نادیده گرفته می‌شوند 
+    // چون grid-template-columns: none در --scrollable اولویت دارد.
+    
+    &:not(.card-grid--scrollable) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: tokens.$spacing-3;
 
-    // تبلت کوچک: ۴ ستون
-    @media (min-width: tokens.$breakpoint-sm) {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: tokens.$spacing-4;
-    }
+      @media (min-width: tokens.$breakpoint-sm) {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: tokens.$spacing-4;
+      }
 
-    // تبلت بزرگ: ۵ ستون
-    @media (min-width: tokens.$breakpoint-md) {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-    }
+      @media (min-width: tokens.$breakpoint-md) {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
 
-    // دسکتاپ: ۶ ستون
-    @media (min-width: tokens.$breakpoint-lg) {
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: tokens.$spacing-6;
+      @media (min-width: tokens.$breakpoint-lg) {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: tokens.$spacing-6;
+      }
     }
   }
 }

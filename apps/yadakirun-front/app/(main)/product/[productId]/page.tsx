@@ -188,7 +188,7 @@ export default function ProductDetailsPage() {
   const perfStyle = performanceStyles[productData.performance];
 
   return (
-    <div className="bg-body min-h-screen pb-20">
+    <div className="bg-body min-h-screen ">
       <Container>
         {/* Breadcrumb */}
         <div className="pt-6">
@@ -202,7 +202,7 @@ export default function ProductDetailsPage() {
         </div>
 
         {/* --- Main Layout Grid --- */}
-        <div className="flex flex-col lg:grid lg:grid-cols-10 gap-8 mt-8">
+        <div className="flex flex-col lg:grid lg:grid-cols-10 gap-2 ">
           {/* --- Column 1: Product Image & Details (7 Cols) --- */}
           <div className="order-1 lg:col-span-7 lg:row-start-1">
             <div className="flex flex-col lg:flex-row p-4 bg-surface rounded-3xl shadow-sm border border-border-secondary">
@@ -215,7 +215,7 @@ export default function ProductDetailsPage() {
               </div>
 
               {/* Product Summary */}
-              <div className="flex flex-col w-full lg:w-2/3 p-4 sm:p-6 lg:p-8">
+              <div className="flex flex-col w-full lg:w-2/3  sm:p-6 lg:p-8">
                 <Label
                   as="h1"
                   size="xl"
@@ -311,7 +311,7 @@ export default function ProductDetailsPage() {
                 </div>
 
                 {/* Features Box */}
-                <div className="bg-bg-secondary border border-border-secondary rounded-lg p-4 mb-6">
+                <div className=" border border-border-secondary rounded-lg p-4 mb-6">
                   <div className="flex items-center gap-3 mb-4">
                     <CheckCircle size={20} className="text-utility-success" />
                     <Label weight="bold" size="base">
@@ -339,7 +339,7 @@ export default function ProductDetailsPage() {
                 </div>
 
                 {/* Suitable For */}
-                <div className="bg-bg-secondary border border-border-secondary rounded-lg p-4  ">
+                <div className="bg-secondary-bg border border-border-secondary rounded-lg p-4  ">
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">
                       <Car size={20} className="text-text-placeholder" />
@@ -350,7 +350,7 @@ export default function ProductDetailsPage() {
                     <button className="text-xs font-bold text-brand-primary flex items-center gap-1 hover:text-brand-primary-hover transition-colors 
                     
                     cursor-pointer">
-                      <Label size="sm"> مشاهده بیشتر </Label>{" "}
+                      <Label size="xs" weight="bold" > مشاهده بیشتر </Label>{" "}
                       <ChevronLeft size={16} />
                     </button>
                   </div>
@@ -360,10 +360,10 @@ export default function ProductDetailsPage() {
                     {productData.suitableFor.map((car, i) => (
                       <Badge
                         key={i}
-                        variant="secondary"
+                        variant="success"
                         className="px-3 py-1 font-medium border border-border-secondary"
                       >
-                        <Label size="sm" weight="bold">
+                        <Label size="xs" weight="bold" color="on-brand">
                           {" "}
                           {car}
                         </Label>
@@ -458,7 +458,7 @@ export default function ProductDetailsPage() {
         </div>
 
         {/* --- Similar Products --- */}
-        <div className="mt-10">
+        <div className="">
           <BestSellersSlider
             title="محصولات مشابه"
             items={similarProducts}

@@ -40,11 +40,10 @@
     object-fit: contain;
     padding: tokens.$spacing-2;
     transition: transform 0.3s ease;
+     padding: tokens.$spacing-3
   }
 
-  &:hover &__image {
-    transform: scale(1.05);
-  }
+
 
   &__details {
     flex-grow: 1;

@@ -6,7 +6,7 @@
   background-color: tokens.$color-bg-surface;
   border-radius: tokens.$radius-xl;
   overflow: hidden;
-  border: 1px solid tokens.$color-border-primary;
+  border: 1px solid tokens.$color-border-secondary;
   transition: tokens.$transition-base;
   min-height: 340px;
 
@@ -19,6 +19,7 @@
   &__image-wrapper {
     position: relative;
     width: 100%;
+
 
     padding-top: 50%; // Aspect Ratio
   }

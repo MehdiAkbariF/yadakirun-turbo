@@ -3,14 +3,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { X, ShoppingCart, Trash2 } from 'lucide-react';
 import { Label } from '../../atoms/Label/Label';
 import { Button } from '../../atoms/Button/Button';
-import { Modal } from '../Modal/Modal'; // ✅ ایمپورت مودال
+import { Modal } from '../Modal/Modal';
 import { CartItemCard, CartItemProps } from '../../molecules/CartItemCard/CartItemCard';
+import { formatPrice } from '../../../utils/persian';
 import './CartDrawer.scss';
 
 export interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  items: CartItemProps[]; // توجه: CartItemProps خودش شامل متد onRemove هست
+  items: CartItemProps[];
   totalPrice: number;
   onCheckout: () => void;
   onClearCart?: () => void;
@@ -25,12 +26,23 @@ export const CartDrawer = ({
   onClearCart 
 }: CartDrawerProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
-  
-  // ✅ استیت‌های مدیریت مودال حذف
   const [itemToDelete, setItemToDelete] = useState<string | number | null>(null);
   const [isClearingCart, setIsClearingCart] = useState(false);
 
-  // بستن با دکمه Escape
+  // ✅ مدیریت اسکرول (بسیار ساده شده)
+  // چون scrollbar-gutter را در CSS اضافه کردیم، دیگر نیازی به محاسبه پدینگ نیست
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  // بستن با Escape
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -39,47 +51,30 @@ export const CartDrawer = ({
     return () => document.removeEventListener('keydown', handleEsc);
   }, [isOpen, onClose]);
 
-  // جلوگیری از اسکرول بادی
-  useEffect(() => {
-    if (isOpen) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = 'unset';
-    return () => { document.body.style.overflow = 'unset'; };
-  }, [isOpen]);
-
-  // هندل کردن حذف تکی
   const handleConfirmDelete = () => {
     if (itemToDelete !== null) {
-      // پیدا کردن آیتم و صدا زدن متد onRemove خودش
       const item = items.find(i => i.id === itemToDelete);
-      if (item && item.onRemove) {
-        item.onRemove();
-      }
+      if (item && item.onRemove) item.onRemove();
       setItemToDelete(null);
     }
   };
 
-  // هندل کردن حذف کل سبد
   const handleConfirmClear = () => {
-    if (onClearCart) {
-      onClearCart();
-    }
+    if (onClearCart) onClearCart();
     setIsClearingCart(false);
   };
 
   return (
     <>
-      {/* Backdrop */}
       <div 
         className={`cart-drawer-backdrop ${isOpen ? 'cart-drawer-backdrop--open' : ''}`}
         onClick={onClose}
       />
 
-      {/* Drawer Panel */}
       <div 
         className={`cart-drawer ${isOpen ? 'cart-drawer--open' : ''}`}
         ref={drawerRef}
       >
-        {/* Header */}
         <div className="cart-drawer__header">
           <div className="flex items-center gap-3">
             <ShoppingCart size={24} className="text-brand-primary" />
@@ -91,7 +86,6 @@ export const CartDrawer = ({
           </button>
         </div>
 
-        {/* Body (List) */}
         <div className="cart-drawer__body custom-scrollbar">
           {items.length > 0 ? (
             <div className="space-y-4">
@@ -99,7 +93,6 @@ export const CartDrawer = ({
                  <div key={item.id} className="cart-drawer__item">
                     <CartItemCard 
                       {...item} 
-                      // ✅ اورراید کردن متد حذف برای باز کردن مودال
                       onRemove={() => setItemToDelete(item.id)}
                     />
                  </div>
@@ -118,14 +111,13 @@ export const CartDrawer = ({
           )}
         </div>
 
-        {/* Footer */}
         {items.length > 0 && (
           <div className="cart-drawer__footer">
             <div className="flex justify-between items-center mb-4">
               <Label color="secondary">مبلغ قابل پرداخت:</Label>
               <div className="text-left">
                  <Label size="lg" weight="extra-bold" color="brand-primary">
-                   {totalPrice.toLocaleString('fa-IR')}
+                   {formatPrice(totalPrice)}
                  </Label>
                  <Label size="xs" color="secondary">تومان</Label>
               </div>
@@ -135,7 +127,7 @@ export const CartDrawer = ({
                {onClearCart && (
                  <Button 
                    variant="ghost" 
-                   onClick={() => setIsClearingCart(true)} // باز کردن مودال حذف همه
+                   onClick={() => setIsClearingCart(true)}
                    className="text-utility-error hover:bg-utility-error/10 p-3"
                  >
                     <Trash2 size={20} />
@@ -149,44 +141,34 @@ export const CartDrawer = ({
         )}
       </div>
 
-      {/* ✅✅✅ Modal 1: حذف آیتم تکی ✅✅✅ */}
+      {/* Modals */}
       <Modal
         isOpen={itemToDelete !== null}
         onClose={() => setItemToDelete(null)}
         title="حذف کالا از سبد"
         footer={
           <>
-            <Button variant="secondary" onClick={() => setItemToDelete(null)}>
-              انصراف
-            </Button>
-            <Button variant="danger" onClick={handleConfirmDelete}>
-              بله، حذف کن
-            </Button>
+            <Button variant="secondary" onClick={() => setItemToDelete(null)}>انصراف</Button>
+            <Button variant="danger" onClick={handleConfirmDelete}>بله، حذف کن</Button>
           </>
         }
       >
         <Label>آیا از حذف این کالا از سبد خرید اطمینان دارید؟</Label>
       </Modal>
 
-      {/* ✅✅✅ Modal 2: حذف کل سبد ✅✅✅ */}
       <Modal
         isOpen={isClearingCart}
         onClose={() => setIsClearingCart(false)}
         title="خالی کردن سبد خرید"
         footer={
           <>
-            <Button variant="secondary" onClick={() => setIsClearingCart(false)}>
-              انصراف
-            </Button>
-            <Button variant="danger" onClick={handleConfirmClear}>
-              بله، همه را حذف کن
-            </Button>
+            <Button variant="secondary" onClick={() => setIsClearingCart(false)}>انصراف</Button>
+            <Button variant="danger" onClick={handleConfirmClear}>بله، همه را حذف کن</Button>
           </>
         }
       >
         <Label>آیا مطمئن هستید که می‌خواهید تمام کالاها را از سبد خرید حذف کنید؟</Label>
       </Modal>
-
     </>
   );
 };

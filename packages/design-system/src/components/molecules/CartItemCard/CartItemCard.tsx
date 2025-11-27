@@ -34,22 +34,22 @@ export const CartItemCard = ({
       </div>
       
       <div className="cart-item__content">
-        <Label weight="bold" size="base" className="cart-item__title">{title}</Label>
+        <Label weight="bold" size="sm" className="cart-item__title">{title}</Label>
         
         <div className="cart-item__meta">
           <div className="flex items-center gap-2 text-utility-success">
-            <ShieldCheck size={14} />
-            <Label size="xs" color="success">ضمانت اصالت کالا</Label>
+            <ShieldCheck size={16} />
+            <Label size="xs" color="success" weight='bold'>ضمانت اصالت کالا</Label>
           </div>
           <div className="flex items-center gap-2 text-utility-warning">
-            <Archive size={14} />
-            <Label size="xs" color="warning">موجود در انبار</Label>
+            <Archive size={16} />
+            <Label size="xs" color="warning" weight='bold'>موجود در انبار</Label>
           </div>
         </div>
 
         <div className="cart-item__footer">
           <div className="cart-item__price">
-            <Label size="lg" weight="extra-bold">{formatPrice(price * quantity)}</Label>
+            <Label size="base" weight="extra-bold">{formatPrice(price * quantity)}</Label>
             <Label size="xs">تومان</Label>
           </div>
 

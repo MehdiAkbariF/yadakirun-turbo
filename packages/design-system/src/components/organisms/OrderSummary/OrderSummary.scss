@@ -31,13 +31,15 @@
 }
 
 .btn-apply {
-  background-color: tokens.$color-bg-surface;
+  background-color: tokens.$color-brand-accent;
   border: 1px solid tokens.$color-border-secondary;
-  color: tokens.$color-text-primary;
+  color: tokens.$color-text-on-brand;
   padding: 0 tokens.$spacing-4;
   border-radius: tokens.$radius-lg;
   font-weight: bold;
+    font-size: tokens.$font-size-xs;
   transition: all 0.2s;
+  cursor: pointer;
   &:hover {
     background-color: tokens.$color-brand-primary;
     color: tokens.$color-text-on-brand;
@@ -47,12 +49,13 @@
 
 .btn-checkout {
   width: 100%;
-  background-color: tokens.$color-brand-accent; // دکمه پرداخت معمولا نارنجی/اکسنت است
+  cursor: pointer;
+  background-color: tokens.$color-brand-primary; // دکمه پرداخت معمولا نارنجی/اکسنت است
   color: tokens.$color-text-on-brand;
-  padding: tokens.$spacing-4;
+  padding: tokens.$spacing-3;
   border-radius: tokens.$radius-lg;
   font-weight: bold;
-  font-size: tokens.$font-size-base;
+  font-size: tokens.$font-size-sm;
   transition: transform 0.2s, background-color 0.2s;
   margin-bottom: tokens.$spacing-4;
   &:hover {

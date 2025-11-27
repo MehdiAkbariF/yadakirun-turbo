@@ -85,27 +85,27 @@ export const ProductInfoCard = ({
       {/* Seller */}
       <div className="flex justify-between text-sm mb-4">
          <Label color="placeholder">فروشنده:</Label>
-         <Label color="link" weight="bold">{seller}</Label>
+         <Label color="link" weight="bold" size='sm'>{seller}</Label>
       </div>
 
       {/* Price Box */}
       <div className="product-info-card__price-box">
          {originalPrice && (
            <div className="flex justify-between text-sm text-text-placeholder mb-2">
-              <Label size='sm'>قیمت اصلی:</Label>
-              <Label size='sm'>{formatPrice(originalPrice)}</Label>
+              <Label color='secondary' weight='bold' size='sm'>قیمت اصلی:</Label>
+              <Label color='primary' weight='bold' size='sm'>{formatPrice(originalPrice)}</Label>
            </div>
          )}
          {discountAmount && (
            <div className="flex justify-between text-sm text-utility-success mb-4">
-              <Label className="font-bold">سود شما:</Label>
-              <Label className="font-bold">{formatPrice(discountAmount)}</Label>
+              <Label color='secondary' weight='bold' size='sm'>سود شما:</Label>
+              <Label color='success' weight='bold' size='sm'>{formatPrice(discountAmount)}</Label>
            </div>
          )}
          <div className="flex justify-between items-center pt-4 border-t border-border-secondary">
             <Label weight="bold">قیمت نهایی:</Label>
             <div className="text-left">
-               <Label size="xl" weight="extra-bold" color="brand-accent">{formatPrice(price)}</Label>
+               <Label size="lg" weight="extra-bold" color="brand-accent">{formatPrice(price)}</Label>
             </div>
          </div>
       </div>
@@ -113,10 +113,10 @@ export const ProductInfoCard = ({
       {/* Action Button */}
       <Button 
         fullWidth 
-        size="lg" 
+        size="sm" 
         disabled={!inStock}
         variant={inStock ? 'primary' : 'secondary'} // در دیزاین سیستم اگر variant اکسنت ندارید، primary
-        className="mt-4 shadow-lg"
+        className="mt-5"
       >
         {inStock ? 'افزودن به سبد خرید' : 'ناموجود'}
       </Button>

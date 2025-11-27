@@ -233,7 +233,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           {/* 
              ✅✅✅ ستون محتوا (۹ ستون) 
           */}
-          <div className="lg:col-span-9  bg-accent-bg p-5 rounded-3xl">
+          <div className="lg:col-span-9  bg-surface p-5 rounded-3xl">
             <div className="flex items-center justify-between mb-6 border-b border-gray-300 pb-4">
               <Label as="h3" size="xl" weight="bold">تازه ترین نوشته‌ها</Label>
               <Label size="sm" color="secondary">نمایش صفحه {currentPage} از {totalPages}</Label>

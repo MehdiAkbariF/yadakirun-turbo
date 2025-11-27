@@ -17,7 +17,7 @@ interface BestSellersSliderProps {
   uniqueId: string;
 }
 
-// داده‌های نمونه را می‌توانیم خارج از کامپوننت نگه داریم
+
 
 
 export const BestSellersSlider = ({ title, items = sampleData, uniqueId }: BestSellersSliderProps) => {

@@ -73,8 +73,8 @@ export const SidebarNewsSlider = ({ items, title }: SidebarNewsSliderProps) => {
               {/* محتوا */}
               <div className="mini-news-card__content">
                 <Label 
-                  as="h4" 
-                  size="sm" 
+                  as="span" 
+                  size="xs" 
                   weight="semi-bold" 
                   className="mini-news-card__title group-hover:text-brand-primary transition-colors"
                 >

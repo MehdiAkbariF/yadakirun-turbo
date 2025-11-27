@@ -17,22 +17,24 @@ $header-height: 5rem;
     box-shadow: tokens.$shadow-md;
   }
 
-  // ✅✅✅ اصلاح نهایی برای رفع مشکل بنر ✅✅✅
+  // ✅✅✅ اصلاح نهایی: فیکس شدن شرطی ✅✅✅
   &--menu-open {
     box-shadow: none !important; 
     border-bottom-color: tokens.$color-border-secondary;
     
-    // 1. اجبار هدر به چسبیدن به بالای صفحه
-    position: fixed !important; 
-    top: 0 !important;
-    left: 0;
-    right: 0;
-    
-    // 2. اطمینان از اینکه عرض کامل است
-    width: 100%;
-    
-    // 3. جلوگیری از انیمیشن پرش موقع تغییر وضعیت
-    transition: none;
+    // 1. شرط: اگر کلاس header--scrolled وجود نداشت (یعنی بالای صفحه هستیم)
+    // آنگاه هدر را فیکس کن تا به بالای صفحه بچسبد و روی بنر بیاید
+    &:not(.header--scrolled) {
+      position: fixed !important; 
+      top: 0 !important;
+      left: 0;
+      right: 0;
+      width: 100%;
+      transition: none; // جلوگیری از پرش انیمیشن
+    }
+
+    // اگر اسکرول شده باشد، خود هدر توسط layout چسبان (Sticky) است 
+    // و نیازی به fixed کردن اجباری ندارد.
   }
 
   &__container {
@@ -383,14 +385,10 @@ $header-height: 5rem;
     display: flex;
     flex-direction: column;
     gap: 0;
-    background-color: tokens.$color-bg-secondary; // پس‌زمینه متمایز
+    background-color: tokens.$color-bg-secondary;
     border-radius: tokens.$radius-lg;
-    margin-top: tokens.$spacing-2;
-    overflow: hidden; // مهم: برای اینکه محتوا بیرون نزند
-    
-    // پدینگ فقط وقتی باز است اعمال شود (در AccordionMenu کنترل می‌شود)
-    // اما چون AccordionMenu با state کنترل می‌شود، اینجا استایل پایه را می‌دهیم
     padding: tokens.$spacing-2 0;
+    margin-top: tokens.$spacing-2;
   }
   
   &__footer {

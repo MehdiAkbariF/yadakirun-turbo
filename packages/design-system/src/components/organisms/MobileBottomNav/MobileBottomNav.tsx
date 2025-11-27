@@ -35,7 +35,8 @@ export const MobileBottomNav = ({ items, activeId, className, cartSummary }: Mob
               onClick={() => setIsCartOpen(true)}
             >
               <ShoppingBag size={16} />
-              <Label color='on-brand' weight='medium' size="xs"> تکمیل خرید ({cartSummary.itemCount}) </Label>
+              <Label color='on-brand' weight='medium' size="xs"> تکمیل خرید ({cartSummary.itemCount.toLocaleString('fa-IR')}) </Label>
+        
               <ChevronUp size={16} />
             </button>
           )}

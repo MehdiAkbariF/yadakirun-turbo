@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { SliderProductCardProps } from './SliderProductCard.types';
 import { Label } from '../Label/Label';
-import { Badge } from '../Badge/Badge'; // ✅ ایمپورت بج
+import { Badge } from '../Badge/Badge';
 import { RatingStars } from '../RatingStars/RatingStars';
 import './SliderProductCard.scss';
 
@@ -18,24 +18,23 @@ export const SliderProductCard = ({
 }: SliderProductCardProps) => {
   const classNames = ['slider-product-card', className].filter(Boolean).join(' ');
 
-  // فرمت قیمت (جدا کردن سه رقم)
-  const formatPrice = (val: string | number) => 
+  // تابع کمکی فقط برای جدا کردن سه رقم (تبدیل به فارسی توسط Label انجام می‌شود)
+  const addCommas = (val: string | number) => 
     val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return (
     <a href={href} className={classNames}>
       
-      {/* ✅ نمایش بج (مثلاً 20% تخفیف) */}
+      {/* بج (تخفیف یا متن خاص) */}
       {badgeText && (
         <div className="slider-product-card__badge">
-          {/* از کلاس‌های یوتیلیتی یا استایل داخلی برای تنظیم فونت ریز استفاده می‌کنیم */}
-          <Badge variant="primary" className="text-[10px] px-2 py-0.5 font-bold shadow-sm">
-            
+          <Badge variant="error" className="text-[10px] px-2 py-0.5 font-bold shadow-sm">
             {badgeText}
           </Badge>
         </div>
       )}
 
+      {/* تصویر محصول */}
       <div className="slider-product-card__image-container">
         <Image 
           src={imgSrc} 
@@ -46,31 +45,56 @@ export const SliderProductCard = ({
         />
       </div>
       
+      {/* جزئیات */}
       <div className="slider-product-card__details">
-        {typeof rating === 'number' && <RatingStars rating={rating} />}
         
-        <Label as="h3" size="base" weight="semi-bold" color="primary" className="slider-product-card__title">
+        {/* امتیاز */}
+        <div className="slider-product-card__rating">
+           {typeof rating === 'number' && <RatingStars rating={rating} />}
+        </div>
+        
+       
+        <Label 
+          as="h3" 
+          size="sm" 
+          weight="semi-bold" 
+          color="primary" 
+    
+        >
           {title}
         </Label>
         
+        {/* فوتر (قیمت‌ها) */}
         <div className="slider-product-card__footer">
           
-          {/* سمت راست (در RTL): قیمت قدیمی */}
+          {/* قیمت قدیمی (خط‌خورده) - سمت راست */}
           <div className="slider-product-card__old-price-wrapper">
             {originalPrice && (
-              <Label className="slider-product-card__old-price">
-                {formatPrice(originalPrice)}
+              <Label 
+                as="span" 
+                className="slider-product-card__old-price"
+              >
+                {addCommas(originalPrice)}
               </Label>
             )}
           </div>
 
-          {/* سمت چپ (در RTL): قیمت نهایی */}
+          {/* قیمت نهایی - سمت چپ */}
           <div className="slider-product-card__price-wrapper">
-            <Label className="slider-product-card__price">
-              {/* ✅ استفاده از ?? 0 برای رفع خطای تایپ‌اسکریپت */}
-              {formatPrice(price ?? 0)}
+            <Label 
+              as="span" 
+              className="slider-product-card__price"
+            >
+              {/* استفاده از ?? 0 برای اطمینان از اینکه مقدار undefined نیست */}
+              {addCommas(price ?? 0)}
             </Label>
-            <Label className="slider-product-card__currency">تومان</Label>
+            
+            <Label 
+              as="span" 
+              className="slider-product-card__currency"
+            >
+              تومان
+            </Label>
           </div>
           
         </div>

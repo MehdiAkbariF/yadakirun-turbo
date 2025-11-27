@@ -230,12 +230,13 @@ export default function HomePage() {
         <Label as="h2" size="3x" weight="bold" color="primary">
           بنر صفحه اصلی
         </Label>
+   
       </section>
 
       <Container>
         <section className="my-10">
           <div className="hidden lg:block">
-            <CardGrid items={desktopItems} columns={7} />
+            <CardGrid items={desktopItems} columns={7}  scrollable={true} />
           </div>
           <div className="lg:hidden">
             <CardSlider items={mobileItems} />

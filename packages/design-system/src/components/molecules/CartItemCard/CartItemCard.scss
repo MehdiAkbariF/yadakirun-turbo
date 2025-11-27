@@ -8,12 +8,13 @@
   background-color: tokens.$color-bg-surface;
   border-radius: tokens.$radius-xl;
   box-shadow: tokens.$shadow-md;
-  transition: box-shadow 0.3s;
+  transition:  0.3s;
   border: 1px solid tokens.$color-border-secondary;
 
   &:hover {
     box-shadow: tokens.$shadow-lg;
-    border-color: tokens.$color-border-primary;
+    border-color: tokens.$color-brand-primary;
+    cursor: pointer;
   }
 
   &__image-wrapper {
@@ -24,10 +25,9 @@
     border-radius: tokens.$radius-lg;
     overflow: hidden;
     background-color: tokens.$color-bg-secondary;
-    
+    margin-top: 20px;
     @media (min-width: tokens.$breakpoint-sm) {
-      width: 100px;
-      height: 100px;
+     margin-top: 10px;
     }
   }
 
@@ -50,6 +50,7 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+
   }
 
   &__meta {
@@ -95,6 +96,7 @@
   justify-content: center;
   border-radius: tokens.$radius-full;
   transition: background-color 0.2s;
+  cursor: pointer;
   
   &:hover {
     background-color: rgba(0, 0, 0, 0.05);

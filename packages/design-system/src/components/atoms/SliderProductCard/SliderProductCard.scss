@@ -4,33 +4,39 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  min-height: 300px;
+  min-height: 320px; // ارتفاع متناسب
+  height: 100%;
   background-color: tokens.$color-bg-surface;
-  border: 1px solid tokens.$color-border-secondary;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
-
-  // هاور افکت
-  &:hover {
-    background-color: tokens.$color-bg-secondary;
-    
   
+  // بوردر نرم و لطیف
+  border: 1px solid tokens.$color-border-secondary;
+ 
+ 
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); // انیمیشن نرم
+
+  // --- Hover Effect (حرفه‌ای) ---
+  &:hover {
+  
+    box-shadow: tokens.$shadow-lg; // سایه عمیق می‌گیرد
+ 
+   background-color: tokens.$color-bg-secondary;
+
+
+    .slider-product-card__title {
+      color: tokens.$color-brand-primary; // تغییر رنگ تایتل
+    }
   }
 
-  // حذف بردر اولین آیتم (اختیاری)
-  .swiper-slide:first-child & {
-    // border-right: none; 
-  }
-
-  // ✅ استایل کانتینر بج
+  // بج
   &__badge {
     position: absolute;
-    top: tokens.$spacing-3;
-    right: tokens.$spacing-3;
-    z-index: 2; // بالاتر از عکس
+    top: 12px;
+    right: 12px;
+    z-index: 5;
   }
   
-  &__image-container {
+  // --- تصویر ---
+&__image-container {
     position: relative;
     height: 9rem;
     width: 100%;
@@ -38,7 +44,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: tokens.$spacing-3;
+    padding: tokens.$spacing-5;
+  
+  
   }
 
   &__image {
@@ -46,51 +54,68 @@
     width: 100%;
     height: 100%;
     transition: transform 0.3s ease;
+      
+       padding: tokens.$spacing-2;
   }
 
+  // --- جزئیات ---
   &__details {
-    padding: 0 tokens.$spacing-4 tokens.$spacing-4;
-    text-align: right;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    padding:tokens.$spacing-5   tokens.$spacing-4 tokens.$spacing-4;
+  }
+
+  &__rating {
+    margin-bottom: tokens.$spacing-2;
+    display: flex;
+    justify-content: flex-end; // ستاره‌ها سمت چپ (در RTL) یا راست (در LTR)
   }
   
   &__title {
-    height: 2.4rem; 
-    line-height: 1.2rem;
+    font-family: tokens.$font-family-base;
     font-size: tokens.$font-size-sm;
+    font-weight: tokens.$font-weight-bold;
+    color: tokens.$color-text-primary;
+    line-height: 1.6;
+
+    transition: color 0.2s;
     
+    // محدود کردن متن به ۲ خط
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    
-    margin-top: tokens.$spacing-2;
-    margin-bottom: tokens.$spacing-3;
+    text-align: right;
   }
 
+  // --- فوتر (قیمت‌ها) ---
   &__footer {
     margin-top: auto;
     padding-top: tokens.$spacing-3;
+    border-top: 1px dashed tokens.$color-border-secondary; // خط‌چین ظریف
     
     display: flex;
     justify-content: space-between; 
-    align-items: flex-end; 
+    align-items: center;
   }
 
+  // قیمت خط‌خورده (سمت راست)
   &__old-price-wrapper {
     display: flex;
     align-items: center;
   }
 
   &__old-price {
-    font-size: tokens.$font-size-xs; // کمی کوچکتر از قیمت اصلی
+    font-family: tokens.$font-family-base;
+    font-size: 12px;
     color: tokens.$color-text-placeholder;
     text-decoration: line-through;
+    font-weight: tokens.$font-weight-medium;
   }
 
+  // قیمت نهایی (سمت چپ)
   &__price-wrapper {
     display: flex;
     align-items: center;
@@ -98,14 +123,17 @@
   }
 
   &__price {
+    font-family: tokens.$font-family-base;
     font-size: tokens.$font-size-lg;
-    font-weight: tokens.$font-weight-bold;
+    font-weight: tokens.$font-weight-black; // خیلی بولد برای تاکید
     color: tokens.$color-text-primary;
   }
 
   &__currency {
+    font-family: tokens.$font-family-base;
     font-size: 10px;
+    font-weight: tokens.$font-weight-medium;
     color: tokens.$color-text-secondary;
-    margin-bottom: 2px;
+    margin-top: 6px; // تراز با پایین عدد
   }
 }

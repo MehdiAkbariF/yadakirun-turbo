@@ -38,16 +38,16 @@
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  border: 1px solid tokens.$color-brand-primary;
-  color: tokens.$color-brand-primary;
+
+  color: tokens.$color-text-on-brand;
   border-radius: tokens.$radius-lg;
   font-weight: tokens.$font-weight-bold;
-  background: transparent;
+background-color: tokens.$color-brand-primary;
   transition: all 0.2s;
-
+cursor: pointer;
   &:hover {
-    background-color: tokens.$color-brand-primary;
-    color: tokens.$color-text-on-brand;
+    background-color: tokens.$color-text-secondary;
+   
   }
 }
 

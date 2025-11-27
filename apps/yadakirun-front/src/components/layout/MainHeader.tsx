@@ -11,8 +11,9 @@ import { MegaMenu } from '@monorepo/design-system/src/components/organisms/MegaM
 import { ThemeToggle } from '@monorepo/design-system/src/components/atoms/ThemeToggle/ThemeToggle';
 import { Input } from '@monorepo/design-system/src/components/atoms/Input/Input';
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
-import { CartDrawer } from '@monorepo/design-system/src/components/organisms/CartDrawer/CartDrawer'; // ✅ ایمپورت CartDrawer
+import { CartDrawer } from '@monorepo/design-system/src/components/organisms/CartDrawer/CartDrawer'; 
 import { useTheme } from '@/src/context/ThemeProvider';
+import { toPersianDigits } from '@monorepo/design-system/src/utils/persian';
 
 // منبع داده واحد برای تمام آیتم‌های منو
 const navigationItems = [
@@ -79,6 +80,11 @@ export const MainHeader = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // بستن دراور هنگام تغییر مسیر
+  useEffect(() => {
+    setIsCartOpen(false);
+  }, [pathname]);
+
   // --- هندلرهای سبد خرید ---
   const handleIncrease = (id: string | number) => {
     setCartItems(items => items.map(item => item.id === id ? { ...item, quantity: item.quantity + 1 } : item));
@@ -115,7 +121,6 @@ export const MainHeader = () => {
   );
 
   const cartComponent = (
-    // ✅ اتصال دکمه به State باز شدن دراور
     <button 
       className="header-action header-action--cart relative" 
       onClick={() => setIsCartOpen(true)}
@@ -123,7 +128,7 @@ export const MainHeader = () => {
       <ShoppingCart size={22} />
       {cartItems.length > 0 && (
         <span className="cart-badge">
-          {cartItems.length}
+          {toPersianDigits(cartItems.length)}
         </span>
       )}
     </button>
@@ -139,7 +144,6 @@ export const MainHeader = () => {
           onToggle={toggleTheme}
         />
       </div>
-     
     </>
   );
 
@@ -187,7 +191,6 @@ export const MainHeader = () => {
         userSlot={userLinkComponent}
       />
 
-      {/* ✅ رندر کردن کامپوننت CartDrawer */}
       <CartDrawer 
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}

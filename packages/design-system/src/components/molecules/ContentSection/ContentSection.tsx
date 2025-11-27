@@ -15,7 +15,7 @@ export const ContentSection = ({
     <section className={classNames}>
       <div className="content-section__title-wrapper">
         {/* استفاده از Label برای عنوان */}
-        <Label as={titleAs} size="2x" weight="extra-bold" color="primary">
+        <Label as={titleAs} size="xl" weight="extra-bold" color="primary">
           {title}
         </Label>
       </div>

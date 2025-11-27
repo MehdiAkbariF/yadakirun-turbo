@@ -30,11 +30,11 @@ export const Footer = (props: FooterProps) => {
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 {props.logo}
-                <Label as="p" size="lg" weight="semi-bold">
+                <Label as="p" size="sm" weight="semi-bold">
                   {props.companyName} | <span className="text-accent">{props.tagline}</span>
                 </Label>
               </div>
-              <Label as="p" color="secondary" className="leading-relaxed">{props.description}</Label>
+              <Label as="p" color="secondary" className="leading-relaxed" size='sm'>{props.description}</Label>
             </div>
             <div>
               <Label as="h3" weight="semi-bold" className="mb-4">خدمات ما</Label>

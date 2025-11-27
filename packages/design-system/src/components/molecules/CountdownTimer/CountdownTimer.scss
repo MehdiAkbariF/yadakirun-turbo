@@ -1,14 +1,63 @@
 @use '../../../styles/_variables.scss' as tokens;
 
 .countdown-timer {
-display: flex;
-gap: 10;
-flex-direction: row-reverse;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: tokens.$spacing-2;
+  direction: ltr; // تایمر همیشه چپ به راست خوانده می‌شود (ریاضی)
 
   &__block {
-    padding: tokens.$spacing-2;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: tokens.$radius-md;
+    // ✅ ابعاد ثابت برای هم‌اندازه شدن تمام بلوک‌ها
+    width: 56px;
+    height: 56px;
     
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    // استایل شیشه‌ای (Glassmorphism)
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: tokens.$radius-lg;
+    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      background-color: rgba(255, 255, 255, 0.25);
+    }
   }
+
+  &__value {
+    font-family: tokens.$font-family-base;
+    font-size: tokens.$font-size-lg; // سایز عدد بزرگ
+    font-weight: tokens.$font-weight-extra-bold;
+    color: tokens.$color-text-on-brand; // رنگ سفید (یا متناسب با تم)
+    line-height: 1;
+  }
+
+  &__label {
+    font-family: tokens.$font-family-base;
+    font-size: 10px; // سایز ریز برای لیبل
+    font-weight: tokens.$font-weight-medium;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 2px;
+  }
+
+  &__separator {
+    font-size: tokens.$font-size-xl;
+    font-weight: tokens.$font-weight-bold;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 12px; // تراز کردن با عدد
+    animation: blink 1s infinite; // افکت چشمک زن
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }

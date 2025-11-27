@@ -11,6 +11,7 @@
   transition: all 0.3s ease;
   text-decoration: none;
   position: relative;
+  padding: 5px;
   
   // حداقل ارتفاع در موبایل کمتر باشد
   min-height: 140px; 
@@ -40,7 +41,7 @@
     flex-shrink: 0;
     
     // ✅ استایل موبایل: عکس کوچک سمت راست
-    width: 80px; 
+    width: 70px; 
     height: auto; // ارتفاع خودکار تا کل ارتفاع کارت را بگیرد
     overflow: hidden;
 
@@ -88,10 +89,10 @@
     -webkit-line-clamp: 2; // در موبایل ۲ خط
     -webkit-box-orient: vertical;
     overflow: hidden;
-    font-size: tokens.$font-size-sm; // فونت کمی کوچکتر در موبایل
+    font-size: tokens.$font-size-xs; // فونت کمی کوچکتر در موبایل
 
     @media (min-width: tokens.$breakpoint-md) {
-      font-size: tokens.$font-size-lg;
+      font-size: tokens.$font-size-base;
     }
   }
 

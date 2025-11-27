@@ -31,8 +31,9 @@ export const ProductCard = ({
       
       {badgeText && (
         <div className="product-card__badge">
-          <Badge variant="secondary" className="text-[10px] px-2 py-0.5 font-bold shadow-sm">
-            {badgeText}
+          <Badge variant="primary" className="">
+            <Label size='xs' weight='black' color='on-brand'>  {badgeText}</Label>
+          
           </Badge>
         </div>
       )}
@@ -57,8 +58,11 @@ export const ProductCard = ({
           {/* سمت راست: قیمت خط‌خورده و بج تخفیف */}
           {originalPrice && discountPercent > 0 && (
             <div className="product-card__discount-section">
-              <Badge variant="error" className="product-card__discount-badge">
-                {discountPercent}%
+              <Badge variant="error" className="product-card__discount-badge" >
+                <Label size='xs' color='on-brand' weight='bold'>
+                   {discountPercent.toLocaleString("FA")}%
+                </Label>
+               
               </Badge>
               <Label className="product-card__old-price">
                 {formatPrice(originalPrice)}

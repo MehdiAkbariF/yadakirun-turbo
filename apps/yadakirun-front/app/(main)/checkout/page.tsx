@@ -81,32 +81,9 @@ export default function CheckoutPage() {
   const total = subtotal - discount;
 
   // --- Empty Cart View ---
-  if (cartItems.length === 0) {
-    return (
-      <div className="bg-body min-h-screen py-20">
-        <Container>
-           <div className="flex flex-col items-center justify-center text-center bg-surface rounded-2xl p-12 border border-border-secondary shadow-sm">
-              <div className="w-24 h-24 bg-secondary-bg rounded-full flex items-center justify-center mb-6">
-                 <ShoppingBag size={48} className="text-brand-primary" />
-              </div>
-              <Label as="h1" size="2x" weight="bold" className="mb-2">سبد خرید شما خالی است</Label>
-              <Label color="secondary" className="mb-8">به نظر می‌رسد هنوز هیچ محصولی را انتخاب نکرده‌اید.</Label>
-              
-              {/* ✅ استفاده از کامپوننت Button */}
-              <Link href="/categories">
-                 <Button variant="primary" size="lg">مشاهده محصولات</Button>
-              </Link>
-           </div>
-           <div className="mt-16">
-              <BestSellersSlider title="پیشنهادهای ویژه برای شما" items={suggestedProducts} uniqueId="empty-cart-slider" />
-           </div>
-        </Container>
-      </div>
-    );
-  }
 
   return (
-    <div className="bg-body min-h-screen pb-20">
+    <div className="bg-body min-h-screen pb-5 mt-6">
       <Container>
         <div className=" border-b border-border-secondary mb-4 flex justify-between items-center ">
           <div className="flex items-center gap-3">
@@ -156,7 +133,7 @@ export default function CheckoutPage() {
            </div>
         </div>
 
-        <div className="mt-20 border-t border-border-secondary pt-10">
+        <div className="mt-10 border-t border-border-secondary ">
            <BestSellersSlider title="شاید از این‌ها هم خوشتان بیاید" items={suggestedProducts} uniqueId="checkout-slider" />
         </div>
 
@@ -184,7 +161,7 @@ export default function CheckoutPage() {
           </>
         }
       >
-         <Label>
+         <Label size="sm" weight="medium">
             {itemToRemove === 'ALL' 
               ? "آیا مطمئن هستید که می‌خواهید تمام کالاها را از سبد خرید حذف کنید؟" 
               : "آیا از حذف این محصول از سبد خرید اطمینان دارید؟"
