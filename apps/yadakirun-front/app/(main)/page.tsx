@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'; // ✨ 1. ایمپورت dynamic برای Lazy Loading
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
 import { Container } from '@monorepo/design-system/src/components/organisms/Container/Container';
 import { CardGrid } from '@monorepo/design-system/src/components/molecules/CardGrid/CardGrid';
@@ -5,9 +6,19 @@ import { CardSlider } from '@monorepo/design-system/src/components/molecules/Car
 import { SpecialOffers } from '@/src/components/layout/SpecialOffers';
 import { BestSellersSlider } from '@/src/components/layout/BestSellersSlider';
 import { ImageCard } from '@monorepo/design-system/src/components/atoms/ImageCard/ImageCard';
-import { NewsSection } from '@/src/components/layout/NewsSection';
-import { ContentSection } from '@monorepo/design-system/src/components/molecules/ContentSection/ContentSection'; 
-import { Footer } from '@monorepo/design-system/src/components/organisms/Footer/Footer';
+// import { NewsSection } from '@/src/components/layout/NewsSection'; // به dynamic تبدیل می‌شود
+// import { ContentSection } from '@monorepo/design-system/src/components/molecules/ContentSection/ContentSection'; // در کامپوننت جدا استفاده می‌شود
+
+// ✨ 2. بارگذاری تنبل کامپوننت‌هایی که در پایین صفحه هستند
+const NewsSection = dynamic(() =>
+  import('@/src/components/layout/NewsSection').then(mod => mod.NewsSection),
+  { loading: () => <div style={{ height: '400px' }} /> } // یک جایگزین ساده برای جلوگیری از پرش
+);
+
+const SeoContentSection = dynamic(() =>
+  import('@/src/components/layout/SeoContentSection').then(mod => mod.SeoContentSection),
+  { loading: () => <div style={{ height: '500px' }} /> }
+);
 const specialOfferData = [
   {
     id: 1,
@@ -223,20 +234,18 @@ export default function HomePage() {
     ...categoryData,
     { href: moreHref, title: `${moreCount}+ بیشتر`, isMore: true }
   ];
-
   return (
     <>
       <section className="w-full h-64 flex items-center justify-center mb-20">
         <Label as="h2" size="3x" weight="bold" color="primary">
           بنر صفحه اصلی
         </Label>
-   
       </section>
 
       <Container>
         <section className="my-10">
           <div className="hidden lg:block">
-            <CardGrid items={desktopItems} columns={7}  scrollable={true} />
+            <CardGrid items={desktopItems} columns={7} />
           </div>
           <div className="lg:hidden">
             <CardSlider items={mobileItems} />
@@ -245,7 +254,7 @@ export default function HomePage() {
       </Container>
       
       <Container>
-   <SpecialOffers products={specialOfferData} title="پیشنهادهای شگفت‌انگیز" />
+        <SpecialOffers products={specialOfferData} title="پیشنهادهای شگفت‌انگیز" />
         <BestSellersSlider title="پرفروش‌ترین محصولات" items={bestSellersData} uniqueId="bestsellers" />
       </Container>
       
@@ -256,12 +265,14 @@ export default function HomePage() {
             src="/SGA-banner.webp"
             alt="لوازم آفرودی"
             aspectRatio="5 / 1"
+            priority={true} // ✨ 3. اولویت‌بندی تصویر مهم
           />
           <ImageCard
             href="/category/tuning"
             src="/aisin-clutch-banner.webp"
             alt="لوازم تیونینگ"
             aspectRatio="5 / 1"
+            priority={true} // ✨ 3. اولویت‌بندی تصویر مهم
           />
         </div>
       </Container>
@@ -272,34 +283,13 @@ export default function HomePage() {
 
        <Container className="my-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <ImageCard
-            href="/category/body"
-            src="/SGA-banner.webp"
-            alt="قطعات بدنه"
-            aspectRatio="6 / 3"
-          />
-          <ImageCard
-            href="/category/engine"
-            src="/aisin-clutch-banner.webp"
-            alt="قطعات موتوری"
-            aspectRatio="6 / 3"
-          />
-          <ImageCard
-            href="/category/suspension"
-            src="/SGA-banner.webp"
-            alt="جلوبندی"
-            aspectRatio="6 / 3"
-          />
-          <ImageCard
-            href="/category/electrical"
-            src="/aisin-clutch-banner.webp"
-            alt="برقی"
-            aspectRatio="6 / 3"
-          />
+          <ImageCard href="/category/body" src="/SGA-banner.webp" alt="قطعات بدنه" aspectRatio="6 / 3" />
+          <ImageCard href="/category/engine" src="/aisin-clutch-banner.webp" alt="قطعات موتوری" aspectRatio="6 / 3" />
+          <ImageCard href="/category/suspension" src="/SGA-banner.webp" alt="جلوبندی" aspectRatio="6 / 3" />
+          <ImageCard href="/category/electrical" src="/aisin-clutch-banner.webp" alt="برقی" aspectRatio="6 / 3" />
         </div>
       </Container>
 
-      {/* بخش گرید ریسپانسیو برندها */}
       <Container className="my-4">
          <section>
             <div className="mb-4 text-right border-r-4 border-brand-accent pr-4 pt-2">
@@ -309,17 +299,11 @@ export default function HomePage() {
          </section>
       </Container>
 
+      {/* ✨ 4. استفاده از کامپوننت‌های Lazy Load شده */}
       <NewsSection title="آخرین اخبار و مقالات" items={newsData} uniqueId="homepage-news" />
       
-      <Container asSection className="my-1">
-        {textContentData.map((section, index) => (
-          <div key={section.id + index} className={index > 0 ? 'mt-12' : ''}>
-            <ContentSection title={section.title}>
-              {section.content}
-            </ContentSection>
-          </div>
-        ))}
-      </Container>
+      {/* کامپوننت جدید برای بخش SEO که به صورت تنبل لود می‌شود */}
+      <SeoContentSection textContentData={textContentData} />
     </>
   );
 }

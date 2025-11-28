@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@monorepo/design-system/src/components/organisms/Container/Container';
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
-
+import { ProgressBar } from '@/src/components/layout/ProgressBar';
 // ✅ ایمپورت‌های جدید
 import { useTheme } from '@/src/context/ThemeProvider';
 import { ThemeToggle } from '@monorepo/design-system/src/components/atoms/ThemeToggle/ThemeToggle';
@@ -15,6 +15,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
   const { theme, toggleTheme } = useTheme();
 
   return (
+    
     <div className="min-h-screen bg-bg-body flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative transition-colors duration-300">
       
       {/* ✅ دکمه تغییر تم (گوشه بالا سمت چپ) */}
@@ -26,7 +27,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           className="bg-bg-surface border border-border-secondary shadow-sm hover:shadow-md !p-3 !w-12 !h-12 !rounded-xl"
         />
       </div>
-
+      <React.Suspense fallback={null}>
+        <ProgressBar />
+      </React.Suspense>
       <Container className="!max-w-xl w-full !px-5">
         
         {/* لوگو و هدر */}

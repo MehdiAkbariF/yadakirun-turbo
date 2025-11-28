@@ -10,10 +10,9 @@ export const ImageCard = ({
   href,
   aspectRatio = '16 / 9',
   className,
+  priority = false, // ✨ 1. دریافت پراپ جدید با مقدار پیش‌فرض false
 }: ImageCardProps) => {
   const classNames = ['image-card', className].filter(Boolean).join(' ');
-
-  // متغیر CSS برای aspect-ratio را به صورت inline style پاس می‌دهیم
   const style = { '--aspect-ratio': aspectRatio } as React.CSSProperties;
 
   return (
@@ -22,8 +21,10 @@ export const ImageCard = ({
         src={src}
         alt={alt}
         fill
-        sizes="(max-width: 768px) 100vw, 50vw" // مقدار sizes را می‌توان از بیرون هم دریافت کرد
+        sizes="(max-width: 768px) 100vw, 50vw"
         className="image-card__image"
+        // ✨ 2. پاس دادن پراپ به کامپوننت Image
+        priority={priority}
       />
       <div className="image-card__overlay" />
     </a>

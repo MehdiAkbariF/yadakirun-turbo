@@ -1,42 +1,55 @@
-// packages/design-system/src/components/molecules/AccordionMenu/AccordionMenu.scss
 @use '../../../styles/_variables.scss' as tokens;
 
 .accordion-menu {
+  // هر آیتم منو با یک خط ظریف از آیتم بعدی جدا می‌شود
   border-bottom: 1px solid tokens.$color-border-secondary;
+  transition: background-color 0.2s ease;
+
+  // وقتی کل آیتم هاور می‌شود، یک پس‌زمینه نرم می‌گیرد
+  &:hover {
+    background-color: tokens.$color-bg-secondary;
+  }
 
   &__trigger {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    // استفاده از توکن‌های فاصله‌گذاری
     padding: tokens.$spacing-4;
     background: none;
     border: none;
     cursor: pointer;
     text-align: right;
+    transition: color 0.2s;
 
+    // وقتی تریگر هاور می‌شود، رنگ متن و آیکون تغییر می‌کند
     &:hover {
-      background-color: tokens.$color-bg-secondary;
+      color: tokens.$color-brand-primary;
+      .accordion-menu__chevron {
+        color: tokens.$color-brand-primary;
+      }
     }
   }
-  
+
   &__title {
-    // استایل عنوان در اینجا قرار می‌گیرد (مثلا با استفاده از Label)
+    // استایل از کامپوننت Label می‌آید
   }
 
   &__chevron {
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s;
     color: tokens.$color-text-secondary;
     
     &--open {
       transform: rotate(180deg);
+      color: tokens.$color-brand-primary;
     }
   }
 
   &__content {
     display: grid;
-    grid-template-rows: 0fr; // برای انیمیشن ارتفاع
-    transition: grid-template-rows 0.3s ease-in-out;
+    grid-template-rows: 0fr; 
+    transition: grid-template-rows 0.35s ease-in-out;
 
     &--open {
       grid-template-rows: 1fr;
@@ -45,6 +58,28 @@
   
   &__content-inner {
     overflow: hidden;
-    padding: 0 tokens.$spacing-4 tokens.$spacing-4 tokens.$spacing-8; // ایجاد تورفتگی
+    // پدینگ پایین برای ایجاد فاصله بین محتوای باز شده و آیتم بعدی
+    padding-bottom: tokens.$spacing-2;
+  }
+
+  // ===================================
+  // استایل‌های زیرمنوی تو در تو (Nested)
+  // ===================================
+  &--nested {
+    // برای آیتم‌های تو در تو، خط جداکننده و هاور را حذف می‌کنیم
+    border-bottom: none;
+    &:hover {
+      background-color: transparent;
+    }
+
+    .accordion-menu__trigger {
+      padding: tokens.$spacing-3 tokens.$spacing-6; // تورفتگی بیشتر از راست
+    }
+    
+    .accordion-menu__content-inner {
+      // پدینگ راست بیشتر برای ایجاد سلسله مراتب بصری
+      padding-right: tokens.$spacing-8;
+      padding-bottom: 0;
+    }
   }
 }

@@ -1,9 +1,24 @@
 import { ReactNode } from 'react';
 
-export interface FooterLink { text: string; href: string; }
-export interface ServiceCardData { icon: ReactNode; title: string; description: string; }
-export interface TrustSealData { src: string; alt: string; href: string; }
+// این تایپ‌ها ممکن است در جاهای دیگر هم استفاده شوند، پس آنها را هم export می‌کنیم
+export interface ServiceCardData {
+  icon: ReactNode;
+  title: string;
+  description: string;
+}
 
+export interface FooterLink {
+  text: string;
+  href: string;
+}
+
+export interface TrustSealData {
+    src: string;
+    alt: string;
+    href: string;
+}
+
+// ✨✨✨ 1. کلمه کلیدی export اضافه شد ✨✨✨
 export interface FooterProps {
   logo: ReactNode;
   companyName: string;
@@ -12,8 +27,8 @@ export interface FooterProps {
   supportPhone1: string;
   supportPhone2: string;
   workHours: string[];
-  serviceCards: ServiceCardData[];
-  footerButtons: FooterLink[];
   trustSeals: TrustSealData[];
   copyrightText: string;
+  serviceCards: ServiceCardData[];
+  footerButtons: FooterLink[];
 }

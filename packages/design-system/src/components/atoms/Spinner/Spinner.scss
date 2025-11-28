@@ -1,0 +1,68 @@
+  @use '../../../styles/_variables.scss' as tokens;
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  
+
+  
+  // انیمیشن چرخش
+  @keyframes spinner-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .spinner {
+    display: inline-block;
+    border-radius: tokens.$radius-full;
+    
+    // تکنیک: یک بوردر ضخیم و شفاف با یک لبه رنگی
+    border-style: solid;
+    border-color: transparent; // سه لبه شفاف
+    
+    // اعمال انیمیشن
+    animation: spinner-spin 0.3s linear infinite;
+  
+    // --- سایزها (بر اساس توکن‌ها) ---
+    &--size-sm {
+      width: tokens.$spacing-4;   // 16px
+      height: tokens.$spacing-4;
+      border-width: 2px;
+    }
+    &--size-md {
+      width: tokens.$spacing-6;   // 24px
+      height: tokens.$spacing-6;
+      border-width: 3px;
+    }
+    &--size-lg {
+      width: tokens.$spacing-10;  // 40px
+      height: tokens.$spacing-10;
+      border-width: 4px;
+    }
+    &--size-xl {
+      width: tokens.$spacing-16;  // 64px
+      height: tokens.$spacing-16;
+      border-width: 6px;
+    }
+  
+    // --- رنگ‌ها (بر اساس توکن‌های تم) ---
+    &--color-primary {
+      // لبه بالایی رنگی می‌شود
+      border-top-color: tokens.$color-brand-primary;
+    }
+    &--color-secondary {
+      border-top-color: tokens.$color-text-secondary;
+    }
+    &--color-on-brand {
+      border-top-color: tokens.$color-text-on-brand; // برای استفاده روی پس‌زمینه‌های رنگی
+    }
+  }

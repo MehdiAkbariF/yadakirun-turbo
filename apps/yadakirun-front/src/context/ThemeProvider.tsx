@@ -1,53 +1,76 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-type Theme = 'light-orange' | 'dark-blue'; // می‌توانید تم‌های دیگر را هم اضافه کنید
+// فرض می‌کنم تایپ تم شما به این شکل است
+type Theme = 'light-orange' | 'dark-blue';
 
-interface ThemeContextType {
+interface ThemeProviderState {
   theme: Theme;
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeProviderContext = createContext<ThemeProviderState | undefined>(undefined);
 
-export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>('light-orange'); // تم پیش‌فرض
+// ✨ 1. کلید localStorage را به یک متغیر ثابت تبدیل می‌کنیم
+const THEME_STORAGE_KEY = 'theme';
 
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  // ✨ 2. یک استیت برای جلوگیری از اجرای افکت در اولین رندر اضافه می‌کنیم
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // مقدار اولیه state را null یا undefined می‌گذاریم
+  const [theme, setTheme] = useState<Theme | null>(null);
+
+  // ✨ 3. این افکت فقط یک بار بعد از مانت شدن اجرا می‌شود
   useEffect(() => {
-    // در اولین رندر، تم ذخیره شده یا تم سیستم را می‌خوانیم
-    const storedTheme = localStorage.getItem('theme') as Theme | null;
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setIsMounted(true);
     
+    // تم را از localStorage می‌خوانیم و در state قرار می‌دهیم
+    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
     if (storedTheme) {
       setTheme(storedTheme);
-    } else if (prefersDark) {
-      setTheme('dark-blue');
+    } else {
+      // اگر تمی وجود نداشت، تم پیش‌فرض را بر اساس سیستم عامل تنظیم کن
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(prefersDark ? 'dark-blue' : 'light-orange');
     }
   }, []);
 
+  // ✨ 4. این افکت فقط زمانی اجرا می‌شود که تم *تغییر کند*
   useEffect(() => {
-    // هر بار که تم تغییر کرد، کلاس را روی <html> اعمال و در localStorage ذخیره می‌کنیم
-    const root = document.documentElement;
-    const isDark = theme === 'dark-blue';
+    // اگر کامپوننت هنوز مانت نشده یا تم مقدار ندارد، کاری انجام نده
+    if (!isMounted || !theme) return;
     
-    root.classList.remove(isDark ? 'light-orange' : 'dark-blue');
-    root.classList.add(theme);
+    // تم را در localStorage ذخیره کن
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
     
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    // کلاس را به تگ <html> اعمال کن
+    document.documentElement.className = theme;
+    
+  }, [theme, isMounted]);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light-orange' ? 'dark-blue' : 'light-orange'));
+    setTheme(prevTheme => prevTheme === 'light-orange' ? 'dark-blue' : 'light-orange');
   };
 
-  const value = useMemo(() => ({ theme, toggleTheme }), [theme]);
+  // ✨ 5. تا زمانی که تم از کلاینت خوانده نشده، هیچ UI ای که به تم وابسته است را رندر نکن
+  if (!isMounted || !theme) {
+    // می‌توانید یک لودر ساده اینجا برگردانید، اما null بهتر است تا از پرش جلوگیری شود
+    return null; 
+  }
+  
+  const value = { theme, toggleTheme };
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
-};
+  return (
+    <ThemeProviderContext.Provider value={value}>
+      {children}
+    </ThemeProviderContext.Provider>
+  );
+}
 
 export const useTheme = () => {
-  const context = useContext(ThemeContext);
+  const context = useContext(ThemeProviderContext);
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }

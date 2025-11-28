@@ -6,5 +6,5 @@ export interface AccordionMenuProps {
   children: ReactNode;
   isOpen: boolean;
   onToggle: () => void;
-  className : string
+  className?: string; // ✅ این پراپ را اضافه کنید
 }

@@ -1,0 +1,28 @@
+/*
+ * استایل‌های سفارشی برای NProgress
+ * ما رنگ اصلی را با متغیر CSS تم شما تنظیم می‌کنیم
+ */
+
+ #nprogress {
+    pointer-events: none;
+  }
+  
+  #nprogress .bar {
+    /* ✨ رنگ اصلی از توکن‌های دیزاین سیستم شما گرفته می‌شود ✨ */
+    background: var(--color-brand-primary);
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px; /* ضخامت نوار */
+  }
+  
+  /* افکت درخشان (Spinner) را حذف می‌کنیم تا ظاهر مینیمال و مدرن باشد */
+  #nprogress .peg {
+    display: none;
+  }
+  
+  #nprogress .spinner {
+    display: none;
+  }

@@ -6,9 +6,23 @@
 //================================================
 // Design Tokens V5.7
 //================================================
+body, html {
+  // به تمام رنگ‌ها و پس‌زمینه‌ها یک انیمیشن نرم اضافه کن
+  transition:
+cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    
+}
+
+// برای اطمینان از اینکه تمام عناصر این رفتار را دارند،
+// از انتخابگر universal استفاده می‌کنیم.
+
+// برای جلوگیری از تداخل با انیمیشن‌های دیگر (مانند هاور دکمه‌ها)،
+// transition پیش‌فرض آنها را بازمی‌گردانیم.
+
 
 // --- 1. Raw Color Palette ---
-
+$theme-transition-duration: 0.5s; // می‌توانید این زمان را برای سرعت بیشتر یا کمتر تنظیم کنید
+$theme-transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); // منحنی انتخابی شما
 // Brand Colors (برای لایت مود نارنجی)
 $primary-blue-light:   #FF5000;
 $secondary-blue-light: #ffe8dc;
@@ -327,3 +341,4 @@ $transition-base: all 0.2s ease-in-out;
 $font-family-base: 'IRANYekan', sans-serif; 
 $font-family-heading: var(--font-iranyekan), sans-serif;
 $font-family-mono: 'Fira Code', monospace;
+

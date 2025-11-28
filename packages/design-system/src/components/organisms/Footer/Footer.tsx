@@ -1,8 +1,11 @@
 "use client"
 import React from 'react';
 import { IoMdArrowRoundUp } from 'react-icons/io';
-import { PhoneIcon, ClockIcon } from 'lucide-react'; // جایگزینی آیکون‌های SVG با کتابخانه
-import { FooterProps } from './Footer.types';
+import { PhoneIcon, ClockIcon } from 'lucide-react';
+
+// ✨✨✨ 2. ایمپورت کردن تایپ از فایل جداگانه ✨✨✨
+import { FooterProps } from './Footer.types'; 
+
 import { Label } from '../../atoms/Label/Label';
 import { ServiceCard } from '../../atoms/ServiceCard/ServiceCard';
 import { TrustSeal } from '../../atoms/TrustSeal/TrustSeal';

@@ -1,4 +1,5 @@
 // packages/design-system/src/components/atoms/ImageCard/ImageCard.types.ts
+
 export interface ImageCardProps {
   /**
    * آدرس تصویر
@@ -21,4 +22,11 @@ export interface ImageCardProps {
    * کلاس‌های CSS اضافی
    */
   className?: string;
+
+  /**
+   * ✨ پراپ جدید: آیا این تصویر باید با اولویت بالا بارگذاری شود؟
+   * برای تصاویری که در بالای صفحه (Above the Fold) قرار دارند استفاده شود.
+   * @default false
+   */
+  priority?: boolean;
 }
