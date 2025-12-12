@@ -3,25 +3,21 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 200; // بالاترین لایه (روی هدر و همه چیز)
+  z-index: 200;
   display: flex;
   
-  // در موبایل آیتم‌ها پایین باشند (Bottom Sheet)
   align-items: flex-end; 
   justify-content: center;
   
-  // در دسکتاپ وسط باشند
   @media (min-width: tokens.$breakpoint-sm) {
     align-items: center;
     padding: tokens.$spacing-4;
   }
 
-  // حالت اولیه (مخفی)
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 
-  // حالت باز
   &--open {
     opacity: 1;
     visibility: visible;
@@ -32,7 +28,7 @@
   position: absolute;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px); // افکت شیشه‌ای مات
+  backdrop-filter: blur(4px);
   transition: background-color 0.3s ease;
 }
 
@@ -44,38 +40,35 @@
   z-index: 10;
   display: flex;
   flex-direction: column;
-  max-height: 85vh; // جلوگیری از بلند شدن بیش از حد
+  
+  height: auto;
+  max-height: 80vh;
 
-  // --- استایل موبایل (Bottom Sheet) ---
   border-top-left-radius: tokens.$radius-2xl;
   border-top-right-radius: tokens.$radius-2xl;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   
-  transform: translateY(100%); // مخفی در پایین
-  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1); // حرکت نرم
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 
-  // --- استایل دسکتاپ (Center Modal) ---
   @media (min-width: tokens.$breakpoint-sm) {
-    border-radius: tokens.$radius-2xl; // گردی کامل
-    transform: scale(0.95) translateY(10px); // کمی کوچک و پایین
+    border-radius: tokens.$radius-2xl;
+    max-height: 85vh; 
+    transform: scale(0.95) translateY(10px);
     opacity: 0;
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
   }
 
-  // --- حالت باز (انیمیت شده) ---
   &--open {
-    // موبایل: بالا آمدن
     transform: translateY(0);
 
-    // دسکتاپ: زوم و فید
     @media (min-width: tokens.$breakpoint-sm) {
       transform: scale(1) translateY(0);
       opacity: 1;
     }
   }
 
-  // --- سایزها ---
   &--sm { max-width: 400px; }
   &--md { max-width: 550px; }
   &--lg { max-width: 800px; }
@@ -89,7 +82,7 @@
   padding: tokens.$spacing-5;
   border-bottom: 1px solid tokens.$color-border-secondary;
   background-color: tokens.$color-bg-surface;
-  // هدر ثابت بماند اگر محتوا اسکرول خورد
+  flex-shrink: 0; 
   border-radius: tokens.$radius-2xl tokens.$radius-2xl 0 0;
 }
 
@@ -97,8 +90,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 2px;
+  width: 32px;
+  height: 32px;
   border-radius: tokens.$radius-full;
   background: transparent;
   border: none;
@@ -114,9 +107,12 @@
 
 .modal-content {
   padding: tokens.$spacing-6;
-  overflow-y: auto; // اسکرول داخلی برای محتوای طولانی
+  overflow-y: auto;
   
-  // استایل اسکرول بار
+  // ✅✅✅ اصلاح اصلی اینجاست ✅✅✅
+  flex-grow: 1;   // فضای باقی‌مانده را پر کن
+  min-height: 0;    // اجازه بده از محتوایش کوچکتر شود تا اسکرول فعال گردد
+  
   &::-webkit-scrollbar { width: 4px; }
   &::-webkit-scrollbar-track { background: transparent; }
   &::-webkit-scrollbar-thumb { 
@@ -128,16 +124,16 @@
 .modal-footer {
   padding: tokens.$spacing-3 tokens.$spacing-4;
   border-top: 1px solid tokens.$color-border-secondary;
-  background-color: tokens.$color-bg-secondary; // فوتر کمی تیره‌تر
+  background-color: tokens.$color-bg-secondary;
   display: flex;
   justify-content: flex-end;
   gap: tokens.$spacing-3;
-  // فوتر همیشه پایین بماند
+  flex-shrink: 0; 
   border-bottom-left-radius: tokens.$radius-2xl;
   border-bottom-right-radius: tokens.$radius-2xl;
   
   @media (max-width: tokens.$breakpoint-sm) {
-    border-radius: 0; // در موبایل پایین صاف است
+    border-radius: 0;
     padding-bottom: calc(tokens.$spacing-4 + env(safe-area-inset-bottom));
   }
 }

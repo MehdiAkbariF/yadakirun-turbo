@@ -1,4 +1,4 @@
-import dynamic from 'next/dynamic'; // ✨ 1. ایمپورت dynamic برای Lazy Loading
+import dynamic from 'next/dynamic';
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
 import { Container } from '@monorepo/design-system/src/components/organisms/Container/Container';
 import { CardGrid } from '@monorepo/design-system/src/components/molecules/CardGrid/CardGrid';
@@ -6,82 +6,40 @@ import { CardSlider } from '@monorepo/design-system/src/components/molecules/Car
 import { SpecialOffers } from '@/src/components/layout/SpecialOffers';
 import { BestSellersSlider } from '@/src/components/layout/BestSellersSlider';
 import { ImageCard } from '@monorepo/design-system/src/components/atoms/ImageCard/ImageCard';
-// import { NewsSection } from '@/src/components/layout/NewsSection'; // به dynamic تبدیل می‌شود
-// import { ContentSection } from '@monorepo/design-system/src/components/molecules/ContentSection/ContentSection'; // در کامپوننت جدا استفاده می‌شود
-
-// ✨ 2. بارگذاری تنبل کامپوننت‌هایی که در پایین صفحه هستند
+import { HomeBanner } from '@/src/components/layout/HomeBanner';
+import { homeService } from '@monorepo/api-client/src/services/homeService'; // ✅ ایمپورت سرویس
+import { Metadata } from 'next'; // ✅ ۱. ایمپورت تایپ Metadata
+// --- بارگذاری تنبل کامپوننت‌های پایین صفحه ---
 const NewsSection = dynamic(() =>
   import('@/src/components/layout/NewsSection').then(mod => mod.NewsSection),
-  { loading: () => <div style={{ height: '400px' }} /> } // یک جایگزین ساده برای جلوگیری از پرش
+  { loading: () => <div style={{ height: '400px' }} /> }
 );
 
 const SeoContentSection = dynamic(() =>
   import('@/src/components/layout/SeoContentSection').then(mod => mod.SeoContentSection),
   { loading: () => <div style={{ height: '500px' }} /> }
 );
-const specialOfferData = [
-  {
-    id: 1,
-    title: "کمک فنر حرفه‌ای رنو تالیسمان",
-    href: "/product/item-1",
-    imgSrc: "/Renault.svg",
-    price: 1250000,       // قیمت با تخفیف
-    originalPrice: 1500000, // قیمت اصلی
-    rating: 4.5,
-    carName: "۲۰٪ تخفیف", // بج روی کارت
-  },
-  {
-    id: 2,
-    title: "دیسک ترمز خنک شونده پژو",
-    href: "/product/item-2",
-    imgSrc: "/Renault.svg",
-    price: 890000,
-    originalPrice: 980000,
-    rating: 4.2,
-    carName: "پژو ۲۰۶",
-  },
-  {
-    id: 3,
-    title: "کیت کامل جلوبندی MVM",
-    href: "/product/item-3",
-    imgSrc: "/Renault.svg",
-    price: 3400000,
-    originalPrice: 3800000,
-    rating: 4.8,
-    carName: "فروش ویژه",
-  },
-  {
-    id: 4,
-    title: "چراغ ال‌ای‌دی آفرودی Pro",
-    href: "/product/item-4",
-    imgSrc: "/Renault.svg",
-    price: 2100000,
-    originalPrice: 2500000,
-    rating: 4.6,
-    carName: "تویوتا",
-  },
-  {
-    id: 5,
-    title: "پمپ بنزین اصلی جک S5",
-    href: "/product/item-5",
-    imgSrc: "/Renault.svg",
-    price: 1700000,
-    originalPrice: 1950000,
-    rating: 4.4,
-    carName: "جک S5",
-  },
-  {
-    id: 6,
-    title: "شمع ایریدیوم سوزنی NGK",
-    href: "/product/item-6",
-    imgSrc: "/Renault.svg",
-    price: 650000,
-    originalPrice: 720000,
-    rating: 4.9,
-    carName: "ارسال رایگان",
-  },
-];
-// ✅ داده‌های کامل و نهایی برای بخش توضیحات متنی (SEO)
+export async function generateMetadata(): Promise<Metadata> {
+  // دریافت داده‌ها از API
+  const homeData = await homeService.getHomePageData();
+
+  // اگر داده‌ای وجود نداشت، از مقادیر پیش‌فرض استفاده کن
+  if (!homeData) {
+    return {
+      title: 'یدکی‌ران - فروشگاه آنلاین لوازم یدکی خودرو',
+      description: 'بزرگترین پلتفرم بررسی و خرید لوازم یدکی خودرو با ضمانت اصالت کالا.',
+    };
+  }
+
+  return {
+    title: homeData.metaTitle,
+    description: homeData.metaDescription,
+    alternates: {
+      canonical: homeData.canonicalUrl,
+    },
+  };
+}
+// --- داده‌های استاتیک (که در API نبودند) ---
 const textContentData = [
     { 
       id: 'sec-1', 
@@ -114,31 +72,6 @@ const textContentData = [
         </>
       ) 
     },
-    { 
-      id: 'sec-3', 
-      title: "راهنمای خرید قطعات موتوری", 
-      content: (
-        <>
-          <Label as="p" size="base" className="mb-4 leading-loose text-justify">
-            موتور قلب تپنده خودروی شماست و استفاده از قطعات باکیفیت برای آن حیاتی است. در یدکی‌ران می‌توانید انواع تسمه تایم، شمع، وایر، فیلترها و روغن‌های موتور را با اطمینان از اصالت کالا تهیه کنید.
-          </Label>
-          <Label as="p" size="base" className="leading-loose text-justify">
-            پیشنهاد ما این است که همیشه قبل از خرید، مدل دقیق خودرو و سال ساخت آن را چک کنید تا قطعه‌ای کاملاً سازگار انتخاب نمایید.
-          </Label>
-        </>
-      ) 
-    },
-    { 
-      id: 'sec-4', 
-      title: "لوازم جانبی و تزئینی", 
-      content: (
-        <>
-          <Label as="p" size="base" className="mb-4 leading-loose text-justify">
-            علاوه بر قطعات فنی، زیبایی و راحتی خودرو نیز اهمیت زیادی دارد. ما مجموعه‌ای کامل از روکش صندلی، کفپوش، سیستم‌های صوتی و سایر لوازم جانبی را گردآوری کرده‌ایم تا خودروی شما همواره در بهترین وضعیت ظاهری باشد.
-          </Label>
-        </>
-      ) 
-    },
 ];
 
 const categoryData = [
@@ -148,62 +81,6 @@ const categoryData = [
   { href: "/cat/4", imgSrc: "/Renault.svg", title: "رنو" },
   { href: "/cat/5", imgSrc: "/ssangyong.svg", title: "سانگ یانگ" },
   { href: "/cat/6", imgSrc: "/Renault.svg", title: "پژو" },
-];
-
-const newsData = [
-  { 
-    href: '#', 
-    title: 'نکات مهم در خرید لوازم یدکی اصلی', 
-    imgSrc: '/SGA-banner.webp', 
-    date: '۲۵ آبان ۱۴۰۴',
-    description: 'در این مقاله به بررسی روش‌های تشخیص قطعات اصلی از تقلبی و اهمیت استفاده از لوازم یدکی با کیفیت می‌پردازیم.'
-  },
-  { 
-    href: '#', 
-    title: 'چطور از جلوبندی خودروی خود مراقبت کنیم؟', 
-    imgSrc: '/aisin-clutch-banner.webp', 
-    date: '۲۲ آبان ۱۴۰۴',
-    description: 'جلوبندی یکی از بخش‌های حیاتی خودرو است. با رعایت چند نکته ساده، عمر قطعات آن را افزایش دهید.'
-  },
-  { 
-    href: '#', 
-    title: 'همه چیز درباره شمع‌های ایریدیوم و پلاتینیوم', 
-    imgSrc: '/SGA-banner.webp', 
-    date: '۲۰ آبان ۱۴۰۴',
-    description: 'تفاوت شمع‌های مختلف در چیست و کدام یک برای خودروی شما مناسب‌تر است؟ پاسخ را در این مطلب بخوانید.'
-  },
-  { 
-    href: '#', 
-    title: 'راهنمای کامل انتخاب دیسک و صفحه کلاچ', 
-    imgSrc: '/aisin-clutch-banner.webp', 
-    date: '۱۸ آبان ۱۴۰۴',
-    description: 'علائم زمان تعویض دیسک و صفحه و معرفی بهترین برندهای موجود در بازار.'
-  },
-  { 
-    href: '#', 
-    title: 'سیستم ترمز ABS چگونه کار می‌کند؟', 
-    imgSrc: '/SGA-banner.webp', 
-    date: '۱۵ آبان ۱۴۰۴',
-    description: 'آشنایی با مکانیزم ترمز ضد قفل و نقش حیاتی آن در ایمنی خودرو.'
-  },
-  { 
-    href: '#', 
-    title: 'روغن موتور مناسب برای فصل سرما', 
-    imgSrc: '/aisin-clutch-banner.webp', 
-    date: '۱۲ آبان ۱۴۰۴',
-    description: 'با شروع فصل سرما، انتخاب ویسکوزیته مناسب برای روغن موتور اهمیت دوچندان پیدا می‌کند.'
-  },
-];
-
-// ✅ داده‌های دقیق با قیمت و قیمت اصلی برای نمایش تخفیف
-const bestSellersData = [
-    { id: '1', title: 'کمک فنر حرفه‌ای رنو', href: '#', imgSrc: '/Renault.svg', price: 1250000, originalPrice: 1500000, rating: 4.5, badgeText: 'رنو' },
-    { id: '2', title: 'دیسک ترمز خنک شونده پژو', href: '#', imgSrc: '/Renault.svg', price: 890000, originalPrice: 980000, rating: 4.2, badgeText: 'پژو' },
-    { id: '3', title: 'لنت ترمز سرامیکی', href: '#', imgSrc: '/Renault.svg', price: 450000, originalPrice: 520000, rating: 4.5, badgeText: 'کیا' },
-    { id: '4', title: 'فیلتر روغن اصلی', href: '#', imgSrc: '/Renault.svg', price: 120000, originalPrice: 150000, rating: 5, badgeText: 'هیوندای' },
-    { id: '5', title: 'شمع موتور بوش', href: '#', imgSrc: '/Renault.svg', price: 350000, originalPrice: 400000, rating: 4.8, badgeText: 'تویوتا' },
-    { id: '6', title: 'تسمه تایم کنتیننتال', href: '#', imgSrc: '/Renault.svg', price: 850000,  rating: 4.9, badgeText: 'رنو' },
-    { id: '7', title: 'واتر پمپ', href: '#', imgSrc: '/Renault.svg', price: 980000,  rating: 4.2, badgeText: 'پژو' },
 ];
 
 const brandCardsData = [
@@ -221,26 +98,68 @@ const brandCardsData = [
   { href: "/brand/12", imgSrc: "/Renault.svg", title: "نیسان" },
 ];
 
-export default function HomePage() {
+// ✅ کامپوننت به async تبدیل شد
+export default async function HomePage() {
+  // ۱. دریافت داده از API در سمت سرور
+  const homeData = await homeService.getHomePageData();
+
+  // ۲. آماده‌سازی داده‌ها برای کامپوننت‌ها (با در نظر گرفتن حالت null)
+  const specialOfferProducts = homeData?.discountedProducts.map(p => ({
+    id: p.id,
+    title: p.title,
+    href: `/ProductPage/${p.id}`,
+    imgSrc: `https://api-yadakirun.yadakchi.com${p.imageUrl}`,
+    price: p.priceAfterDiscount,
+    originalPrice: p.price,
+    rating: 4.5, // فیلد استاتیک چون در API نیست
+    carName: p.discountPercent > 0 ? `${p.discountPercent}% تخفیف` : "فروش ویژه",
+  })) || [];
+
+  const bestSellerItems = homeData?.mostSoldProducts.map(p => ({
+    id: String(p.id),
+    title: p.title,
+    href: `/ProductPage/${p.id}`,
+    imgSrc: `https://api-yadakirun.yadakchi.com${p.imageUrl}`,
+    price: p.priceAfterDiscount,
+    originalPrice: p.price,
+    rating: 4.8, // فیلد استاتیک
+    badgeText: "پرفروش",
+  })) || [];
+
+  const newestProductItems = homeData?.mostRecentProducts.map(p => ({
+    id: String(p.id),
+    title: p.title,
+    href: `/ProductPage/${p.id}`,
+    imgSrc: `https://api-yadakirun.yadakchi.com${p.imageUrl}`,
+    price: p.priceAfterDiscount,
+    originalPrice: p.price,
+    rating: 4.2, // فیلد استاتیک
+    badgeText: "جدیدترین",
+  })) || [];
+
+  const newsItems = homeData?.mostRecentBlogPosts.map(post => ({
+    href: `/blog/${post.id}`,
+    title: post.title,
+    imgSrc: `https://api-yadakirun.yadakchi.com${post.coverUrl}`,
+    date: new Date(post.createDate).toLocaleDateString('fa-IR', { day: 'numeric', month: 'long', year: 'numeric' }),
+    description: `این مقاله را در ${post.readingTime} دقیقه بخوانید...`,
+  })) || [];
+
+  // آماده‌سازی داده‌های استاتیک
   const moreCount = 10;
   const moreHref = "/categories";
-
   const desktopItems = [
     { href: moreHref, title: `${moreCount}+ بیشتر`, isMore: true },
     ...categoryData.slice(0, 6)
   ];
-  
   const mobileItems = [
     ...categoryData,
     { href: moreHref, title: `${moreCount}+ بیشتر`, isMore: true }
   ];
+
   return (
     <>
-      <section className="w-full h-64 flex items-center justify-center mb-20">
-        <Label as="h2" size="3x" weight="bold" color="primary">
-          بنر صفحه اصلی
-        </Label>
-      </section>
+      <HomeBanner />
 
       <Container>
         <section className="my-10">
@@ -254,8 +173,9 @@ export default function HomePage() {
       </Container>
       
       <Container>
-        <SpecialOffers products={specialOfferData} title="پیشنهادهای شگفت‌انگیز" />
-        <BestSellersSlider title="پرفروش‌ترین محصولات" items={bestSellersData} uniqueId="bestsellers" />
+        {/* ✅ پاس دادن داده‌های داینامیک */}
+        <SpecialOffers products={specialOfferProducts} title="پیشنهادهای شگفت‌انگیز" />
+        <BestSellersSlider title="پرفروش‌ترین محصولات" items={bestSellerItems} uniqueId="bestsellers" />
       </Container>
       
       <Container className="my-10">
@@ -265,20 +185,21 @@ export default function HomePage() {
             src="/SGA-banner.webp"
             alt="لوازم آفرودی"
             aspectRatio="5 / 1"
-            priority={true} // ✨ 3. اولویت‌بندی تصویر مهم
+            priority={true}
           />
           <ImageCard
             href="/category/tuning"
             src="/aisin-clutch-banner.webp"
             alt="لوازم تیونینگ"
             aspectRatio="5 / 1"
-            priority={true} // ✨ 3. اولویت‌بندی تصویر مهم
+            priority={true}
           />
         </div>
       </Container>
 
       <Container>
-        <BestSellersSlider title="جدیدترین محصولات" items={bestSellersData} uniqueId="newest-products" />
+        {/* ✅ پاس دادن داده‌های داینامیک */}
+        <BestSellersSlider title="جدیدترین محصولات" items={newestProductItems} uniqueId="newest-products" />
       </Container>
 
        <Container className="my-12">
@@ -299,10 +220,9 @@ export default function HomePage() {
          </section>
       </Container>
 
-      {/* ✨ 4. استفاده از کامپوننت‌های Lazy Load شده */}
-      <NewsSection title="آخرین اخبار و مقالات" items={newsData} uniqueId="homepage-news" />
+      {/* ✅ پاس دادن داده‌های داینامیک */}
+      <NewsSection title="آخرین اخبار و مقالات" items={newsItems} uniqueId="homepage-news" />
       
-      {/* کامپوننت جدید برای بخش SEO که به صورت تنبل لود می‌شود */}
       <SeoContentSection textContentData={textContentData} />
     </>
   );

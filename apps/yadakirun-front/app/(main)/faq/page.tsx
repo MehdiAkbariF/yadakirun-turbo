@@ -1,47 +1,43 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { CircleHelp, MessageCircleQuestion } from 'lucide-react';
+import { faqService } from '@monorepo/api-client/src/services/faqService'; // ✅ ایمپورت سرویس
 
 // --- Design System Imports ---
 import { Container } from '@monorepo/design-system/src/components/organisms/Container/Container';
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
 import { Accordion } from '@monorepo/design-system/src/components/molecules/Accordion/Accordion';
 
-// --- Metadata ---
-export const metadata: Metadata = {
-  title: 'پرسش‌های متداول | یدکی‌ران',
-  description: 'پاسخ به سوالات متداول کاربران درباره نحوه ارسال، ضمانت اصالت، بازگشت کالا و پیگیری سفارشات در فروشگاه اینترنتی یدکی‌ران.',
-};
+// --- Metadata (داینامیک) ---
+export async function generateMetadata(): Promise<Metadata> {
+  const faqData = await faqService.getFaqPageData();
 
-// --- FAQ Data ---
-const faqData = [
-  {
-    question: 'چگونه می‌توانم از اصالت کالا مطمئن شوم؟',
-    answer: 'تمام قطعات یدکی موجود در یدکی‌ران دارای تضمین کیفیت و اصالت هستند. ما کالاها را مستقیماً از تأمین‌کنندگان معتبر تهیه می‌کنیم و برای تمامی قطعات اصلی (Genuine) ضمانت اصالت کالا ارائه می‌دهیم. در صورت وجود هرگونه مغایرت، امکان مرجوعی کالا وجود دارد.',
-  },
-  {
-    question: 'زمان و نحوه ارسال سفارشات چگونه است؟',
-    answer: 'سفارش‌های تهران در صورت ثبت قبل از ساعت ۱۶، همان روز با پیک ارسال می‌شوند. سفارش‌های شهرستان‌ها از طریق تیپاکس یا باربری ارسال شده و معمولاً بین ۲۴ تا ۷۲ ساعت کاری (بسته به مسافت) به دست شما می‌رسند.',
-  },
-  {
-    question: 'آیا امکان مرجوع کردن کالا وجود دارد؟',
-    answer: 'بله، رضایت مشتری اولویت ماست. شما تا ۷ روز پس از تحویل کالا فرصت دارید تا در صورت وجود نقص فنی، مغایرت با توضیحات سایت یا عدم اصالت، درخواست مرجوعی خود را ثبت کنید. لطفاً توجه داشته باشید که جعبه و بسته‌بندی کالا باید سالم باشد.',
-  },
-  {
-    question: 'چگونه می‌توانم سفارشم را پیگیری کنم؟',
-    answer: 'پس از ثبت و پردازش سفارش، کد رهگیری پستی یا تیپاکس برای شما پیامک خواهد شد. همچنین می‌توانید با ورود به پنل کاربری خود و مراجعه به بخش "سفارش‌های من"، وضعیت لحظه‌ای سفارش خود را مشاهده کنید.',
-  },
-  {
-    question: 'آیا امکان خرید حضوری نیز وجود دارد؟',
-    answer: 'در حال حاضر، یدکی‌ران با هدف کاهش هزینه‌ها و ارائه بهترین قیمت به مشتریان، به صورت کاملاً آنلاین فعالیت می‌کند و امکان خرید حضوری در انبار مرکزی وجود ندارد.',
-  },
-  {
-    question: 'هزینه ارسال چگونه محاسبه می‌شود؟',
-    answer: 'هزینه ارسال بر اساس وزن و ابعاد مرسوله و همچنین شهر مقصد محاسبه می‌شود. برای خریدهای بالای ۵ میلیون تومان، ارسال به سراسر کشور رایگان است.',
-  },
-];
+  if (!faqData) {
+    return {
+      title: 'پرسش‌های متداول | یدکی‌ران',
+      description: 'پاسخ به سوالات متداول کاربران فروشگاه اینترنتی یدکی‌ران.',
+    };
+  }
 
-export default function FaqPage() {
+  return {
+    title: faqData.metaTitle,
+    description: faqData.metaDescription,
+    alternates: {
+      canonical: faqData.canonicalUrl,
+    },
+  };
+}
+
+
+// ✅ کامپوننت به async تبدیل شد
+export default async function FaqPage() {
+
+  // دریافت داده‌ها در سرور
+  const faqPageData = await faqService.getFaqPageData();
+  
+  // اگر داده‌ای نبود، یک آرایه خالی در نظر می‌گیریم تا صفحه کرش نکند
+  const faqCategories = faqPageData?.faqCategories || [];
+
   return (
     <div className="bg-body min-h-screen pb-20">
       
@@ -63,34 +59,46 @@ export default function FaqPage() {
       </section>
 
       <Container>
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto space-y-8">
           
-          {/* --- FAQ List --- */}
-          <div className="bg-surface rounded-2xl shadow-sm border border-border-secondary p-6 md:p-8">
-            {faqData.map((item, index) => (
-              <Accordion 
-                key={index} 
-                title={item.question}
-                // آیکون اختصاصی برای هر سوال
-                icon={<CircleHelp size={20} className="text-brand-primary" />}
-                // اولین آیتم به صورت پیش‌فرض باز باشد
-                defaultOpen={index === 0}
-                className="last:mb-0"
-              >
-                <Label 
-                  as="p" 
-                  size="base" 
-                  color="secondary" 
-                  className="leading-loose text-justify"
-                >
-                  {item.answer}
+          {/* 
+            --- FAQ List ---
+            حالا بر اساس دسته‌بندی‌های دریافتی از API رندر می‌کنیم
+          */}
+          {faqCategories.length > 0 ? (
+            faqCategories.map((category, catIndex) => (
+              <div key={catIndex} className="bg-surface rounded-2xl shadow-sm border border-border-secondary p-6 md:p-8">
+                {/* نمایش عنوان دسته‌بندی */}
+                <Label as="h2" size="xl" weight="bold" className="mb-6 border-r-4 border-brand-primary pr-4">
+                  {category.title}
                 </Label>
-              </Accordion>
-            ))}
-          </div>
 
-          {/* --- Contact CTA --- */}
-         
+                {category.faQs.map((item, itemIndex) => (
+                  <Accordion 
+                    key={itemIndex} 
+                    title={item.question}
+                    icon={<CircleHelp size={20} className="text-brand-primary" />}
+                    // اولین آیتم از اولین دسته‌بندی باز باشد
+                    defaultOpen={catIndex === 0 && itemIndex === 0}
+                    className="last:mb-0"
+                  >
+                    <Label 
+                      as="p" 
+                      size="base" 
+                      color="secondary" 
+                      className="leading-loose text-justify"
+                    >
+                      {item.answer}
+                    </Label>
+                  </Accordion>
+                ))}
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-20 bg-surface rounded-xl border border-border-secondary">
+              <Label color="secondary">موردی برای نمایش یافت نشد.</Label>
+            </div>
+          )}
 
         </div>
       </Container>

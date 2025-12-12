@@ -2,36 +2,55 @@ import React from 'react';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { CheckCircle } from 'lucide-react';
+import { aboutUsService } from '@monorepo/api-client/src/services/aboutUsService'; // ✅ ایمپورت سرویس
 
 // --- Design System Imports ---
 import { Container } from '@monorepo/design-system/src/components/organisms/Container/Container';
 import { ContentSection } from '@monorepo/design-system/src/components/molecules/ContentSection/ContentSection';
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
 
-export const metadata: Metadata = {
-  title: 'درباره ما | فروشگاه اینترنتی یدکی‌ران',
-  description: 'آشنایی با داستان شکل‌گیری، اهداف و تعهدات فروشگاه اینترنتی یدکی‌ران در ارائه قطعات یدکی خودرو.',
-};
+// --- Metadata (داینامیک) ---
+export async function generateMetadata(): Promise<Metadata> {
+  const pageData = await aboutUsService.getAboutUsPageData();
 
-export default function AboutPage() {
+  if (!pageData) {
+    return {
+      title: 'درباره ما | فروشگاه اینترنتی یدکی‌ران',
+      description: 'آشنایی با داستان شکل‌گیری، اهداف و تعهدات فروشگاه اینترنتی یدکی‌ران.',
+    };
+  }
+
+  return {
+    title: pageData.metaTitle,
+    description: pageData.metaDescription,
+    alternates: {
+      canonical: pageData.canonicalUrl,
+    },
+  };
+}
+
+// ✅ کامپوننت به async تبدیل شد
+export default async function AboutPage() {
+
+  // ۱. دریافت داده‌ها در سرور
+  const pageData = await aboutUsService.getAboutUsPageData();
+  const mainBanner = pageData?.banners.find(b => b.bannerPlaceName === "AboutUsMain");
+
   return (
     <div className="bg-bg-body min-h-screen pb-20">
       
-      {/* === بخش ۱: بنر تمام‌عرض (Hero Section) === */}
+      {/* === بخش ۱: بنر تمام‌عرض (داینامیک) === */}
       <section className="relative w-full h-64 lg:h-80">
-        {/* تصویر پس‌زمینه */}
         <Image 
-            src="/aboutus.png" // اطمینان حاصل کنید عکس در پوشه public موجود است
-            alt="درباره فروشگاه یدکی‌ران"
+            src={mainBanner ? `https://api-yadakirun.yadakchi.com${mainBanner.image}` : "/aboutus.png"}
+            alt={mainBanner?.imageAlt || "درباره فروشگاه یدکی‌ران"}
             fill
             className="object-cover"
             priority
         />
         
-        {/* لایه تاریک روی عکس */}
         <div className="absolute inset-0 bg-black/60"></div>
         
-        {/* عنوان وسط بنر */}
         <div className="absolute inset-0 flex items-center justify-center z-10">
             <Label as="h1" size="4x" weight="black" className="text-white drop-shadow-md">
               درباره یدکی‌ران
@@ -39,7 +58,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* === بخش ۲: کانتینر محتوا (Overlap Card) === */}
+      {/* === بخش ۲: محتوای استاتیک === */}
       <Container>
         <div className="relative z-10 -mt-16 lg:-mt-24 mb-10">
             <div className="bg-surface rounded-3xl shadow-xl border border-border-secondary p-6 md:p-10 lg:p-14">
@@ -55,10 +74,10 @@ export default function AboutPage() {
                         </Label>
                     </ContentSection>
 
-                    {/* تصویر میانی (اختیاری - برای تنوع بصری) */}
+                    {/* تصویر میانی */}
                     <div className="relative w-full h-64 rounded-2xl overflow-hidden shadow-md">
                         <Image 
-                           src="/SGA-banner.webp" // یک عکس مرتبط از پوشه public
+                           src="/SGA-banner.webp"
                            alt="تیم یدکی‌ران"
                            fill
                            className="object-cover"

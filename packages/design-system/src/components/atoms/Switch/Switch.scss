@@ -11,13 +11,14 @@
 .switch-track {
   width: 40px;
   height: 24px;
-  background-color: tokens.$color-border-primary;
+  
+   background-color: tokens.$color-text-placeholder;
   border-radius: tokens.$radius-full;
   position: relative;
   transition: background-color 0.3s;
 
   &--checked {
-    background-color: tokens.$color-brand-primary;
+   background-color: tokens.$color-brand-primary;
 
     .switch-thumb {
       transform: translateX(16px);

@@ -3,48 +3,84 @@
 .sort-options {
   display: flex;
   align-items: center;
-  gap: tokens.$spacing-4;
-  padding: tokens.$spacing-4;
+  width: 100%;
   background-color: tokens.$color-bg-surface;
   border-radius: tokens.$radius-lg;
   border: 1px solid tokens.$color-border-secondary;
   margin-bottom: tokens.$spacing-6;
-  overflow-x: auto; // اسکرول افقی در موبایل
+  padding: tokens.$spacing-2; // پدینگ کلی کمتر
+  overflow: hidden; // جلوگیری از بیرون زدن کلی
 
+  // --- بخش لیبل (ثابت) ---
   &__label {
     display: flex;
     align-items: center;
-    gap: tokens.$spacing-2;
+    gap: tokens.$spacing-1;
+    padding-left: tokens.$spacing-3;
+    margin-left: tokens.$spacing-2;
+    border-left: 1px solid tokens.$color-border-secondary; // خط جداکننده
+    flex-shrink: 0; // ⛔️ حیاتی: جلوگیری از له شدن لیبل در موبایل
     color: tokens.$color-text-secondary;
-    flex-shrink: 0;
+    height: 100%;
+    
+  
+    @media (max-width: 380px) {
+      padding-left: tokens.$spacing-2;
+      margin-left: tokens.$spacing-1;
+      
+    
+      span { display: none; } 
+    }
   }
 
+  // --- بخش لیست دکمه‌ها (اسکرول شونده) ---
   &__list {
     display: flex;
+    align-items: center;
     gap: tokens.$spacing-2;
+    flex-grow: 1; // فضای باقی‌مانده را بگیرد
+    
+   
+    min-width: 0; 
+    
+    overflow-x: auto; // اسکرول افقی فعال
+    overflow-y: hidden;
+    white-space: nowrap;
+    
+    // اسکرول نرم در موبایل
+    -webkit-overflow-scrolling: touch; 
+    padding-bottom: 2px; // جلوگیری از بریده شدن سایه دکمه‌ها
+    
+    // مخفی کردن اسکرول‌بار (برای زیبایی)
+    scrollbar-width: none; // Firefox
+    &::-webkit-scrollbar { 
+      display: none; // Chrome, Safari
+    }
   }
 }
 
+// --- استایل دکمه‌ها ---
 .sort-btn {
-  padding: tokens.$spacing-2 tokens.$spacing-4;
-  border-radius: tokens.$radius-full;
-  font-size: tokens.$font-size-sm;
-  color: tokens.$color-text-secondary;
-  background: transparent;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
+  height: 32px !important; // ارتفاع فیکس برای نظم
+  padding: 0 tokens.$spacing-3 !important;
+  border-radius: tokens.$radius-full !important;
+  font-size: tokens.$font-size-xs !important;
+  font-weight: tokens.$font-weight-medium !important;
+  color: tokens.$color-text-secondary !important;
+  white-space: nowrap !important; // جلوگیری از شکستن متن دکمه
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
 
-  &:hover {
-    background-color: tokens.$color-bg-secondary;
-    color: tokens.$color-brand-primary;
-  }
+  flex-shrink: 0; 
 
+
+  // حالت فعال
   &--active {
-    background-color: rgba(tokens.$color-brand-primary, 0.1);
-    color: tokens.$color-brand-primary;
-    border-color: rgba(tokens.$color-brand-primary, 0.2);
-    font-weight: tokens.$font-weight-bold;
+    background-color: rgba(tokens.$color-brand-primary, 0.1) !important;
+    color: tokens.$color-brand-primary !important;
+    border-color: rgba(tokens.$color-brand-primary, 0.2) !important;
+    font-weight: tokens.$font-weight-bold !important;
+    
+
   }
 }

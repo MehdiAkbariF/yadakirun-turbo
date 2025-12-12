@@ -1,5 +1,6 @@
 @use '../../../styles/_variables.scss' as tokens;
 
+// --- استایل‌های دسکتاپ ---
 .filter-sidebar {
   background-color: tokens.$color-bg-surface;
   border: 1px solid tokens.$color-border-secondary;
@@ -8,15 +9,20 @@
   position: sticky; 
   top: 100px; 
   box-shadow: tokens.$shadow-md;
+  
+  display: none; // در موبایل مخفی
+  @media (min-width: tokens.$breakpoint-lg) {
+    display: block; // در دسکتاپ نمایش داده شود
+  }
 
+  // ... (بقیه استایل‌های داخلی header, content, divider مثل قبل باقی می‌مانند)
   &__header {
     padding: tokens.$spacing-5;
     border-bottom: 1px solid tokens.$color-border-secondary;
-    background-color: tokens.$color-bg-surface;
   }
 
   &__content {
-    padding: tokens.$spacing-5;
+    padding: tokens.$spacing-4;
     display: flex;
     flex-direction: column;
     gap: tokens.$spacing-2;
@@ -29,41 +35,60 @@
   }
 }
 
-// ✅✅✅ استایل اسکرول‌بار سفارشی ✅✅✅
-.custom-scrollbar {
-  // 1. اجبار ارتفاع حداکثری برای فعال شدن اسکرول
-  max-height: 200px; 
-  overflow-y: auto; // حتماً باید auto باشد
-  padding-right: 4px; // فاصله برای اینکه اسکرول روی محتوا نیفتد
-
-  // 2. استایل ظاهری (Firefox)
-  scrollbar-width: thin;
-  scrollbar-color: tokens.$color-brand-primary transparent;
-
-  // 3. استایل ظاهری (Webkit)
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
+// --- استایل‌های موبایل ---
+.filter-sidebar__floating-btn-container {
+  // این کانتینر دکمه را به بالای صفحه می‌چسباند
+  position: sticky;
+  top: 100px; // فاصله از بالای صفحه (باید با ارتفاع هدر تنظیم شود)
   
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-    margin: 4px 0;
-  }
+  display: flex;
+  justify-content: flex-start; // چسباندن به چپ (در RTL)
   
-  &::-webkit-scrollbar-thumb {
-    background-color: tokens.$color-brand-primary;
-    border-radius: tokens.$radius-full;
-    border: 2px solid transparent; // تکنیک برای فاصله انداختن
-    background-clip: content-box;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: tokens.$color-brand-primary-hover;
+   // فاصله از محتوای زیرین
+  
+  // در دسکتاپ مخفی شود
+  @media (min-width: tokens.$breakpoint-lg) {
+    display: none;
   }
 }
 
-// استایل‌های آکاردئون
-.filter-sidebar .accordion {
+.filter-sidebar__floating-btn {
+  // استایل دکمه شناور
+  border-radius: tokens.$radius-full !important;
+  background-color: rgba(tokens.$color-bg-surface, 0.8) !important;
+  backdrop-filter: blur(8px); // افکت شیشه‌ای
+  border: 1px solid tokens.$color-border-secondary !important;
+  color: tokens.$color-text-primary !important;
+  box-shadow: tokens.$shadow-lg !important;
+
+  &:hover {
+    background-color: rgba(tokens.$color-bg-secondary, 0.9) !important;
+    color: tokens.$color-brand-primary !important;
+  }
+}
+
+
+.custom-scrollbar {
+  max-height: 200px; 
+  overflow-y: auto;
+  padding-right: 4px;
+
+  scrollbar-width: thin;
+  scrollbar-color: tokens.$color-brand-primary transparent;
+
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background-color: transparent; }
+  &::-webkit-scrollbar-thumb { 
+    background-color: tokens.$color-brand-primary; 
+    border-radius: tokens.$radius-full; 
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  &::-webkit-scrollbar-thumb:hover { background-color: tokens.$color-brand-primary-hover; }
+}
+
+.filter-sidebar .accordion,
+.modal .accordion {
   border: none;
   margin-bottom: 0;
   background-color: transparent;
@@ -76,9 +101,7 @@
   }
 
   &__content {
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 0;
+    padding: 0;
     border-top: none;
   }
 }

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useMemo } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
+import { useParams, useSearchParams } from "next/navigation";
 import { ProductCategoryPageData } from "@monorepo/api-client/src/types/category.types";
 import { PaginatedResponse, Product } from "@monorepo/api-client/src/types/car";
 
@@ -14,7 +13,7 @@ import { Pagination } from "@monorepo/design-system/src/components/molecules/Pag
 import { ContentSection } from "@monorepo/design-system/src/components/molecules/ContentSection/ContentSection";
 import { ProductGrid } from "@monorepo/design-system/src/components/organisms/ProductGrid/ProductGrid";
 import { CardSlider } from "@monorepo/design-system/src/components/molecules/CardSlider/CardSlider";
-import { Breadcrumb } from "@monorepo/design-system/src/components/molecules/Breadcrumb/Breadcrumb"; // ✨ 1. ایمپورت Breadcrumb
+import { Breadcrumb } from "@monorepo/design-system/src/components/molecules/Breadcrumb/Breadcrumb";
 
 interface CategoryPageClientProps {
   categoryData: ProductCategoryPageData;
@@ -26,7 +25,6 @@ const categoryList: FilterItem[] = [];
 const brandList: FilterItem[] = [];
 
 export function CategoryPageClient({ categoryData, initialProducts }: CategoryPageClientProps) {
-  const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
 
@@ -66,28 +64,42 @@ export function CategoryPageClient({ categoryData, initialProducts }: CategoryPa
     }));
   }, [categoryData.cars]);
 
-  // ✨ 2. ساخت آیتم‌های Breadcrumb به صورت داینامیک
   const breadcrumbItems = [
-    { label: "دسته‌بندی‌ها", href: "/categories" }, // لینک به صفحه لیست تمام دسته‌بندی‌ها
-    { label: categoryData.name, href: `/ProductCategoryPage/${categoryData.id}` }, // لینک به خود صفحه فعلی
+    { label: "دسته‌بندی‌ها", href: "/categories" },
+    { label: categoryData.name, href: `/ProductCategoryPage/${categoryData.id}` },
   ];
 
   return (
     <div className="bg-body min-h-screen pb-15">
       <Container>
-        {/* ✨ 3. اضافه کردن کامپوننت Breadcrumb در بالای صفحه */}
         <div className="pt-6">
           <Breadcrumb items={breadcrumbItems} />
         </div>
 
         <section className="py-1">
            <div className="mb-6 mt-6">
-             {/* {categoryData.bannerUrl && (
-                <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-6">
-                    <Image src={categoryData.bannerUrl} alt={categoryData.bannerAlt || categoryData.name} fill className="object-cover" />
-                </div>
-             )} */}
-             <Label as="h1" size="2x" weight="extra-bold">{categoryData.name}</Label>
+             {/* 
+               --- عنوان و دکمه فیلتر در موبایل ---
+               از Flexbox برای چیدمان کنار هم استفاده می‌کنیم
+             */}
+             <div className="flex justify-between items-center mb-6 lg:hidden">
+                <Label as="h1" size="lg" weight="extra-bold">{categoryData.name}</Label>
+                {/* 
+                   کامپوننت فیلتر اینجا برای موبایل رندر می‌شود
+                   تا بتوانیم آن را کنار عنوان قرار دهیم
+                */}
+                <FilterSidebar 
+                  filters={filters} 
+                  onFilterChange={setFilters} 
+                  categories={categoryList}
+                  brands={brandList} 
+                />
+             </div>
+             
+             {/* عنوان در دسکتاپ */}
+             <div className="hidden lg:block">
+                <Label as="h1" size="2x" weight="extra-bold">{categoryData.name}</Label>
+             </div>
              
              {carSliderItems.length > 0 && (
                 <div className="my-8">
@@ -98,7 +110,12 @@ export function CategoryPageClient({ categoryData, initialProducts }: CategoryPa
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-          <div className="hidden lg:block lg:col-span-1 sticky top-24">
+          
+          {/* 
+            --- فیلتر سایدبار در دسکتاپ ---
+            این بخش فقط در دسکتاپ نمایش داده می‌شود
+          */}
+          <div className="hidden lg:block lg:col-span-1 lg:sticky lg:top-24">
              <FilterSidebar 
                filters={filters} 
                onFilterChange={setFilters} 
@@ -106,7 +123,7 @@ export function CategoryPageClient({ categoryData, initialProducts }: CategoryPa
                brands={brandList} 
              />
           </div>
-
+          
           <div className="lg:col-span-3">
              <SortOptions activeSort={activeSort} onSortChange={setActiveSort} />
              

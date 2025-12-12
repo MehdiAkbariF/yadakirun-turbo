@@ -83,4 +83,36 @@
   :root {
     --font-iranyekan: "Ravi"; 
   }
+  /* انیمیشن شناور شدن عکس (مثل معلق بودن در هوا) */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* انیمیشن ورود متن از راست */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-right {
+  animation: fadeInRight 0.8s ease-out forwards;
+  opacity: 0; /* وضعیت اولیه مخفی */
+  animation-fill-mode: forwards; /* در پایان انیمیشن همانجا بماند */
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
 }
