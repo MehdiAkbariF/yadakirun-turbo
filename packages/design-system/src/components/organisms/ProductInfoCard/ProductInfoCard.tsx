@@ -116,7 +116,7 @@ export const ProductInfoCard = ({
         size="sm" 
         disabled={!inStock}
         variant={inStock ? 'primary' : 'secondary'} // در دیزاین سیستم اگر variant اکسنت ندارید، primary
-        className="mt-5"
+        className="mt-6"
       >
         {inStock ? 'افزودن به سبد خرید' : 'ناموجود'}
       </Button>

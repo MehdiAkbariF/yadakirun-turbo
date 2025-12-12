@@ -83,7 +83,7 @@ export default function LoginPage() {
       <Button 
         type="submit" 
         fullWidth 
-        size="lg" 
+        size="md" 
         isLoading={isLoading}
         className="shadow-md"
       >

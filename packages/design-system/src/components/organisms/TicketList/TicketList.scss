@@ -1,0 +1,168 @@
+// مسیر: packages/design-system/src/components/organisms/TicketList/TicketList.scss
+@use '../../../styles/_variables.scss' as tokens;
+
+.ticket-list {
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-2xl;
+  padding: tokens.$spacing-6;
+  box-shadow: tokens.$shadow;
+  border: 1px solid tokens.$color-border-secondary;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: tokens.$spacing-3;
+    margin-bottom: tokens.$spacing-6;
+    border-bottom: 1px solid tokens.$color-border-secondary;
+    padding-bottom: tokens.$spacing-4;
+  }
+
+  &__icon {
+    color: tokens.$color-brand-primary;
+  }
+
+  &__tabs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); // ✅✅✅ عرض مینیمم کمتر برای کوچیک کردن تب‌ها ✅✅✅
+    gap: tokens.$spacing-2;
+    margin-bottom: tokens.$spacing-6;
+  }
+
+  &__tab {
+    display: flex;
+    flex-direction: row; // ✅✅✅ تغییر به row برای افقی کردن و کوچیک‌تر شدن ✅✅✅
+    align-items: center;
+    justify-content: center;
+    gap: tokens.$spacing-4; // ✅ فاصله بین المان‌ها
+    padding: tokens.$spacing-2; // ✅✅✅ پدینگ کمتر برای کوچیک کردن ✅✅✅
+    background-color: tokens.$color-bg-secondary;
+    border-radius: tokens.$radius-lg;
+    border: 1px solid tokens.$color-border-secondary;
+    transition: tokens.$transition-base;
+    text-wrap: nowrap;
+    
+    cursor: pointer;
+
+    &:hover {
+      border-color: tokens.$color-brand-primary;
+      box-shadow: tokens.$shadow-md;
+    }
+
+    &--active {
+      background-color: tokens.$color-brand-primary;
+      color: tokens.$color-text-on-brand;
+
+      .ticket-list__tab-label,
+      .ticket-list__tab-icon {
+        color: tokens.$color-text-on-brand;
+      }
+
+      .ticket-list__tab-count {
+        background-color: tokens.$color-text-on-brand;
+        color: tokens.$color-brand-primary;
+      }
+    }
+  }
+
+  &__tab-icon {
+    // ✅ حذف margin-bottom چون حالا row هست
+    color: tokens.$color-text-primary;
+  }
+
+  &__tab-label {
+    font-weight: tokens.$font-weight-semi-bold;
+    color: tokens.$color-text-primary;
+  }
+
+  &__tab-count {
+    // ✅ margin-top حذف و کوچیک‌تر کردن
+    background-color: tokens.$color-bg-surface;
+    color: tokens.$color-text-primary;
+    font-size: tokens.$font-size-xs;
+    padding: tokens.$spacing-1 tokens.$spacing-2;
+    border-radius: tokens.$radius-full;
+    font-weight: tokens.$font-weight-bold;
+  }
+
+  &__content {
+    min-height: 200px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: tokens.$spacing-4;
+  }
+
+  &__empty {
+    text-align: center;
+    padding: tokens.$spacing-10;
+  }
+}
+
+.ticket-card {
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$radius-lg;
+  border: 1px solid tokens.$color-border-secondary;
+  padding: tokens.$spacing-4;
+  box-shadow: tokens.$shadow;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: tokens.$spacing-4;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid tokens.$color-border-secondary;
+    padding-top: tokens.$spacing-4;
+  }
+
+  &__subject {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__link {
+    color: tokens.$color-brand-primary;
+    font-weight: tokens.$font-weight-semi-bold;
+    text-decoration: none;
+    transition: tokens.$transition-base;
+
+    &:hover {
+      color: tokens.$color-brand-primary-hover;
+    }
+  }
+}
+.ticket-card__link{
+   display: flex;
+    flex-direction: row; // ✅✅✅ تغییر به row برای افقی کردن و کوچیک‌تر شدن ✅✅✅
+    align-items: center;
+    justify-content: center;
+    gap: tokens.$spacing-2; // ✅ فاصله بین المان‌ها
+    padding: tokens.$spacing-2; // ✅✅✅ پدینگ کمتر برای کوچیک کردن ✅✅✅
+    background-color: tokens.$color-bg-secondary;
+    border-radius: tokens.$radius-lg;
+    border: 1px solid tokens.$color-border-secondary;
+    transition: tokens.$transition-base;
+    
+cursor: pointer;
+ 
+    &:hover {
+      border-color: tokens.$color-brand-primary;
+      box-shadow: tokens.$shadow-md;
+    }
+
+}

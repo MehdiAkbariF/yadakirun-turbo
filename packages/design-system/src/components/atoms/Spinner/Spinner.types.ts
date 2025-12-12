@@ -1,27 +1,13 @@
-export type SpinnerSize = 'sm' | 'md' | 'lg' | 'xl';
-export type SpinnerColor = 'primary' | 'secondary' | 'on-brand';
+// packages/design-system/src/components/atoms/Spinner/Spinner.types.ts
+import { HTMLAttributes } from 'react';
 
-export interface SpinnerProps {
-  /**
-   * اندازه اسپینر بر اساس توکن‌های فاصله‌گذاری.
-   * @default 'md'
-   */
+type SpinnerSize = 'sm' | 'md' | 'lg' | 'xl';
+// رنگ 'multicolor' رو اضافه کردم
+type SpinnerColor = 'primary' | 'secondary' | 'white' | 'multicolor'; 
+
+export interface SpinnerProps extends HTMLAttributes<HTMLDivElement> {
   size?: SpinnerSize;
-
-  /**
-   * رنگ اسپینر بر اساس رنگ‌های معنایی تم.
-   * @default 'primary'
-   */
   color?: SpinnerColor;
-
-  /**
-   * متنی برای خوانایی بهتر توسط صفحه‌خوان‌ها.
-   * @default 'در حال بارگذاری...'
-   */
   label?: string;
-
-  /**
-   * کلاس‌های CSS اضافی برای استایل‌دهی سفارشی.
-   */
-  className?: string;
+  strokeWidth?: number;
 }

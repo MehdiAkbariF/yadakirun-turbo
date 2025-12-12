@@ -1,0 +1,42 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.textarea-container {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-2;
+  width: 100%;
+
+  &--error {
+    .textarea-field {
+      border-color: tokens.$color-utility-error;
+      &:focus {
+        border-color: tokens.$color-utility-error;
+        box-shadow: 0 0 0 4px rgba(tokens.$color-utility-error, 0.1);
+      }
+    }
+  }
+}
+
+.textarea-field {
+  width: 100%;
+  min-height: 120px;
+  padding: tokens.$spacing-3;
+  border-radius: tokens.$radius-lg;
+  border: 1px solid tokens.$color-border-secondary;
+  background-color: tokens.$color-bg-surface;
+  color: tokens.$color-text-primary;
+  font-family: tokens.$font-family-base;
+  font-size: tokens.$font-size-sm;
+  resize: vertical; // اجازه تغییر ارتفاع
+  outline: none;
+  transition: all 0.2s ease;
+
+  &:focus {
+    border-color: tokens.$color-brand-primary;
+    box-shadow: 0 0 0 4px rgba(tokens.$color-brand-primary, 0.1);
+  }
+
+  &::placeholder {
+    color: tokens.$color-text-placeholder;
+  }
+}

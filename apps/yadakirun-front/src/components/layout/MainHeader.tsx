@@ -35,11 +35,11 @@ const initialCartItems = [
 ];
 
 interface MainHeaderProps {
-  menuData: MenuData;
+  menuData?: MenuData; // علامت سوال اضافه شد تا در صورت نبود دیتا ارور ندهد
 }
 
 export const MainHeader = ({ menuData }: MainHeaderProps) => {
-  console.log("--- MainHeader Component Re-rendered ---");
+  console.log("--- MainHeader Component Rendered ---");
   const pathname = usePathname();
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
@@ -48,6 +48,10 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
   const [cartItems, setCartItems] = useState(initialCartItems);
 
   const navigationItems = useMemo(() => {
+    // ✅ ایمن‌سازی دیتا: اگر menuData نال بود، آبجکت‌های خالی جایگزین شوند
+    const safeProductCategories = menuData?.productCategories || [];
+    const safeCarManufacturers = menuData?.carManufacturers || [];
+
     const categoriesNode = {
       id: "categories",
       title: "دسته‌بندی فروشگاه",
@@ -57,7 +61,8 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
           id: "parts",
           title: "قطعات خودرو",
           href: "/parts",
-          children: menuData.productCategories.map((cat) => ({
+          // ✅ استفاده از متغیر ایمن شده
+          children: safeProductCategories.map((cat) => ({
             id: `cat-${cat.id}`,
             title: cat.name,
             href: `/ProductCategoryPage/${cat.id}`,
@@ -67,17 +72,17 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
           id: "brands",
           title: "برند خودرو",
           href: "/brands",
-          children: menuData.carManufacturers.map((brand) => ({
+          // ✅ استفاده از متغیر ایمن شده
+          children: safeCarManufacturers.map((brand) => ({
             id: `brand-${brand.id}`,
             title: brand.name,
-            // ✨✨✨ اصلاح اصلی اینجاست ✨✨✨
-            // آدرس به ساختار جدید پوشه تغییر یافت
             href: `/CarManufacturerPage/${brand.id}`,
-            children: brand.cars.map((car) => ({
+            // ✅ استفاده از Optional Chaining برای children داخلی
+            children: brand.cars?.map((car) => ({
               id: `car-${car.id}`,
               title: car.modelName,
               href: `/CarPage/${car.id}`,
-            })),
+            })) || [],
           })),
         },
       ],
@@ -86,7 +91,7 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
     const staticLinks = [
       { id: "blog", title: "بلاگ", href: "/blog" },
       { id: "about", title: "درباره ما", href: "/about-us" },
-      { id: "faq", title: "تماس با ما", href: "/faq" },
+      { id: "faq", title: "تماس با ما", href: "/contact-us" },
       {
         id: "track-order",
         title: "پیگیری سفارش",
@@ -102,7 +107,7 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
     ];
 
     return [categoriesNode, ...staticLinks];
-  }, [menuData]);
+  }, [menuData]); // وابستگی به menuData صحیح است
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -188,10 +193,11 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
   );
 
   const megaMenuItem = navigationItems.find((item) => item.id === "categories");
+  // ✅ ایمن‌سازی دسترسی به children
   const categoriesForMegaMenu =
-    megaMenuItem?.children?.find((c: { id: string; }) => c.id === "parts")?.children || [];
+    megaMenuItem?.children?.find((c: any) => c.id === "parts")?.children || [];
   const brandsForMegaMenu =
-    megaMenuItem?.children?.find((c: { id: string; }) => c.id === "brands")?.children || [];
+    megaMenuItem?.children?.find((c: any) => c.id === "brands")?.children || [];
 
   return (
     <>
@@ -215,7 +221,7 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
             <MegaMenu
               triggerText={megaMenuItem.title}
               categories={categoriesForMegaMenu}
-              brands={brandsForMegaMenu.map((brand: { children: any; }) => ({
+              brands={brandsForMegaMenu.map((brand: any) => ({
                 ...brand,
                 subItems: brand.children || [],
               }))}

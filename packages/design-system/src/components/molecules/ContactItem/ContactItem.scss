@@ -1,0 +1,37 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: tokens.$spacing-4;
+  padding: tokens.$spacing-4;
+  background-color: tokens.$color-bg-surface;
+  border: 1px solid tokens.$color-border-secondary;
+  border-radius: tokens.$radius-xl;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: tokens.$color-brand-primary;
+    box-shadow: tokens.$shadow;
+    transform: translateY(-2px);
+  }
+
+  &__icon-box {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: tokens.$color-bg-secondary;
+    border-radius: tokens.$radius-lg;
+    color: tokens.$color-brand-primary;
+    flex-shrink: 0;
+  }
+
+  &--address {
+    align-items: flex-start;
+    .contact-item__icon-box {
+      margin-top: 4px;
+    }
+  }
+}

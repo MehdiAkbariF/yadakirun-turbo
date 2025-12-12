@@ -1,33 +1,30 @@
-import { ReactNode, ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+// انواع ظاهری دکمه
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success';
+export type ButtonSize = 'sm' | 'md' | 'lg';
+
+// پراپرتی‌های مشترک
+interface BaseButtonProps {
   children: ReactNode;
-  /**
-   * نوع ظاهری دکمه
-   * @default 'primary'
-   */
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success';
-  /**
-   * اندازه دکمه
-   * @default 'md'
-   */
-  size?: 'sm' | 'md' | 'lg';
-  /**
-   * آیا دکمه تمام عرض والد را بگیرد؟
-   * @default false
-   */
+  variant?: ButtonVariant;
+  size?: ButtonSize;
   fullWidth?: boolean;
-  /**
-   * وضعیت لودینگ
-   * @default false
-   */
   isLoading?: boolean;
-  /**
-   * آیکون سمت چپ
-   */
   leftIcon?: ReactNode;
-  /**
-   * آیکون سمت راست
-   */
   rightIcon?: ReactNode;
+  className?: string;
 }
+
+// 1. حالتی که دکمه معمولی است (بدون href)
+type ButtonAsButton = BaseButtonProps & ButtonHTMLAttributes<HTMLButtonElement> & {
+  href?: undefined;
+};
+
+// 2. حالتی که لینک است (با href)
+type ButtonAsLink = BaseButtonProps & AnchorHTMLAttributes<HTMLAnchorElement> & {
+  href: string;
+};
+
+// اجتماع این دو حالت
+export type ButtonProps = ButtonAsButton | ButtonAsLink;

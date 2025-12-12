@@ -1,0 +1,39 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.page-header {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  &__image {
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+    z-index: 1;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: tokens.$spacing-4;
+  }
+
+  &__divider {
+    width: 60px;
+    height: 4px;
+    background-color: tokens.$color-brand-primary;
+    border-radius: tokens.$radius-full;
+  }
+}

@@ -112,7 +112,7 @@ export default function VerifyPage() {
       <Button 
         type="submit" 
         fullWidth 
-        size="lg" 
+        size="md" 
         isLoading={isLoading}
         disabled={otp.length < 5}
         className="shadow-md"

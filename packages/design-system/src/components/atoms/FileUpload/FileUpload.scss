@@ -1,0 +1,56 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-2;
+  width: 100%;
+
+  &__box {
+    border: 1px dashed tokens.$color-border-secondary;
+    border-radius: tokens.$radius-lg;
+    background-color: tokens.$color-bg-secondary;
+    padding: tokens.$spacing-4;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      border-color: tokens.$color-brand-primary;
+      background-color: rgba(tokens.$color-brand-primary, 0.05);
+    }
+  }
+
+  &__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: tokens.$color-text-placeholder;
+  }
+
+  &__preview {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 tokens.$spacing-2;
+  }
+
+  &__remove {
+    background: transparent;
+    border: none;
+    color: tokens.$color-text-secondary;
+    cursor: pointer;
+    &:hover { color: tokens.$color-utility-error; }
+  }
+
+  &--error {
+    .file-upload__box {
+      border-color: tokens.$color-utility-error;
+    }
+  }
+}

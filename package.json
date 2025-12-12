@@ -10,6 +10,7 @@
     "storybook": "npm run storybook -w @monorepo/design-system"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.9.21",
     "cpy-cli": "^6.0.0",
     "prettier": "^3.2.5",
     "turbo": "latest"

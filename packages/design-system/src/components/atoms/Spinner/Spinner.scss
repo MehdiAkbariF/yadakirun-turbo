@@ -1,68 +1,76 @@
-  @use '../../../styles/_variables.scss' as tokens;
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-  
-  
+@use '../../../styles/_variables.scss' as tokens;
 
-  
-  // انیمیشن چرخش
-  @keyframes spinner-spin {
-    to {
-      transform: rotate(360deg);
+// ۱. انیمیشن چرخش (بسیار سریع)
+@keyframes spinner-spin-fast {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// ۲. انیمیشن تغییر رنگ (با رنگ‌های هاردکد شده برای تست، بعداً توکن‌ها را جایگزین کنید)
+// از ۴ رنگ استفاده می‌کنیم تا تغییر کاملاً محسوس باشد
+@keyframes spinner-colors-crazy {
+  0% { stroke: tokens.$color-brand-primary; }    // آبی (مثلاً)
+  25% { stroke: tokens.$color-brand-accent; }    // نارنجی
+  50% { stroke: #10b981; }                       // سبز (رنگ ثابت زدم که مطمئن بشم عوض میشه)
+  75% { stroke: #ef4444; }                       // قرمز
+  100% { stroke: tokens.$color-brand-primary; }  // برگشت به آبی
+}
+
+.spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  position: relative;
+
+  &__svg {
+    display: block; // حذف فاصله‌های اضافی
+    // چرخش روی کل SVG اعمال می‌شود
+    // 0.5s یعنی هر نیم ثانیه یک دور کامل! (خیلی سریع)
+    animation: spinner-spin-fast 0.5s linear infinite; 
+  }
+
+  &__path {
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke 0.2s ease;
+    
+    // نکته مهم: Dasharray را اینجا فیکس می‌کنیم تا خط همیشه دیده شود
+    // یک خط بلند (75% دایره) که می‌چرخد
+    stroke-dasharray: 90, 150; 
+    stroke-dashoffset: 0;
+  }
+
+  // --- مدیریت رنگ‌ها ---
+
+  // حالت رنگارنگ (Multicolor)
+  &--color-multicolor {
+    .spinner__path {
+      // انیمیشن رنگ روی مسیر (Path) اعمال می‌شود
+      // 2s یعنی کل چرخه رنگ‌ها 2 ثانیه طول می‌کشد
+      animation: spinner-colors-crazy 2s ease-in-out infinite;
     }
   }
-  
-  .spinner {
-    display: inline-block;
-    border-radius: tokens.$radius-full;
-    
-    // تکنیک: یک بوردر ضخیم و شفاف با یک لبه رنگی
-    border-style: solid;
-    border-color: transparent; // سه لبه شفاف
-    
-    // اعمال انیمیشن
-    animation: spinner-spin 0.3s linear infinite;
-  
-    // --- سایزها (بر اساس توکن‌ها) ---
-    &--size-sm {
-      width: tokens.$spacing-4;   // 16px
-      height: tokens.$spacing-4;
-      border-width: 2px;
-    }
-    &--size-md {
-      width: tokens.$spacing-6;   // 24px
-      height: tokens.$spacing-6;
-      border-width: 3px;
-    }
-    &--size-lg {
-      width: tokens.$spacing-10;  // 40px
-      height: tokens.$spacing-10;
-      border-width: 4px;
-    }
-    &--size-xl {
-      width: tokens.$spacing-16;  // 64px
-      height: tokens.$spacing-16;
-      border-width: 6px;
-    }
-  
-    // --- رنگ‌ها (بر اساس توکن‌های تم) ---
-    &--color-primary {
-      // لبه بالایی رنگی می‌شود
-      border-top-color: tokens.$color-brand-primary;
-    }
-    &--color-secondary {
-      border-top-color: tokens.$color-text-secondary;
-    }
-    &--color-on-brand {
-      border-top-color: tokens.$color-text-on-brand; // برای استفاده روی پس‌زمینه‌های رنگی
-    }
-  }
+
+  // حالت‌های تک رنگ
+  &--color-primary { .spinner__path { stroke: tokens.$color-brand-primary; } }
+  &--color-secondary { .spinner__path { stroke: tokens.$color-text-secondary; } }
+  &--color-white { .spinner__path { stroke: #ffffff; } }
+
+  // --- سایزها ---
+  &--size-sm { width: 20px; height: 20px; }
+  &--size-md { width: 32px; height: 32px; }
+  &--size-lg { width: 48px; height: 48px; }
+  &--size-xl { width: 64px; height: 64px; }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

@@ -34,6 +34,7 @@ export const ArticleRow = ({
         <div className="article-row__body">
           <Label 
             as="h3" 
+            size='sm'
             // سایز در CSS کنترل می‌شود (برای موبایل sm برای دسکتاپ lg)
             className="article-row__title group-hover:text-brand-primary transition-colors"
             weight="bold"
@@ -45,6 +46,7 @@ export const ArticleRow = ({
             as="p" 
             className="article-row__excerpt"
             color="secondary"
+            size='sm'
           >
             {excerpt}
           </Label>
