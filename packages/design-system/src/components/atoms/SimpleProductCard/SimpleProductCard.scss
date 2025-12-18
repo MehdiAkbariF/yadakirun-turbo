@@ -2,44 +2,106 @@
 
 .simple-product-card {
   display: flex;
-  // ✅ موبایل: افقی (چون سایت RTL است، عکس خودکار سمت راست می‌افتد)
   flex-direction: row; 
-  align-items: stretch; // هم‌اندازه شدن ارتفاع عکس و متن
+  align-items: stretch;
   background-color: tokens.$color-bg-surface;
   padding: tokens.$spacing-3;
   transition: all 0.2s ease-in-out;
   text-decoration: none;
   position: relative;
   height: 100%;
-  min-height: 140px; // حداقل ارتفاع در موبایل
+  min-height: 140px;
 
-  // ✅ دسکتاپ (و تبلت): عمودی
   @media (min-width: tokens.$breakpoint-sm) {
     flex-direction: column;
     padding: tokens.$spacing-4;
   }
 
-  &:hover {
-    background-color: tokens.$color-bg-surface-hover;
-    z-index: 1;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  // --- Hover Effect (فقط برای دسکتاپ) ---
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-bg-surface-hover;
+      z-index: 1;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+
+      .simple-product-card__add-btn {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
   }
+
+  // --- لینک اصلی که تمام محتوا را در بر می‌گیرد ---
+  &__main-link {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    text-decoration: none;
+    color: inherit;
+    
+    @media (min-width: tokens.$breakpoint-sm) {
+      flex-direction: column;
+    }
+  }
+
+  // --- دکمه افزودن به سبد خرید ---
+  &__add-btn {
+    position: absolute;
+    top: tokens.$spacing-3;
+    left: tokens.$spacing-3; // در RTL، چپ
+    z-index: 5;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: tokens.$radius-full;
+    border: 1px solid tokens.$color-border-secondary;
+    background-color: rgba(var(--color-bg-surface-rgb), 0.8);
+    backdrop-filter: blur(4px);
+    color: tokens.$color-text-primary;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    // --- استایل پیش‌فرض (دسکتاپ) ---
+    width: 32px;
+    height: 32px;
+    opacity: 0;
+    transform: scale(0.8);
+
+    &:hover {
+      background-color: tokens.$color-brand-primary;
+      border-color: tokens.$color-brand-primary;
+      color: tokens.$color-text-on-brand;
+    }
+    
+    // --- بازنویسی استایل برای موبایل ---
+    @media (max-width: tokens.$breakpoint-sm) {
+      width: 36px;
+      height: 36px;
+      opacity: 1;
+      transform: scale(1);
+      box-shadow: tokens.$shadow; 
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
 
   // --- بخش تصویر ---
   &__image-wrapper {
     position: relative;
-    // در موبایل عرض فیکس و کوچک دارد
     width: 90px; 
-    flex-shrink: 0; // جلوگیری از جمع شدن عکس
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: tokens.$spacing-3; // فاصله از متن (در RTL میشه سمت چپ عکس)
+    margin-left: tokens.$spacing-3;
 
     @media (min-width: tokens.$breakpoint-sm) {
-     
       width: 150px;
-      aspect-ratio: 1 / 1; // در دسکتاپ مربعی شود
+      aspect-ratio: 1 / 1;
       margin-left: auto;
       margin-right: auto;
       margin-bottom: tokens.$spacing-3;
@@ -47,23 +109,21 @@
   }
 
   &__image {
-    object-fit: fill;
+    object-fit: contain;
     max-height: 100%;
     width: auto;
     max-width: 100%;
     transition: transform 0.3s ease;
   }
 
- 
-
-  // --- بخش محتوا (جدید) ---
+  // --- بخش محتوا ---
   &__content {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    justify-content: space-between; // پخش کردن محتوا در ارتفاع
+    justify-content: space-between;
     width: 100%;
-    overflow: hidden; // جلوگیری از سرریز متن
+    overflow: hidden;
   }
 
   &__title {
@@ -72,8 +132,6 @@
     color: tokens.$color-text-primary;
     line-height: 1.6;
     margin-bottom: tokens.$spacing-2;
-    
-    // محدود کردن به ۳ خط در موبایل (مشابه کد قبلی)
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -81,12 +139,12 @@
 
     @media (min-width: tokens.$breakpoint-sm) {
       font-size: tokens.$font-size-sm;
-      -webkit-line-clamp: 2; // در دسکتاپ ۲ خط
+      -webkit-line-clamp: 2;
     }
   }
 
   &__meta {
-    font-size: 10px; // در موبایل خیلی ریز
+    font-size: 10px;
     color: tokens.$color-text-placeholder;
     margin-bottom: tokens.$spacing-2;
     display: flex;
@@ -103,7 +161,7 @@
   &__price-section {
     display: flex;
     flex-direction: column;
-    align-items: flex-end; // قیمت همیشه سمت چپ (پایان خط)
+    align-items: flex-end;
     gap: 2px;
   }
 
@@ -114,38 +172,31 @@
   }
 
   &__old-price {
-    font-size: tokens.$font-size-sm;
+    font-size: tokens.$font-size-xs; // ریزتر شد
     color: tokens.$color-text-placeholder;
     text-decoration: line-through;
-
- 
   }
 
   &__price {
-    font-size: tokens.$font-size-sm;
-    font-weight: tokens.$font-weight-bold;
-    color: tokens.$color-text-primary;
-    
-    span {
+    display: flex;
+    align-items: baseline; // تراز بهتر تومان
+    gap: tokens.$spacing-1;
+
+    span:first-child { // خود عدد قیمت
       font-size: tokens.$font-size-base;
       font-weight: tokens.$font-weight-bold;
-      margin-right: 2px;
+      color: tokens.$color-text-primary;
     }
 
-    @media (min-width: tokens.$breakpoint-sm) {
-      font-size: tokens.$font-size-base;
-      
-      span {
-        font-size: tokens.$font-size-sm;
-        margin-right: 4px;
-      }
+    span:last-child { // کلمه تومان
+      font-size: 10px;
     }
   }
 
   &__out-of-stock {
-    font-size: tokens.$font-size-sm;
-    color: tokens.$color-text-disabled;
-    font-weight: tokens.$font-weight-bold;
-    text-align: left;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
   }
 }

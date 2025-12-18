@@ -1,83 +1,54 @@
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Phone } from 'lucide-react';
 
 // Imports from DS
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
-import { Input } from '@monorepo/design-system/src/components/atoms/Input/Input';
 import { Button } from '@monorepo/design-system/src/components/atoms/Button/Button';
-import { Alert } from '@monorepo/design-system/src/components/molecules/Alert/Alert';
+import { Input } from '@monorepo/design-system/src/components/atoms/Input/Input';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [mobile, setMobile] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
-  // ✅ مدیریت پیشرفته ارور با آیدی برای ریست شدن تایمر
-  const [errorState, setErrorState] = useState<{ message: string; id: number } | null>(null);
-
-  const showError = (msg: string) => {
-    setErrorState({ message: msg, id: Date.now() }); // آیدی جدید باعث ری-رندر کامل آلرت می‌شود
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorState(null); // پاک کردن ارور قبلی
-
-    const mobileRegex = /^09[0-9]{9}$/;
-    
-    if (!mobileRegex.test(mobile)) {
-      // ✅ نمایش ارور با تایمر
-      showError('لطفاً یک شماره موبایل معتبر (۱۱ رقم با ۰۹) وارد کنید.');
-      return;
-    }
+    if (mobile.length < 11) return; // اعتبارسنجی ساده
 
     setIsLoading(true);
-
+    
+    // شبیه‌سازی ارسال شماره موبایل به API
     setTimeout(() => {
       setIsLoading(false);
+      // پس از موفقیت، کاربر را به صفحه تایید به همراه شماره موبایل هدایت می‌کنیم
       router.push(`/verify?mobile=${mobile}`);
     }, 1000);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="text-center mb-6">
+      
+      {/* هدر */}
+      <div className="text-center mb-8">
         <Label size="lg" weight="bold" className="mb-2">ورود | ثبت‌نام</Label>
-        <Label size="sm" color="secondary">
-          لطفاً شماره موبایل خود را وارد کنید
-        </Label>
+        <Label size="sm" color="secondary">با وارد کردن شماره موبایل، کد تایید برای شما ارسال می‌شود</Label>
       </div>
 
-      {/* ✅ استفاده حرفه‌ای از Alert */}
-      {errorState && (
-        <Alert 
-          key={errorState.id} // ⭐️ نکته کلیدی: تغییر این کلید باعث ریست شدن تایمر می‌شود
-          variant="warning" 
-          duration={3000} // ۶ ثانیه زمان
-          onClose={() => setErrorState(null)}
-        >
-          {errorState.message}
-        </Alert>
-      )}
-
-      <div>
+      {/* فیلد ورودی شماره موبایل */}
+      <div className="relative">
         <Input
           id="mobile"
-          type="tel"
-          placeholder="مثال: 09123456789"
+          type="tel" // نوع مناسب برای شماره تلفن
+          placeholder="شماره موبایل"
           value={mobile}
-          onChange={(e) => {
-            setMobile(e.target.value);
-            if (errorState) setErrorState(null); // پاک کردن ارور هنگام تایپ
-          }}
-          leftIcon={<Phone size={18} className="text-placeholder" />}
-          label="شماره موبایل"
-          className="text-left ltr placeholder:text-right"
-          dir="ltr"
+          onChange={(e) => setMobile(e.target.value)}
+          inputMode="numeric" // کیبورد عددی را در موبایل نشان می‌دهد
+          autoComplete="tel"
+          className="text-center tracking-[4px] font-mono" // استایل برای ظاهر بهتر
           maxLength={11}
         />
+        <Label htmlFor="mobile" as="label" className="sr-only">شماره موبایل</Label>
       </div>
 
       <Button 
@@ -85,6 +56,7 @@ export default function LoginPage() {
         fullWidth 
         size="md" 
         isLoading={isLoading}
+        disabled={mobile.length < 11}
         className="shadow-md"
       >
         دریافت کد تایید

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, ChevronLeft } from "lucide-react"; // اضافه کردن ChevronLeft برای موبایل
+import { Clock } from "lucide-react"; // ChevronLeft حذف شد چون استفاده نمی‌شد
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, FreeMode } from "swiper/modules";
@@ -17,7 +17,11 @@ import { ProductCardProps } from "@monorepo/design-system/src/components/atoms/P
 import { CountdownTimer } from "@monorepo/design-system/src/components/molecules/CountdownTimer/CountdownTimer";
 import { Label } from "@monorepo/design-system/src/components/atoms/Label/Label";
 
-// داده‌های پیش‌فرض
+// ✅ 1. ایمپورت هر دو store و هوک useMediaQuery
+import { useBasketStore } from "@/src/stores/basketStore";
+import { useUIStore } from "@/src/stores/uiStore";
+import { useMediaQuery } from '@/src/hooks/useMediaQuery';
+
 const defaultOfferData = [
   {
     id: 1,
@@ -31,8 +35,10 @@ const defaultOfferData = [
   },
 ];
 
+type SpecialOfferProduct = Omit<ProductCardProps, 'className' | 'onAddToCart'> & { id: string | number };
+
 interface SpecialOffersProps {
-  products?: (Omit<ProductCardProps, 'className'> & { id: string | number })[];
+  products?: SpecialOfferProduct[];
   title?: string;
   endTime?: number;
 }
@@ -42,7 +48,13 @@ export const SpecialOffers = ({
   title = "تخفیفات ویژه",
   endTime 
 }: SpecialOffersProps) => {
+  // ✅ 2. دسترسی به اکشن‌های هر دو store
+  const { addItem } = useBasketStore();
+  const { openCartDrawerOnDesktop } = useUIStore();
   
+  // ✅ 3. تشخیص وضعیت دسکتاپ
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+
   const [timeLeft, setTimeLeft] = useState({
     days: 0, hours: 0, minutes: 0, seconds: 0
   });
@@ -72,6 +84,16 @@ export const SpecialOffers = ({
     return () => clearInterval(timer);
   }, [endTime]);
 
+  // ✅ 4. ساخت یک تابع هندلر جدید برای مدیریت شرطی عملیات
+  const handleAddToCart = async (productId: string | number) => {
+    await addItem({
+      productId: Number(productId),
+      quantity: 1,
+    });
+    
+    openCartDrawerOnDesktop(isDesktop);
+  };
+
   if (!products || products.length === 0) return null;
 
   return (
@@ -79,17 +101,13 @@ export const SpecialOffers = ({
       <div className="bg-highlight rounded-2xl shadow-lg overflow-hidden my-10">
         <div className="p-2 lg:p-4">
           
-          {/* ✅✅✅ هدر موبایل (فقط در موبایل نمایش داده می‌شود) ✅✅✅ */}
-          {/* بدون عکس و تایمر، در بالای اسلایدر */}
           <div className="flex items-center justify-between px-2 mb-4 lg:hidden">
             <div className="flex items-center gap-2">
-               {/* آیکون کوچک ساعت برای جذابیت (اختیاری) */}
                <Clock size={20} className="text-white" />
                <Label as="h2" size="xl" weight="extra-bold" color="on-brand">
                  {title}
                </Label>
             </div>
-           
           </div>
 
           <Swiper
@@ -101,8 +119,6 @@ export const SpecialOffers = ({
             freeMode={true}
             className="!py-1"
           >
-            {/* ✅✅✅ اسلاید معرفی (فقط در دسکتاپ نمایش داده می‌شود) ✅✅✅ */}
-            {/* کلاس hidden lg:flex باعث مخفی شدن در موبایل می‌شود */}
             <SwiperSlide key="special-offer-intro" className="!hidden lg:!flex !w-auto !h-auto items-center">
               <div className="intro-card flex flex-col justify-center items-center gap-2 h-full">
                 <Image
@@ -129,8 +145,7 @@ export const SpecialOffers = ({
               </div>
             </SwiperSlide>
 
-            {/* اسلایدهای محصولات */}
-            {products.map((product: any) => (
+            {products.map((product: SpecialOfferProduct) => (
               <SwiperSlide 
                 key={product.id} 
                 className="!w-64 !h-auto !flex"
@@ -141,9 +156,9 @@ export const SpecialOffers = ({
                   imgSrc={product.imgSrc}
                   price={product.price}
                   originalPrice={product.originalPrice} 
-                  rating={product.rating}
-                  badgeText={product.badgeText || product.carName} 
+                  badgeText={product.badgeText} 
                   className="w-full h-full"
+                  onAddToCart={() => handleAddToCart(product.id)}
                 />
               </SwiperSlide>
             ))}

@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowRight, Timer } from 'lucide-react';
 
+// ✅ 1. ایمپورت هوک useAuth
+import { useAuth } from '@/src/context/AuthContext';
+
 // Imports from DS
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
 import { Button } from '@monorepo/design-system/src/components/atoms/Button/Button';
@@ -13,12 +16,14 @@ export default function VerifyPage() {
   const searchParams = useSearchParams();
   const mobile = searchParams.get('mobile') || '---';
 
+  // ✅ 2. دسترسی به تابع login از AuthContext
+  const { login } = useAuth();
+
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [timer, setTimer] = useState(120); // 2 دقیقه زمان
+  const [timer, setTimer] = useState(120);
   const [canResend, setCanResend] = useState(false);
 
-  // تایمر معکوس
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (timer > 0) {
@@ -37,16 +42,20 @@ export default function VerifyPage() {
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (otp.length < 5) return;
+    if (otp.length < 5 || isLoading) return;
 
     setIsLoading(true);
-    // شبیه‌سازی API
+
+    // شبیه‌سازی API تایید کد
     setTimeout(() => {
+      // ✅ 3. به جای alert، تابع login را فراخوانی می‌کنیم
+      login();
+
       setIsLoading(false);
-      alert('ورود موفقیت آمیز!');
-      router.push('/'); // رفتن به صفحه اصلی یا داشبورد
+      // پس از لاگین موفق، کاربر را به صفحه اصلی هدایت می‌کنیم
+      router.push('/');
     }, 1500);
   };
 
@@ -54,14 +63,12 @@ export default function VerifyPage() {
     setTimer(120);
     setCanResend(false);
     setOtp('');
-    // فراخوانی API ارسال مجدد کد
     console.log('Resending code...');
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 ">
+    <form onSubmit={handleSubmit} className="space-y-6">
       
-      {/* هدر با دکمه بازگشت */}
       <div className="text-center mb-2 relative">
         <button 
           type="button" 
@@ -86,7 +93,6 @@ export default function VerifyPage() {
         />
       </div>
 
-      {/* تایمر و ارسال مجدد */}
       <div className="flex justify-center">
         {canResend ? (
           <Button 

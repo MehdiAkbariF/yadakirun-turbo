@@ -2498,6 +2498,293 @@ export interface PaginatedResponse<T> {
 }
 
 
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\organisms\Modal\Modal.tsx'
+"use client";
+import React, { useEffect, useState } from 'react';
+import { X } from 'lucide-react';
+import { Label } from '../../atoms/Label/Label';
+import './Modal.scss';
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+  footer?: React.ReactNode;
+  /**
+   * سایز مودال
+   * @default 'md'
+   */
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+}
+
+export const Modal = ({ 
+  isOpen, 
+  onClose, 
+  title, 
+  children, 
+  footer, 
+  size = 'md' 
+}: ModalProps) => {
+  const [isVisible, setIsVisible] = useState(false); // آیا در DOM رندر شود؟
+  const [isAnimateIn, setIsAnimateIn] = useState(false); // آیا کلاس‌های ورود اعمال شود؟
+
+  // مدیریت چرخه حیات انیمیشن
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+      // یک تاخیر کوچک برای اینکه مرورگر رندر اولیه را انجام دهد و انیمیشن CSS اجرا شود
+      requestAnimationFrame(() => {
+        setIsAnimateIn(true);
+      });
+      document.body.style.overflow = 'hidden';
+    } else {
+      setIsAnimateIn(false);
+      document.body.style.overflow = 'unset';
+      // صبر می‌کنیم تا انیمیشن خروج (300ms) تمام شود
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  // بستن با دکمه Escape
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) onClose();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen, onClose]);
+
+  if (!isVisible) return null;
+
+  return (
+    <div 
+      className={`modal-overlay ${isAnimateIn ? 'modal-overlay--open' : ''}`} 
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="modal-backdrop" />
+      
+      <div 
+        className={`modal-container modal-container--${size} ${isAnimateIn ? 'modal-container--open' : ''}`}
+        onClick={(e) => e.stopPropagation()} // جلوگیری از بستن هنگام کلیک روی محتوا
+      >
+        <div className="modal-header">
+          <Label weight="extra-bold" size="sm" className="modal-title">{title}</Label>
+          <button onClick={onClose} className="modal-close-btn" aria-label="بستن">
+            <X size={20} />
+          </button>
+        </div>
+        
+        <div className="modal-content custom-scrollbar">
+          {children}
+        </div>
+        
+        {footer && (
+          <div className="modal-footer">
+            {footer}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\design-system\src\components\organisms\Modal\Modal.scss'
+@use '../../../styles/_variables.scss' as tokens;
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  
+  // موبایل: Bottom Sheet
+  align-items: flex-end; 
+  justify-content: center;
+  
+  // دسکتاپ: Center Modal
+  @media (min-width: tokens.$breakpoint-sm) {
+    align-items: center;
+    padding: tokens.$spacing-4;
+  }
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  &--open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  transition: background-color 0.3s ease;
+}
+
+.modal-container {
+  position: relative;
+  width: 100%;
+  background-color: tokens.$color-bg-surface;
+  box-shadow: tokens.$shadow-2xl;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  
+  // ✅✅✅ اصلاح اصلی اینجاست ✅✅✅
+  // در موبایل ارتفاع auto است ولی حداکثر ۸۰ درصد صفحه را می‌گیرد
+  height: auto;
+  max-height: 80vh;
+
+  // --- استایل موبایل (Bottom Sheet) ---
+  border-top-left-radius: tokens.$radius-2xl;
+  border-top-right-radius: tokens.$radius-2xl;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+
+  // --- استایل دسکتاپ (Center Modal) ---
+  @media (min-width: tokens.$breakpoint-sm) {
+    border-radius: tokens.$radius-2xl;
+    // در دسکتاپ ارتفاع را به حالت اولیه برمی‌گردانیم (اگر نیاز بود)
+    // ولی معمولاً max-height: 85vh کافی است
+    max-height: 85vh; 
+    
+    transform: scale(0.95) translateY(10px);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  }
+
+  // --- حالت باز (انیمیت شده) ---
+  &--open {
+    transform: translateY(0);
+
+    @media (min-width: tokens.$breakpoint-sm) {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+  }
+
+  // --- سایزها ---
+  &--sm { max-width: 400px; }
+  &--md { max-width: 550px; }
+  &--lg { max-width: 800px; }
+  &--xl { max-width: 1100px; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: tokens.$spacing-5;
+  border-bottom: 1px solid tokens.$color-border-secondary;
+  background-color: tokens.$color-bg-surface;
+  flex-shrink: 0; // هدر نباید کوچک شود
+  border-radius: tokens.$radius-2xl tokens.$radius-2xl 0 0;
+}
+
+.modal-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; // سایز بزرگتر برای کلیک راحت‌تر
+  height: 32px;
+  border-radius: tokens.$radius-full;
+  background: transparent;
+  border: none;
+  color: tokens.$color-text-secondary;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover { 
+    color: tokens.$color-utility-error;
+    background-color: tokens.$color-bg-secondary;
+  }
+}
+
+.modal-content {
+  padding: tokens.$spacing-6;
+  overflow-y: auto; // اسکرول فقط زمانی که محتوا زیاد است
+  
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { 
+    background-color: tokens.$color-border-primary; 
+    border-radius: 4px; 
+  }
+}
+
+.modal-footer {
+  padding: tokens.$spacing-3 tokens.$spacing-4;
+  border-top: 1px solid tokens.$color-border-secondary;
+  background-color: tokens.$color-bg-secondary;
+  display: flex;
+  justify-content: flex-end;
+  gap: tokens.$spacing-3;
+  flex-shrink: 0; // فوتر نباید کوچک شود
+  border-bottom-left-radius: tokens.$radius-2xl;
+  border-bottom-right-radius: tokens.$radius-2xl;
+  
+  @media (max-width: tokens.$breakpoint-sm) {
+    border-radius: 0;
+    padding-bottom: calc(tokens.$spacing-4 + env(safe-area-inset-bottom));
+  }
+}
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\api-client\src\services\aboutUsService.ts'
+import { AboutUsPageData } from '../types/about.types';
+
+const BASE_URL = "https://api-yadakirun.yadakchi.com/api";
+
+export const aboutUsService = {
+  getAboutUsPageData: async (): Promise<AboutUsPageData | null> => {
+    try {
+      const response = await fetch(`${BASE_URL}/Front/AboutUsPage`, {
+        next: { revalidate: 86400 }, // کش برای ۲۴ ساعت
+      } as any);
+
+      if (!response.ok) {
+        throw new Error(`API call failed: ${response.statusText}`);
+      }
+      
+      return await response.json() as AboutUsPageData;
+    } catch (error) {
+      console.error('Error fetching About Us page data:', error);
+      return null;
+    }
+  },
+};
+
+& 'c:\Users\Raven\New folder (2)\monorepo\packages\api-client\src\types\about.types.ts'
+export interface Banner {
+  targetUrl: string;
+  image: string;
+  imageAlt: string;
+  bannerPlace: number;
+  bannerPlaceName: string;
+}
+
+export interface AboutUsPageData {
+  id: number;
+  pageName: string;
+  description: string;
+  metaTitle: string;
+  metaDescription: string;
+  canonicalUrl: string;
+  banners: Banner[];
+}
+
 
 و به همین ترتیب بقیه کد ها  ...
 

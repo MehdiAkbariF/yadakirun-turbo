@@ -2,7 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Clock, Calendar, Folder, CornerDownLeft, MessageSquare, ChevronLeft } from 'lucide-react';
+import { Clock, Calendar, Folder, MessageSquare, ChevronLeft } from 'lucide-react';
+import { blogService } from '@monorepo/api-client/src/services/blogService';
 
 // --- ایمپورت‌های دیزاین سیستم ---
 import { Container } from '@monorepo/design-system/src/components/organisms/Container/Container';
@@ -11,81 +12,26 @@ import { SidebarWidget } from '@monorepo/design-system/src/components/molecules/
 import { SidebarNewsSlider } from '@monorepo/design-system/src/components/molecules/SidebarNewsSlider/SidebarNewsSlider';
 import { AdBanner } from '@monorepo/design-system/src/components/atoms/AdBanner/AdBanner';
 import { CommentsSection } from '@monorepo/design-system/src/components/organisms/CommentsSection/CommentsSection';
-import { ProductCard } from '@monorepo/design-system/src/components/atoms/ProductCard/ProductCard';
-import { Accordion } from '@monorepo/design-system/src/components/molecules/Accordion/Accordion';
-import { QuoteBlock } from '@monorepo/design-system/src/components/atoms/QuoteBlock/QuoteBlock';
-import { CallToActionBanner } from '@monorepo/design-system/src/components/molecules/CallToActionBanner/CallToActionBanner';
 import { FeedbackActions } from '@monorepo/design-system/src/components/molecules/FeedbackActions/FeedbackActions';
+import { BlogCard } from '@monorepo/design-system/src/components/molecules/BlogCard/BlogCard';
 
-// --- تایپ‌ها ---
-import { NewCommentPayload, CommentData, ProductStats } from '@monorepo/design-system/src/types/comment.types';
+// --- تنظیمات متا دیتا داینامیک ---
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const apiData = await blogService.getBlogPostDetail(slug);
 
-// --- داده‌های نمونه (Mock Data) ---
-const blogPostsData = [
-  {
-    id: 1,
-    slug: "how-to-change-oil",
-    title: "راهنمای جامع تعویض روغن موتور خودرو در خانه",
-    excerpt: "در این مقاله به صورت قدم به قدم یاد می‌گیرید که چگونه روغن موتور خودروی خود را مانند یک حرفه‌ای تعویض کنید...",
-    imageUrl: "/Renault.svg",
-    bannerUrl: "/SGA-banner.webp",
-    category: { name: "آموزش فنی", slug: "technical" },
-    date: "۱۴۰۴/۰۵/۰۱",
-    readTime: 5,
-    tableOfContents: [
-      "مقدمه‌ای بر اهمیت روغن موتور",
-      "ابزار مورد نیاز",
-      "بخش ویژه: نکات کلیدی",
-      "مراحل تعویض روغن",
-    ],
-    content: [
-      { type: "paragraph", text: "روغن موتور نقش خون در رگ‌های خودروی شما را دارد. تعویض به موقع آن نه تنها عمر موتور را افزایش می‌دهد، بلکه باعث کاهش مصرف سوخت و عملکرد نرم‌تر خودرو می‌شود." },
-      { type: "heading", text: "ابزار مورد نیاز" },
-      { type: "paragraph", text: "برای تعویض روغن به یک آچار فیلتر، یک تشت برای جمع‌آوری روغن سوخته، قیف و دستکش نیاز دارید. حتماً از ایمن بودن جک خودرو اطمینان حاصل کنید." },
-      { type: "banner" },
-      { type: "heading", text: "انتخاب روغن مناسب" },
-      { type: "paragraph", text: "همیشه به دفترچه راهنمای خودرو مراجعه کنید. ویسکوزیته (غلظت) روغن باید دقیقاً مطابق با توصیه سازنده باشد." },
-      { type: "quote", text: "هرگز روغن سوخته را در طبیعت رها نکنید. آن را به مراکز تعویض روغنی تحویل دهید تا بازیافت شود." },
-    ],
-    cta: {
-      title: "خرید بهترین روغن موتورها",
-      link: "/products/oil",
-      description: "انواع روغن موتورهای اصل با ضمانت کیفیت را از یدکی‌ران تهیه کنید.",
+  if (!apiData) return { title: 'مقاله یافت نشد' };
+
+  return {
+    title: apiData.post.metaTitle || apiData.post.title,
+    description: apiData.post.metaDescription,
+    alternates: {
+      canonical: apiData.post.canonicalUrl,
     },
-  },
-];
+  };
+}
 
-// داده‌های محصول مرتبط
-const relatedProductData = {
-    title: "کیت تسمه تایم اصلی رنو تندر 90 (L90)",
-    href: "/product/timing-belt-l90",
-    imgSrc: "/Renault.svg",
-    price: 2300000,
-    badgeText: "پیشنهاد ویژه"
-};
-
-const categories = [
-    { id: 1, title: 'آموزش فنی', count: 12 },
-    { id: 2, title: 'ایمنی خودرو', count: 8 },
-    { id: 3, title: 'لوازم جانبی', count: 5 },
-];
-
-const newsData = [
-    { href: '#', title: 'نکات مهم در خرید لوازم یدکی اصلی', imgSrc: '/SGA-banner.webp', date: '۲۵ آبان ۱۴۰۴' },
-    { href: '#', title: 'چطور از جلوبندی خودروی خود مراقبت کنیم؟', imgSrc: '/aisin-clutch-banner.webp', date: '۲۲ آبان ۱۴۰۴' },
-        { href: '#', title: 'چطور از جلوبندی خودروی خود مراقبت کنیم؟', imgSrc: '/aisin-clutch-banner.webp', date: '۲۲ آبان ۱۴۰۴' },
-            { href: '#', title: 'چطور از جلوبندی خودروی خود مراقبت کنیم؟', imgSrc: '/aisin-clutch-banner.webp', date: '۲۲ آبان ۱۴۰۴' },
-                { href: '#', title: 'چطور از جلوبندی خودروی خود مراقبت کنیم؟', imgSrc: '/aisin-clutch-banner.webp', date: '۲۲ آبان ۱۴۰۴' },
-                    { href: '#', title: 'چطور از جلوبندی خودروی خود مراقبت کنیم؟', imgSrc: '/aisin-clutch-banner.webp', date: '۲۲ آبان ۱۴۰۴' },
-];
-
-// داده‌های نظرات
-const mockComments: CommentData[] = [
-  { id: 1, author: "علی محمدی", date: "۳ روز پیش", authorType: "buyer", rating: 5, content: "عالی بود! خیلی کامل توضیح دادید.", likes: 15, dislikes: 0, isBuyer: true },
-  { id: 2, author: "مریم حسینی", date: "۱ هفته پیش", authorType: "user", rating: 4, content: "ممنون از شما. کاش ویدیوی آموزشی هم داشت.", likes: 8, dislikes: 1, isBuyer: false },
-];
-const productStatsData: ProductStats = { reviewCount: 123, averageRating: 4.9 };
-
+const BASE_IMG_URL = "https://api-yadakirun.yadakchi.com";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -94,13 +40,24 @@ interface PageProps {
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const currentPost = blogPostsData.find((p) => p.slug === slug);
+  // ۱. دریافت داده‌ها از API (Slug در واقع ID است)
+  const apiData = await blogService.getBlogPostDetail(slug);
 
-  if (!currentPost) {
+  if (!apiData) {
     notFound();
   }
 
-  async function handleAddComment(data: NewCommentPayload) {
+  const { post, blogCategories, mostViewedPosts, relatedPosts } = apiData;
+
+  // تبدیل داده‌های سایدبار برای اسلایدر اخبار (به عنوان نمونه)
+  const sidebarNewsItems = mostViewedPosts.map(p => ({
+    title: p.title,
+    date: new Date(p.createDate).toLocaleDateString('fa-IR'),
+    imgSrc: p.coverUrl ? `${BASE_IMG_URL}${p.coverUrl}` : '/placeholder.png',
+    href: `/blog/${p.id}`
+  }));
+
+  async function handleAddComment(data: any) {
     'use server';
     console.log('Comment Submitted:', data);
   }
@@ -113,195 +70,135 @@ export default async function BlogPostPage({ params }: PageProps) {
           {/* --- Main Content --- */}
           <div className="lg:col-span-9">
             
-            <article className="bg-surface rounded-2xl shadow-sm overflow-hidden border border-border-secondary">
+            <article className="bg-surface rounded-3xl shadow-sm overflow-hidden border border-border-secondary">
               
               {/* Hero Header */}
-              <header className="p-6 md:p-8">
-                 <div className="flex flex-col md:flex-row gap-6 mb-6 " >
-                    <div className="relative w-full md:w-1/3 h-64 md:h-48 rounded-xl overflow-hidden  bg-secondary-bg ">
+              <header className="p-6 md:p-10 border-b border-gray-100">
+                 <div className="flex flex-col gap-8">
+                    {/* تصویر شاخص */}
+                    <div className="relative w-full h-[300px] md:h-[450px] rounded-2xl overflow-hidden shadow-lg">
                        <Image 
-                         src={currentPost.imageUrl} 
-                         alt={currentPost.title} 
+                         src={post.coverUrl ? `${BASE_IMG_URL}${post.coverUrl}` : "/placeholder.png"} 
+                         alt={post.coverAlt || post.title} 
                          fill 
-                         className="fill"
+                         className="object-cover"
+                         priority
                        />
                     </div>
-                    <div className="flex flex-col justify-center flex-grow">
-                       <Label as="h1" size="2x" weight="extra-bold" className="mb-4 leading-snug text-heading">
-                         {currentPost.title}
-                       </Label>
-                       <Label size="base" color="secondary" className="leading-relaxed mb-4">
-                         {currentPost.excerpt}
-                       </Label>
-                       
-                       <div className="flex flex-wrap items-center gap-4 text-secondary mt-auto">
-                          <div className="flex items-center gap-2 bg-secondary-bg px-3 py-1.5 rounded-lg">
+
+                    <div className="flex flex-col gap-4">
+                       <div className="flex flex-wrap items-center gap-4 text-secondary">
+                          <div className="flex items-center gap-2 bg-brand-secondary/20 px-3 py-1.5 rounded-full">
                              <Folder size={16} className="text-brand-primary" />
-                             <Label size="xs" weight="semi-bold" color="primary">{currentPost.category.name}</Label>
+                             <Label size="xs" weight="bold" color="brand-primary">{post.blogCategory?.title}</Label>
                           </div>
                           <div className="flex items-center gap-1.5">
                              <Calendar size={16} className="text-placeholder" />
-                             <Label size="xs" color="placeholder">{currentPost.date}</Label>
+                             <Label size="xs" color="placeholder">{new Date(post.createDate).toLocaleDateString('fa-IR')}</Label>
                           </div>
                           <div className="flex items-center gap-1.5">
                              <Clock size={16} className="text-placeholder" />
-                             <Label size="xs" color="placeholder">{currentPost.readTime} دقیقه مطالعه</Label>
+                             <Label size="xs" color="placeholder">{post.readingTime} دقیقه مطالعه</Label>
                           </div>
+                       </div>
+
+                       <Label as="h1" size="3x" weight="black" className="leading-tight text-heading">
+                         {post.title}
+                       </Label>
+                       
+                       <div className="flex items-center gap-2 mt-2">
+                          <Label size="sm" color="secondary">نویسنده:</Label>
+                          <Label size="sm" weight="bold" color="primary">{post.creator.name} {post.creator.lastName}</Label>
                        </div>
                     </div>
                  </div>
               </header>
 
-              {/* Table of Contents (بهبود یافته با چیدمان حرفه‌ای و Label) */}
-              {currentPost.tableOfContents && (
-                 <div className="px-6 md:px-8 mb-8">
-                   <Accordion title="فهرست مطالب این مقاله" defaultOpen={true}>
-                      <ul className="flex flex-col gap-2">
-                        {currentPost.tableOfContents.map((item, idx) => (
-                           <li key={idx}>
-                              <a 
-                                href="#" 
-                                className="flex items-center gap-3 p-3 rounded-lg bg-secondary-bg/30 hover:bg-secondary-bg transition-all group border border-transparent hover:border-border-secondary"
-                              >
-                                 <div className="flex items-center justify-center w-8 h-8 rounded-full bg-surface text-placeholder group-hover:text-brand-primary transition-colors">
-                                    <CornerDownLeft size={18} />
-                                 </div>
-                                 <Label 
-                                    size="sm" 
-                                    color="secondary" 
-                                    weight="medium"
-                                    className="cursor-pointer group-hover:text-primary transition-colors"
-                                 >
-                                    {item}
-                                 </Label>
-                              </a>
-                           </li>
-                        ))}
-                      </ul>
-                   </Accordion>
-                 </div>
-              )}
-
               {/* Article Content Body */}
-              <div className="px-6 md:px-8 pb-8">
-                 {currentPost.content.map((block, index) => {
-                    switch (block.type) {
-                       case 'heading':
-                          return (
-                             <Label 
-                               key={index} 
-                               as="h2" 
-                               size="xl" 
-                               weight="bold" 
-                               className="mt-8 mb-4 text-heading border-b border-border-secondary pb-2"
-                             >
-                                {block.text}
-                             </Label>
-                          );
-                       case 'paragraph':
-                          return (
-                             <Label 
-                               key={index} 
-                               as="p" 
-                               size="base" 
-                               className="mb-6 leading-loose text-justify text-primary"
-                             >
-                                {block.text}
-                             </Label>
-                          );
-                       case 'quote':
-                          return <QuoteBlock key={index} text={block.text || ''} />;
-                       case 'banner':
-                          // ✅ افزایش ارتفاع بنر به 450px
-                          return currentPost.bannerUrl ? (
-                             <div key={index} className="relative w-full h-[450px] rounded-xl overflow-hidden my-8 shadow-md bg-secondary-bg">
-                                <Image src={currentPost.bannerUrl} alt="Banner" fill className="fill" />
-                             </div>
-                          ) : null;
-                       default:
-                          return null;
-                    }
-                 })}
-
-                 {/* CTA Banner */}
-                 {currentPost.cta && (
-                    <CallToActionBanner 
-                      title={currentPost.cta.title} 
-                      description={currentPost.cta.description} 
-                      link={currentPost.cta.link} 
+              <div className="p-6 md:p-10">
+                 {/* 
+                    چون API محتوا را به صورت یک رشته متنی (احتمالا شامل HTML) برمی‌گرداند،
+                    از whitespace-pre-line برای حفظ ساختار متن یا در صورت وجود تگ، از dangerouslySetInnerHTML استفاده می‌کنیم.
+                 */}
+                 <div className="prose prose-lg max-w-none text-justify leading-loose text-primary">
+                    <div 
+                      className="whitespace-pre-line"
+                      dangerouslySetInnerHTML={{ __html: post.content }}
                     />
-                 )}
+                 </div>
               </div>
 
-              {/* Footer */}
-              <div className="px-6 md:px-8 py-6 border-t border-border-secondary bg-secondary-bg">
+              {/* Footer Actions */}
+              <div className="px-6 md:px-10 py-8 border-t border-border-secondary bg-gray-50/50">
                  <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                     <FeedbackActions />
                     
-                    <a href="#comments" className="flex items-center gap-2 px-6 py-3 bg-brand-primary text-on-brand rounded-xl font-bold hover:bg-brand-primary-hover transition-colors no-underline">
-                       <MessageSquare size={18} />
-                       <Label size='sm' color='brand-secondary'>
-
-                                            ثبت دیدگاه
-                       </Label>
-   
+                    <a href="#comments" className="flex items-center gap-2 px-8 py-3 bg-brand-primary text-on-brand rounded-2xl font-bold hover:bg-brand-primary-hover transition-all shadow-lg shadow-brand-primary/20 no-underline">
+                       <MessageSquare size={20} />
+                       <span className="text-sm">ثبت و مشاهده دیدگاه‌ها</span>
                     </a>
                  </div>
               </div>
 
             </article>
             
-            {/* Related Product */}
-            <section className="mt-12">
-               <div className="flex items-center gap-3 mb-6">
-                  <div className="w-1.5 h-8 bg-brand-accent rounded-full"></div>
-                  <Label as="h3" size="xl" weight="bold" color="primary">محصول مرتبط</Label>
-               </div>
-               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                  <ProductCard {...relatedProductData} />
-               </div>
-            </section>
+            {/* Related Posts Section (Dynamic) */}
+            {relatedPosts.length > 0 && (
+                <section className="mt-16">
+                   <div className="flex items-center gap-3 mb-8">
+                      <div className="w-2 h-10 bg-brand-primary rounded-full"></div>
+                      <Label as="h3" size="2x" weight="black" color="primary">مقالات مرتبط</Label>
+                   </div>
+                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                      {relatedPosts.map((related) => (
+                        <BlogCard
+                           key={related.id}
+                           href={`/blog/${related.id}`}
+                           title={related.title}
+                           imgSrc={related.coverUrl ? `${BASE_IMG_URL}${related.coverUrl}` : "/placeholder.png"}
+                           category={related.blogCategory?.title || "خواندنی"}
+                           date={new Date(related.createDate).toLocaleDateString('fa-IR')}
+                        />
+                      ))}
+                   </div>
+                </section>
+            )}
 
-            {/* Comments */}
-            <div className="mt-12">
+            {/* Comments Section */}
+            <div className="mt-16" id="comments">
                <CommentsSection 
-                 comments={mockComments}
-                 stats={productStatsData}
+                 comments={[]} // در صورتی که API کامنت‌ها جداست، اینجا متصل شود
+                 stats={{ reviewCount: post.views, averageRating: 5 }}
                  onAddComment={handleAddComment}
                />
             </div>
 
           </div>
 
-          {/* --- Sidebar --- */}
-          <aside className="lg:col-span-3 space-y-6 lg:sticky lg:top-24">
-              <SidebarWidget title="آخرین اخبار">
-                <SidebarNewsSlider items={newsData} />
-             </SidebarWidget>
-
-             {/* Categories Widget (with Icons) */}
+          {/* --- Sidebar (Dynamic) --- */}
+          <aside className="lg:col-span-3 space-y-8 lg:sticky lg:top-24">
+              
+             {/* Categories Widget */}
              <SidebarWidget title="دسته‌بندی‌ها">
-                <ul className="space-y-2">
-                   {categories.map((cat) => (
+                <ul className="space-y-1">
+                   {blogCategories.map((cat) => (
                       <li key={cat.id}>
-                         <Link href={`/blog/category/${cat.id}`} className="flex items-center justify-between p-2 rounded-lg hover:bg-secondary-bg transition-colors group">
+                         <Link href={`/blog/category/${cat.id}`} className="flex items-center justify-between p-3 rounded-xl hover:bg-white hover:shadow-sm transition-all group">
                             <Label size="sm" className="group-hover:text-brand-primary transition-colors">{cat.title}</Label>
-                            {/* ✅ جایگزینی عدد با آیکون < */}
-                            <ChevronLeft 
-                              size={16} 
-                              className="text-placeholder group-hover:text-brand-primary transition-colors" 
-                            />
+                            <ChevronLeft size={16} className="text-text-placeholder group-hover:text-brand-primary" />
                          </Link>
                       </li>
                    ))}
                 </ul>
              </SidebarWidget>
 
-             <div className="grid gap-4">
-                <AdBanner title="تبلیغ سایدبار" subTitle="محل تبلیغ شما" />
-                <AdBanner title="فروش ویژه" subTitle="لوازم یدکی" />
-             </div>
+             <SidebarWidget title="پربازدیدترین مقالات">
+                <SidebarNewsSlider items={sidebarNewsItems} />
+             </SidebarWidget>
 
+             <div className="grid gap-4">
+                <AdBanner title="مشاوره فنی یدکی‌ران" subTitle="تماس با کارشناسان ما" />
+             </div>
             
           </aside>
         </div>

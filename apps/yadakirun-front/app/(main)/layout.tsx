@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { Wrench, ShieldCheck, Headphones } from 'lucide-react';
+// ✅ 1. AuthProvider از اینجا حذف شد
+// import { AuthProvider } from '@/src/context/AuthContext';
 
 // --- سرویس‌های API ---
 import { menuService } from '@monorepo/api-client/src/services/menuService';
@@ -46,7 +48,7 @@ export default async function MainLayout({
     footerButtons: footerApiData.footerLinks.map(link => ({ text: link.title, href: link.url })),
   };
 
-  // 3. رندر کردن کامپوننت کلاینت و پاس دادن تمام داده‌ها و children به آن
+  // ✅ 2. JSX ساده شد و AuthProvider حذف گردید
   return (
     <MainLayoutClient menuData={menuData} footerData={footerData}>
       {children}

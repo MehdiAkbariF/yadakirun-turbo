@@ -1,5 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { Plus } from 'lucide-react';
 import { SliderProductCardProps } from './SliderProductCard.types';
 import { Label } from '../Label/Label';
 import { Badge } from '../Badge/Badge';
@@ -15,90 +17,89 @@ export const SliderProductCard = ({
   rating,
   badgeText,
   className,
+  onAddToCart,
 }: SliderProductCardProps) => {
   const classNames = ['slider-product-card', className].filter(Boolean).join(' ');
 
-  // تابع کمکی فقط برای جدا کردن سه رقم (تبدیل به فارسی توسط Label انجام می‌شود)
   const addCommas = (val: string | number) => 
     val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+  const handleAddToCartClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onAddToCart?.();
+  };
+
   return (
-    <a href={href} className={classNames}>
+    <div className={classNames}>
       
-      {/* بج (تخفیف یا متن خاص) */}
-      {badgeText && (
-        <div className="slider-product-card__badge">
-          <Badge variant="error" className="text-[10px] px-2 py-0.5 font-bold shadow-sm">
-            {badgeText}
-          </Badge>
+      {/* ✅ 1. بخش جدید برای المان‌های بالای کارت */}
+      <div className="slider-product-card__top-actions">
+        {/* بج (تخفیف یا متن خاص) */}
+        <div className="slider-product-card__badge-wrapper">
+          {badgeText && (
+            <Badge variant="error" className="text-[10px] px-2 py-0.5 font-bold shadow-sm">
+              {badgeText}
+            </Badge>
+          )}
         </div>
-      )}
-
-      {/* تصویر محصول */}
-      <div className="slider-product-card__image-container">
-        <Image 
-          src={imgSrc} 
-          alt={title} 
-          fill 
-          sizes="(max-width: 768px) 100vw, 250px" 
-          className="slider-product-card__image" 
-        />
+        
+        {/* ✅ 2. دکمه افزودن به سبد خرید به اینجا منتقل شد */}
+        <div className="slider-product-card__add-btn-wrapper">
+          {onAddToCart && (
+            <button 
+              className="slider-product-card__add-btn" 
+              onClick={handleAddToCartClick}
+              aria-label={`افزودن ${title} به سبد خرید`}
+            >
+              <Plus size={20} />
+            </button>
+          )}
+        </div>
       </div>
       
-      {/* جزئیات */}
-      <div className="slider-product-card__details">
-        
-        {/* امتیاز */}
-        <div className="slider-product-card__rating">
-           {typeof rating === 'number' && <RatingStars rating={rating} />}
+      {/* لینک اصلی بدون تغییر */}
+      <Link href={href} className="slider-product-card__main-link">
+        <div className="slider-product-card__image-container">
+          <Image 
+            src={imgSrc} 
+            alt={title} 
+            fill 
+            sizes="(max-width: 768px) 100vw, 250px" 
+            className="slider-product-card__image" 
+          />
         </div>
         
-       
-        <Label 
-          as="h3" 
-          size="sm" 
-          weight="semi-bold" 
-          color="primary" 
-    
-        >
-          {title}
-        </Label>
-        
-        {/* فوتر (قیمت‌ها) */}
-        <div className="slider-product-card__footer">
-          
-          {/* قیمت قدیمی (خط‌خورده) - سمت راست */}
-          <div className="slider-product-card__old-price-wrapper">
-            {originalPrice && (
-              <Label 
-                as="span" 
-                className="slider-product-card__old-price"
-              >
-                {addCommas(originalPrice)}
-              </Label>
-            )}
+        <div className="slider-product-card__details">
+          <div className="slider-product-card__rating">
+             {typeof rating === 'number' && <RatingStars rating={rating} />}
           </div>
+          
+          <Label as="h3" className="slider-product-card__title">
+            {title}
+          </Label>
+        </div>
+      </Link>
+      
+      {/* ✅ 3. فوتر به حالت اولیه خود بازگشت (فقط قیمت) */}
+      <div className="slider-product-card__footer">
+        <div className="slider-product-card__old-price-wrapper">
+          {originalPrice && (
+            <Label as="span" className="slider-product-card__old-price">
+              {addCommas(originalPrice)}
+            </Label>
+          )}
+        </div>
 
-          {/* قیمت نهایی - سمت چپ */}
-          <div className="slider-product-card__price-wrapper">
-            <Label 
-              as="span" 
-              className="slider-product-card__price"
-            >
-              {/* استفاده از ?? 0 برای اطمینان از اینکه مقدار undefined نیست */}
-              {addCommas(price ?? 0)}
-            </Label>
-            
-            <Label 
-              as="span" 
-              className="slider-product-card__currency"
-            >
-              تومان
-            </Label>
-          </div>
-          
+        <div className="slider-product-card__price-wrapper">
+          <Label as="span" className="slider-product-card__price">
+            {addCommas(price ?? 0)}
+          </Label>
+          <Label as="span" className="slider-product-card__currency">
+            تومان
+          </Label>
         </div>
       </div>
-    </a>
+    </div>
   );
 };

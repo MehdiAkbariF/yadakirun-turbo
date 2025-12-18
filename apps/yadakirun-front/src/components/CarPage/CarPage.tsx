@@ -1,7 +1,12 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { CarPageData, PaginatedResponse, Product, CarManufacturer } from "@monorepo/api-client/src/types/car";
+import { CarPageData, PaginatedResponse, Product } from "@monorepo/api-client/src/types/car";
+
+// ✅ 1. ایمپورت استورها و هوک تشخیص سایز صفحه
+import { useBasketStore } from "@/src/stores/basketStore";
+import { useUIStore } from "@/src/stores/uiStore";
+import { useMediaQuery } from "@/src/hooks/useMediaQuery";
 
 // --- Design System Imports ---
 import { Container } from "@monorepo/design-system/src/components/organisms/Container/Container";
@@ -12,15 +17,13 @@ import { Pagination } from "@monorepo/design-system/src/components/molecules/Pag
 import { ContentSection } from "@monorepo/design-system/src/components/molecules/ContentSection/ContentSection";
 import { ProductGrid } from "@monorepo/design-system/src/components/organisms/ProductGrid/ProductGrid";
 import { CardSlider } from "@monorepo/design-system/src/components/molecules/CardSlider/CardSlider";
-import { Breadcrumb } from "@monorepo/design-system/src/components/molecules/Breadcrumb/Breadcrumb"; // ✨ 1. ایمپورت Breadcrumb
+import { Breadcrumb } from "@monorepo/design-system/src/components/molecules/Breadcrumb/Breadcrumb";
 
 interface CarPageClientProps {
   carData: CarPageData;
   initialProducts: PaginatedResponse<Product>;
-  manufacturers: CarManufacturer[]; // این پراپ از صفحه قبل باقی مانده، آن را پاس می‌دهیم
 }
 
-// --- داده‌های استاتیک برای فیلترها ---
 const categoryList: FilterItem[] = [
     { title: "لوازم موتوری", subtitle: "Engine Parts", id: "engine" },
     { title: "قطعات بدنه", subtitle: "Body Parts", id: "body" },
@@ -33,10 +36,17 @@ const brandList: FilterItem[] = [
     { title: "کیا", subtitle: "KIA", id: "kia" },
 ];
 
-export function CarPageClient({ carData, initialProducts, manufacturers }: CarPageClientProps) {
+export function CarPageClient({ carData, initialProducts }: CarPageClientProps) {
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
+
+  // ✅ 2. اتصال به اکشن‌های مورد نیاز
+  const { addItem } = useBasketStore();
+  const { openCartDrawerOnDesktop } = useUIStore();
+
+  // ✅ 3. تشخیص وضعیت دسکتاپ (عرض بیشتر از 1024px)
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const [activeSort, setActiveSort] = useState<SortType>(() => (searchParams.get('sort') as SortType) || "relevant");
   const [filters, setFilters] = useState<FilterState>({
@@ -53,83 +63,95 @@ export function CarPageClient({ carData, initialProducts, manufacturers }: CarPa
     return result;
   }, [initialProducts.items, filters, activeSort]);
 
-  const productGridItems = processedProducts.map(p => ({
-    id: String(p.id),
-    title: p.title,
-    imgSrc: p.mainImage,
-    price: p.price,
-    originalPrice: p.oldPrice,
-    rating: p.rating,
-    brand: carData.carManufacturer.name,
-    inStock: p.stockStatus,
-    href: `/ProductPage/${p.id}`
-  }));
+  // ✅ 4. اصلاح تابع هندلر برای باز شدن شرطی دراور فقط در دسکتاپ
+  const handleAddToCart = async (productId: string | number) => {
+    await addItem({ 
+        productId: Number(productId), 
+        quantity: 1 
+    });
+    
+    // دراور فقط در دسکتاپ باز می‌شود
+    openCartDrawerOnDesktop(isDesktop);
+  };
+  
+  const productGridItems = processedProducts.map(p => {
+    const placeholderImage = '/placeholder.png'; 
+    const imageUrl = p.mainImage 
+      ? `https://api-yadakirun.yadakchi.com${p.mainImage}` 
+      : placeholderImage;
 
-  const brandSliderItems = useMemo(() => {
-    if (!manufacturers) return [];
-    return manufacturers.map(brand => ({
-      title: brand.name,
-      href: `/CarManufacturerPage/${brand.id}`,
-      imgSrc: `/brands/${brand.englishName.toLowerCase()}.svg`,
-    }));
-  }, [manufacturers]);
+    return {
+      id: String(p.id),
+      title: p.title,
+      imgSrc: imageUrl,
+      price: p.price,
+      originalPrice: p.oldPrice,
+      rating: p.rating,
+      brand: carData.carManufacturer.name,
+      inStock: p.stockStatus,
+      href: `/ProductPage/${p.id}`,
+      // ✅ اتصال به هندلر جدید
+      onAddToCart: () => handleAddToCart(p.id),
+    };
+  });
 
-  // ✨ 2. ساخت آیتم‌های Breadcrumb به صورت داینامیک
   const breadcrumbItems = [
+    { label: "خودروها", href: "/cars-category" },
     { label: carData.carManufacturer.name, href: `/CarManufacturerPage/${carData.carManufacturer.id}` },
     { label: carData.modelName, href: `/CarPage/${carData.id}` },
   ];
 
   return (
-    <div className="bg-body min-h-screen pb-15">
+    <div className="bg-body min-h-screen pb-16">
       <Container>
-        {/* ✨ 3. اضافه کردن کامپوننت Breadcrumb در بالای صفحه */}
         <div className="pt-6">
           <Breadcrumb items={breadcrumbItems} />
         </div>
 
         <section className="py-1">
            <div className="mb-6 mt-6">
-             <Label as="h1" size="xl" weight="bold" className="mb-6">
-                قطعات یدکی {carData.modelName}
+             <Label as="h1" size="2x" weight="extra-bold" className="mb-4 block text-center lg:text-right">
+                لوازم یدکی {carData.modelName}
              </Label>
-             
-             {brandSliderItems.length > 0 && (
-                <div className="mb-8">
-                  <CardSlider items={brandSliderItems} />
-                </div>
-             )}
            </div>
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-          <div className="hidden lg:block lg:col-span-1 sticky top-24">
-             <FilterSidebar 
-               filters={filters} 
-               onFilterChange={setFilters} 
-               categories={categoryList}
-               brands={brandList} 
-             />
+          <div className="lg:col-span-1 sticky top-24">
+             <div className="hidden lg:block">
+                <FilterSidebar 
+                  filters={filters} 
+                  onFilterChange={setFilters} 
+                  categories={categoryList}
+                  brands={brandList} 
+                />
+             </div>
           </div>
 
           <div className="lg:col-span-3">
              <SortOptions activeSort={activeSort} onSortChange={setActiveSort} />
+             
+             {/* ✅ پاس دادن محصولات به همراه تابع onAddToCart */}
              <ProductGrid products={productGridItems} />
 
-             <div className="flex justify-center mt-8">
-               <Pagination 
-                 currentPage={initialProducts.currentPage} 
-                 totalPages={initialProducts.totalPages} 
-                 baseUrl={`/CarPage/${params.carsId}`} 
-               /> 
-             </div>
+             {initialProducts.totalPages > 1 && (
+                <div className="flex justify-center mt-8">
+                  <Pagination 
+                    currentPage={initialProducts.currentPage} 
+                    totalPages={initialProducts.totalPages} 
+                    baseUrl={`/CarPage/${params.carsId}`} 
+                  /> 
+                </div>
+             )}
           </div>
         </div>
 
         {carData.description && (
           <div className="mt-16 bg-surface p-8 rounded-2xl border border-border-secondary">
             <ContentSection title={`درباره قطعات ${carData.modelName}`}>
-              <p>{carData.description}</p>
+              <p className="whitespace-pre-line leading-loose text-text-secondary">
+                {carData.description}
+              </p>
             </ContentSection>
           </div>
         )}

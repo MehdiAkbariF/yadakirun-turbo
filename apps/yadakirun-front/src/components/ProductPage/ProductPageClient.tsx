@@ -1,9 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState } from "react"; // ✅ useEffect دیگر لازم نیست
 import {
   CheckCircle, Car, Wrench, ShieldCheck, Headset, X,
 } from "lucide-react";
 import { ProductPageData } from "@monorepo/api-client/src/types/product.types";
+
+// --- Global Stores ---
+import { useBasketStore } from "@/src/stores/basketStore";
+import { useUIStore } from "@/src/stores/uiStore";
 
 // --- Design System Imports ---
 import { Container } from "@monorepo/design-system/src/components/organisms/Container/Container";
@@ -18,32 +22,55 @@ import { BestSellersSlider } from "@/src/components/layout/BestSellersSlider";
 import { CommentFormModal } from "@monorepo/design-system/src/components/organisms/CommentFormModal/CommentFormModal";
 import { ContentSection } from "@monorepo/design-system/src/components/molecules/ContentSection/ContentSection";
 
-// --- داده‌های استاتیک ---
 const serviceItems = [
   { icon: <Wrench size={28} />, title: "مهلت مرجوعی", description: "تا ۲۴ ساعت پس از تحویل" },
   { icon: <ShieldCheck size={28} />, title: "ضمانت اصالت", description: "تضمین اصل بودن تمام قطعات" },
   { icon: <Headset size={28} />, title: "پشتیبانی", description: "مشاوره تخصصی رایگان" },
 ];
-// const similarProducts = [
-//   // این بخش نیازمند API جداگانه است
-// ];
 
 interface ProductPageClientProps {
   productData: ProductPageData;
 }
 
 export function ProductPageClient({ productData }: ProductPageClientProps) {
+  const { addItem } = useBasketStore();
+  const { openCartDrawer } = useUIStore();
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [quantity, setQuantity] = useState(1);
   const [selectedPackage, setSelectedPackage] = useState<PackagingOption | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // ✅ 1. تابع handleAddToCart اصلاح شد
+  const handleAddToCart = async () => {
+    if (isSubmitting) return;
+
+    // ✅ شرط اجباری بودن بسته‌بندی به طور کامل حذف شد
+
+    setIsSubmitting(true);
+    try {
+      await addItem({
+        productId: productData.id,
+        quantity: quantity,
+        // ✅ packageId فقط در صورتی ارسال می‌شود که selectedPackage مقدار داشته باشد
+        packageId: selectedPackage ? Number(selectedPackage.id) : undefined,
+      });
+      openCartDrawer();
+    } catch (error) {
+      console.error("Failed to add item to cart:", error);
+      alert("خطایی در افزودن محصول به سبد رخ داد.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleAddComment = (data: any) => {
     console.log("New Comment:", data);
     setIsModalOpen(false);
   };
 
-  // تبدیل داده‌های API به فرمت مورد نیاز کامپوننت‌ها
-  const galleryImages = [productData.imageUrl, ...productData.gallery.map(img => img.imageUrl)];
   const packagingOptions = productData.productPackages.map(pkg => ({ id: String(pkg.id), label: pkg.name }));
+  const galleryImages = [productData.imageUrl, ...productData.gallery.map(img => img.imageUrl)];
   const breadcrumbItems = [
     { label: "محصولات", href: "/products" },
     { label: productData.productCategory.name, href: `/category/${productData.productCategory.id}` },
@@ -55,19 +82,19 @@ export function ProductPageClient({ productData }: ProductPageClientProps) {
   };
 
   return (
-    <div className="bg-body min-h-screen ">
+    <div className="bg-body min-h-screen">
       <Container>
         <div className="pt-6">
           <Breadcrumb items={breadcrumbItems} />
         </div>
 
-        <div className="flex flex-col lg:grid lg:grid-cols-10 gap-2 ">
+        <div className="flex flex-col lg:grid lg:grid-cols-10 gap-8">
           <div className="order-1 lg:col-span-7 lg:row-start-1">
             <div className="flex flex-col lg:flex-row p-4 bg-surface rounded-3xl shadow-sm border border-border-secondary">
               <div className="lg:w-1/3 mb-6 lg:mb-0">
                 <ProductGallery images={galleryImages} alt={productData.imageAlt || productData.title} />
               </div>
-              <div className="flex flex-col w-full lg:w-2/3  sm:p-6 lg:p-8">
+              <div className="flex flex-col w-full lg:w-2/3 sm:p-6 lg:p-8">
                 <Label as="h1" size="lg" weight="extra-bold" className="text-heading mb-2">{productData.title}</Label>
                 <Label size="sm" color="placeholder" className="font-sans mb-6 block">{productData.englishTitle}</Label>
                 
@@ -90,7 +117,9 @@ export function ProductPageClient({ productData }: ProductPageClientProps) {
                     <div className="space-y-4">
                       <div className="flex items-baseline gap-4">
                         <Label weight="bold" size="sm">بسته بندی:</Label>
-                        <Label size="xs" color="secondary" weight="semi-bold">{selectedPackage ? selectedPackage.label : "یک مورد را انتخاب کنید"}</Label>
+                        <Label size="xs" color="secondary" weight="semi-bold">
+                          {selectedPackage ? selectedPackage.label : "پیش‌فرض"}
+                        </Label>
                       </div>
                       <div className="flex flex-wrap gap-3">
                         {packagingOptions.map((option) => (
@@ -98,7 +127,12 @@ export function ProductPageClient({ productData }: ProductPageClientProps) {
                             {option.label}
                           </button>
                         ))}
-                        {selectedPackage && ( <button onClick={() => setSelectedPackage(null)} className="flex items-center gap-1 px-3 py-2 text-utility-error text-xs font-bold hover:bg-utility-error/5 rounded-lg transition-colors"><X size={16} /> لغو</button>)}
+                        {/* ✅ دکمه لغو دوباره فعال شد تا کاربر بتواند انتخاب خود را لغو کند */}
+                        {selectedPackage && ( 
+                          <button onClick={() => setSelectedPackage(null)} className="flex items-center gap-1 px-3 py-2 text-utility-error text-xs font-bold hover:bg-utility-error/5 rounded-lg transition-colors">
+                            <X size={16} /> لغو
+                          </button>
+                        )}
                       </div>
                     </div>
                   </>
@@ -106,7 +140,7 @@ export function ProductPageClient({ productData }: ProductPageClientProps) {
 
                 <hr className="my-6 border-border-secondary" />
 
-                <div className=" border border-border-secondary rounded-lg p-4 mb-6">
+                <div className="border border-border-secondary rounded-lg p-4 mb-6">
                   <div className="flex items-center gap-3 mb-4">
                     <CheckCircle size={20} className="text-utility-success" />
                     <Label weight="bold" size="sm">ویژگی‌های اصلی</Label>
@@ -127,7 +161,7 @@ export function ProductPageClient({ productData }: ProductPageClientProps) {
                     <Label weight="bold" size="sm">مناسب برای:</Label>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <Badge variant="info" className="px-3 py-1 font-medium border border-border-secondary">
+                    <Badge variant="success" className="px-3 py-1 font-medium border border-border-secondary">
                       <Label size="xs" weight="bold" color="on-brand">{productData.car.modelName}</Label>
                     </Badge>
                   </div>
@@ -136,19 +170,23 @@ export function ProductPageClient({ productData }: ProductPageClientProps) {
             </div>
           </div>
 
-          <div className="order-2 lg:col-span-3 lg:row-start-1 lg:row-span-2">
+          <div className="order-2 lg:col-span-3 lg:row-start-1 lg:row-span-2 sticky top-24">
             <ProductInfoCard
               price={productData.priceAfterDiscount}
               originalPrice={productData.price}
               discountAmount={productData.price - productData.priceAfterDiscount}
-              seller={"یدکی‌ران"} // استاتیک
+              seller={"یدکی‌ران"}
               rating={stats.averageRating}
               reviewCount={stats.reviewCount}
               views={productData.views}
               inStock={productData.quantity > 0}
               guarantee={productData.warranty.title}
               shippingInfo={productData.quantity > 0 ? "موجود در انبار (ارسال فوری)" : "ناموجود"}
-              packagingOptions={packagingOptions}
+              quantity={quantity}
+              onQuantityChange={setQuantity}
+              selectedPackageLabel={selectedPackage?.label}
+              onAddToCart={handleAddToCart}
+              isAddingToCart={isSubmitting}
             />
           </div>
 
@@ -189,11 +227,6 @@ export function ProductPageClient({ productData }: ProductPageClientProps) {
           />
         </div>
 
-        {/* {similarProducts.length > 0 && (
-          <div className="">
-            <BestSellersSlider title="محصولات مشابه" items={similarProducts} uniqueId="similar-products-page" />
-          </div>
-        )} */}
       </Container>
 
       <CommentFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleAddComment} />

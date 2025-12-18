@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react'; // useState دیگر لازم نیست
 import { Eye, Star, Minus, Plus } from 'lucide-react';
 import { Label } from '../../atoms/Label/Label';
 import { Button } from '../../atoms/Button/Button';
 import './ProductInfoCard.scss';
 
+// اینترفیس‌ها باید در بالای فایل باشند
 export interface PackagingOption {
   id: string;
   label: string;
@@ -21,7 +22,13 @@ interface ProductInfoCardProps {
   inStock: boolean;
   guarantee: string;
   shippingInfo?: string;
-  packagingOptions?: PackagingOption[];
+  
+  // ✅ پراپ‌های جدید برای کنترل کامل از بیرون
+  quantity: number;
+  onQuantityChange: (newQuantity: number) => void;
+  selectedPackageLabel?: string;
+  onAddToCart: () => void;
+  isAddingToCart: boolean; // برای نمایش وضعیت لودینگ
 }
 
 export const ProductInfoCard = ({
@@ -35,12 +42,21 @@ export const ProductInfoCard = ({
   inStock,
   guarantee,
   shippingInfo,
-  packagingOptions = []
+  
+  // ✅ دریافت مقادیر و توابع از props
+  quantity,
+  onQuantityChange,
+  selectedPackageLabel,
+  onAddToCart,
+  isAddingToCart,
 }: ProductInfoCardProps) => {
-  const [quantity, setQuantity] = useState(1);
-  const [selectedPackage, setSelectedPackage] = useState<PackagingOption | null>(null);
 
-  const handleQuantity = (val: number) => setQuantity(Math.max(1, quantity + val));
+  // ✅ تابع هندلر حالا تابع دریافتی از props را فراخوانی می‌کند
+  const handleQuantity = (val: number) => {
+    const newQuantity = Math.max(1, quantity + val);
+    onQuantityChange(newQuantity);
+  };
+  
   const formatPrice = (p: number) => p.toLocaleString('fa-IR');
 
   return (
@@ -55,7 +71,7 @@ export const ProductInfoCard = ({
         <div className="flex items-center gap-1">
           <Star size={18} className="text-utility-warning fill-utility-warning" />
           <Label size="sm" weight="bold">{rating}</Label>
-          <Label size="xs" color="placeholder">({reviewCount} نظر)</Label>
+          <Label size="xs" color="placeholder">({reviewCount.toLocaleString('fa-IR')} نظر)</Label>
         </div>
       </div>
 
@@ -65,18 +81,23 @@ export const ProductInfoCard = ({
         {inStock && <Label size="sm" color="secondary">{shippingInfo}</Label>}
       </div>
 
-      {/* Packaging Options OR Quantity */}
+      {/* Quantity OR Packaging */}
       <div className="flex items-center justify-between mb-6">
-        <Label size="sm" weight="bold" color="secondary">موارد انتخابی:</Label>
+        <Label size="sm" weight="bold" color="secondary">
+          {/* ✅ اگر لیبل بسته بندی وجود داشت، آن را نمایش بده، در غیر این صورت "تعداد" */}
+          {selectedPackageLabel ? "بسته‌بندی:" : "تعداد:"}
+        </Label>
         
-        {packagingOptions.length > 0 ? (
+        {selectedPackageLabel ? (
            <Label size="xs" weight="bold">
-             {selectedPackage ? selectedPackage.label : 'انتخاب نشده'}
+             {selectedPackageLabel}
            </Label>
         ) : (
            <div className="quantity-selector">
+              {/* ✅ اتصال به تابع handleQuantity */}
               <button onClick={() => handleQuantity(1)}><Plus size={16}/></button>
-              <Label>{quantity}</Label>
+              {/* ✅ نمایش quantity دریافتی از props */}
+              <Label>{quantity.toLocaleString('fa-IR')}</Label>
               <button onClick={() => handleQuantity(-1)}><Minus size={16}/></button>
            </div>
         )}
@@ -96,16 +117,17 @@ export const ProductInfoCard = ({
               <Label color='primary' weight='bold' >{formatPrice(originalPrice)}</Label>
            </div>
          )}
-         {discountAmount && (
+         {discountAmount && discountAmount > 0 && (
            <div className="flex justify-between text-sm text-utility-success mb-4">
               <Label color='secondary' weight='bold' size='sm'>سود شما:</Label>
               <Label color='success' weight='bold' >{formatPrice(discountAmount)}</Label>
            </div>
          )}
-         <div className="flex justify-between items-center pt-4 border-t border-border-secondary mt-10">
+         <div className="flex justify-between items-center pt-4 border-t border-border-secondary mt-4">
             <Label weight="semi-bold" size='base'>قیمت نهایی:</Label>
             <div className="text-left">
-               <Label size="lg" weight="extra-bold" color="brand-accent">{formatPrice(price)}</Label>
+               {/* ✅ قیمت نهایی باید در تعداد ضرب شود */}
+               <Label size="lg" weight="extra-bold" color="brand-accent">{formatPrice(price * quantity)}</Label>
             </div>
          </div>
       </div>
@@ -113,10 +135,12 @@ export const ProductInfoCard = ({
       {/* Action Button */}
       <Button 
         fullWidth 
-        size="sm" 
-        disabled={!inStock}
-        variant={inStock ? 'primary' : 'secondary'} // در دیزاین سیستم اگر variant اکسنت ندارید، primary
+        size="sm" // سایز بزرگتر برای اهمیت بیشتر
+        disabled={!inStock || isAddingToCart}
+        variant={inStock ? 'primary' : 'secondary'}
         className="mt-6"
+        onClick={onAddToCart} // ✅ اتصال به تابع onAddToCart از props
+        isLoading={isAddingToCart} // ✅ اتصال به isAddingToCart از props
       >
         {inStock ? 'افزودن به سبد خرید' : 'ناموجود'}
       </Button>

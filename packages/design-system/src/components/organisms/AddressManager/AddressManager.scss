@@ -34,12 +34,13 @@
 .address-card {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: flex-start; // دکمه‌ها با عنوان هم‌تراز باشن
   padding: tokens.$spacing-5;
   background-color: tokens.$color-bg-surface;
   border: 1px solid tokens.$color-border-secondary;
   border-radius: tokens.$radius-lg;
   transition: all 0.2s;
+  position: relative; // برای اطمینان از اینکه فرزندان داخل مرز بمونن
 
   &:hover {
     border-color: tokens.$color-border-primary;
@@ -48,6 +49,7 @@
 
   &__content {
     flex: 1;
+    min-width: 0; // جلوگیری از overflow متن
   }
 
   &__actions {
@@ -55,8 +57,16 @@
     gap: tokens.$spacing-2;
     margin-right: tokens.$spacing-4;
     align-items: center;
- 
-  margin-top: 20px;
+
+    // ✅ کاملاً حذف شد — این خط باعث خروج دکمه‌ها از کارت و عدم ثبت کلیک بود
+    // margin-top: 20px;
+
+    // دکمه‌ها رو در بالا نگه می‌داریم (هم‌تراز با عنوان)
+    align-self: flex-start;
+
+    // اگر می‌خوای دکمه‌ها پایین کارت باشن، این‌ها رو فعال کن:
+    // align-self: flex-end;
+    // margin-top: auto;
   }
 
   &__btn {
@@ -70,16 +80,21 @@
     background-color: tokens.$color-bg-secondary;
     cursor: pointer;
     transition: all 0.2s;
+    flex-shrink: 0; // جلوگیری از کوچک شدن دکمه‌ها
 
     &--edit {
       color: tokens.$color-text-secondary;
-      &:hover { background-color: tokens.$color-border-secondary; }
+      &:hover { 
+        background-color: tokens.$color-border-secondary; 
+      }
     }
 
     &--delete {
       color: tokens.$color-utility-error;
       background-color: rgba(tokens.$color-utility-error, 0.1);
-      &:hover { background-color: rgba(tokens.$color-utility-error, 0.2); }
+      &:hover { 
+        background-color: rgba(tokens.$color-utility-error, 0.2); 
+      }
     }
   }
 }

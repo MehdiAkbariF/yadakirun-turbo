@@ -10,4 +10,5 @@ export interface SimpleProductCardProps {
   inStock?: boolean;
   href: string;
   className?: string;
+  onAddToCart?: () => void;
 }

@@ -31,4 +31,5 @@ export interface ProductCardProps {
    * کلاس‌های CSS اضافی
    */
   className?: string;
+     onAddToCart?: () => void;
 }

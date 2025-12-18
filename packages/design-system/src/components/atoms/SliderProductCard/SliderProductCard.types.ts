@@ -8,4 +8,5 @@ export interface SliderProductCardProps {
   rating?: number;
   badgeText?: string;
   className?: string;
+   onAddToCart?: () => void;
 }

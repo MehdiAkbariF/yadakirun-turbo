@@ -11,4 +11,5 @@ export interface ProductGridProps {
    * @default 20
    */
   pageSize?: number;
+  
 }

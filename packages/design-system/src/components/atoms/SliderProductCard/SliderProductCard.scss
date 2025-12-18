@@ -4,39 +4,106 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  min-height: 320px; // ارتفاع متناسب
+  min-height: 320px;
   height: 100%;
   background-color: tokens.$color-bg-surface;
+  // شما این دو خط را برای حل مشکل قبلی اضافه کرده بودید، آن‌ها را حفظ می‌کنیم
+  border: none !important;
+  border-radius: 0;
+  overflow: hidden;
+
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // --- Hover Effect (فقط برای دسکتاپ) ---
+  // با استفاده از pointer: fine، این استایل‌ها فقط روی دستگاه‌هایی با موس اعمال می‌شود
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      box-shadow: tokens.$shadow-lg;
+      background-color: tokens.$color-bg-secondary;
   
-  // بوردر نرم و لطیف
-  border: 1px solid tokens.$color-border-secondary;
- 
- 
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); // انیمیشن نرم
-
-  // --- Hover Effect (حرفه‌ای) ---
-  &:hover {
+      .slider-product-card__title {
+        color: tokens.$color-brand-primary;
+      }
   
-    box-shadow: tokens.$shadow-lg; // سایه عمیق می‌گیرد
- 
-   background-color: tokens.$color-bg-secondary;
-
-
-    .slider-product-card__title {
-      color: tokens.$color-brand-primary; // تغییر رنگ تایتل
+      .slider-product-card__add-btn {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
   }
 
-  // بج
-  &__badge {
+  &__top-actions {
     position: absolute;
     top: 12px;
+    left: 12px;
     right: 12px;
     z-index: 5;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none; 
+  }
+
+  &__badge-wrapper, &__add-btn-wrapper {
+    pointer-events: auto;
+  }
+
+  // ✅✅✅ بخش اصلی تغییرات اینجاست ✅✅✅
+  &__add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    // --- استایل‌های مشترک برای موبایل و دسکتاپ ---
+    border-radius: tokens.$radius-full;
+    border: 1px solid tokens.$color-border-secondary;
+    background-color: rgba(var(--color-bg-surface-rgb), 0.8);
+    backdrop-filter: blur(4px);
+    color: tokens.$color-text-primary;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    // --- استایل پیش‌فرض (دسکتاپ) ---
+    // دکمه کوچک و مخفی است
+    width: 36px;
+    height: 36px;
+    opacity: 0;
+    transform: scale(0.8);
+
+    &:hover {
+      background-color: tokens.$color-brand-primary;
+      border-color: tokens.$color-brand-primary;
+      color: tokens.$color-text-on-brand;
+      transform: scale(1.1);
+    }
+    
+    // --- بازنویسی استایل برای موبایل (صفحات لمسی) ---
+    // از breakpoint تبلت به پایین، این استایل‌ها اعمال می‌شوند
+    @media (max-width: tokens.$breakpoint-lg) {
+      // دکمه بزرگتر و همیشه قابل مشاهده است
+      width: 40px;
+      height: 40px;
+      opacity: 1;
+      transform: scale(1);
+      // یک سایه ملایم برای خوانایی بهتر روی عکس
+      box-shadow: tokens.$shadow; 
+    }
+
+    &:active {
+      // افکت کلیک برای همه دستگاه‌ها
+      transform: scale(0.95);
+    }
+  }
+
+  &__main-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
   }
   
-  // --- تصویر ---
-&__image-container {
+  &__image-container {
     position: relative;
     height: 9rem;
     width: 100%;
@@ -45,8 +112,7 @@
     align-items: center;
     justify-content: center;
     padding: tokens.$spacing-5;
-  
-  
+    margin-top: tokens.$spacing-8;
   }
 
   &__image {
@@ -54,22 +120,20 @@
     width: 100%;
     height: 100%;
     transition: transform 0.3s ease;
-      
-       padding: tokens.$spacing-2;
+    padding: tokens.$spacing-2;
   }
 
-  // --- جزئیات ---
   &__details {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    padding:tokens.$spacing-5   tokens.$spacing-4 tokens.$spacing-4;
+    padding: tokens.$spacing-2 tokens.$spacing-4 tokens.$spacing-4;
   }
 
   &__rating {
     margin-bottom: tokens.$spacing-2;
     display: flex;
-    justify-content: flex-end; // ستاره‌ها سمت چپ (در RTL) یا راست (در LTR)
+    justify-content: flex-end;
   }
   
   &__title {
@@ -78,10 +142,7 @@
     font-weight: tokens.$font-weight-bold;
     color: tokens.$color-text-primary;
     line-height: 1.6;
-
     transition: color 0.2s;
-    
-    // محدود کردن متن به ۲ خط
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -90,18 +151,15 @@
     text-align: right;
   }
 
-  // --- فوتر (قیمت‌ها) ---
   &__footer {
     margin-top: auto;
-    padding-top: tokens.$spacing-3;
-    border-top: 1px dashed tokens.$color-border-secondary; // خط‌چین ظریف
-    
+    padding: tokens.$spacing-3 tokens.$spacing-4;
+    border-top: 1px dashed tokens.$color-border-secondary;
     display: flex;
     justify-content: space-between; 
     align-items: center;
   }
 
-  // قیمت خط‌خورده (سمت راست)
   &__old-price-wrapper {
     display: flex;
     align-items: center;
@@ -115,7 +173,6 @@
     font-weight: tokens.$font-weight-medium;
   }
 
-  // قیمت نهایی (سمت چپ)
   &__price-wrapper {
     display: flex;
     align-items: center;
@@ -125,7 +182,7 @@
   &__price {
     font-family: tokens.$font-family-base;
     font-size: tokens.$font-size-lg;
-    font-weight: tokens.$font-weight-black; // خیلی بولد برای تاکید
+    font-weight: tokens.$font-weight-black;
     color: tokens.$color-text-primary;
   }
 
@@ -134,6 +191,6 @@
     font-size: 10px;
     font-weight: tokens.$font-weight-medium;
     color: tokens.$color-text-secondary;
-    margin-top: 6px; // تراز با پایین عدد
+    margin-top: 6px;
   }
 }

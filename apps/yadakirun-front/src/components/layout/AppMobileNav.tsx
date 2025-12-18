@@ -5,17 +5,21 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Home, LayoutGrid, ShoppingCart, BookOpen, User } from 'lucide-react';
 import { MobileBottomNav } from '@monorepo/design-system/src/components/organisms/MobileBottomNav/MobileBottomNav';
 import { MobileNavItem } from '@monorepo/design-system/src/components/organisms/MobileBottomNav/MobileBottomNav.types';
+// ✅ 1. ایمپورت store سبد خرید
+import { useBasketStore } from '@/src/stores/basketStore';
+import { toPersianDigits } from '@monorepo/design-system/src/utils/persian';
 
 export const AppMobileNav = () => {
   const pathname = usePathname();
   const router = useRouter();
   
-  // Mock Data (در پروژه واقعی از Context بخوانید)
-  const isAuthenticated = false; 
-  const cartItemsCount = 2; 
-  const totalPrice = 3500000; // مبلغ کل فرضی
+  // ✅ 2. اتصال به basketStore و دریافت داده‌های داینامیک
+  const { totalQuantity, totalFinalPrice } = useBasketStore();
 
-  // اگر در صفحه سبد خرید هستیم، پنل شناور را نشان ندهیم (چون خودش دکمه پرداخت دارد)
+  // داده‌های مربوط به احراز هویت را می‌توان بعداً از یک store دیگر خواند
+  const isAuthenticated = false; 
+
+  // اگر در صفحه سبد خرید هستیم، پنل شناور را همیشه باز نگه می‌داریم
   const isCartPage = pathname.startsWith('/checkout');
 
   const getActiveId = () => {
@@ -45,7 +49,8 @@ export const AppMobileNav = () => {
       label: 'سبد خرید',
       icon: <ShoppingCart size={20} />,
       href: '/checkout',
-      badgeCount: cartItemsCount > 0 ? cartItemsCount : undefined,
+      // ✅ 3. badgeCount حالا از totalQuantity خوانده می‌شود
+      badgeCount: totalQuantity > 0 ? toPersianDigits(totalQuantity) : undefined,
     },
     {
       id: 'category',
@@ -65,12 +70,12 @@ export const AppMobileNav = () => {
     <MobileBottomNav 
       items={navItems} 
       activeId={getActiveId()} 
-      // ✅ تنظیم alwaysOpen برای صفحه checkout
-      cartSummary={cartItemsCount > 0 ? {
-        itemCount: cartItemsCount,
-        totalPrice: totalPrice,
-        onCheckout: () => router.push('/checkout'), // یا لاجیک پرداخت نهایی
-        alwaysOpen: isCartPage // اگر در صفحه سبد خریدیم، همیشه باز باشد
+      // ✅ 4. cartSummary به طور کامل داینامیک شد
+      cartSummary={totalQuantity > 0 ? {
+        itemCount: totalQuantity,
+        totalPrice: totalFinalPrice,
+        onCheckout: () => router.push('/checkout'),
+        alwaysOpen: isCartPage
       } : undefined}
     />
   );
