@@ -44,7 +44,7 @@ export default async function CarManufacturerPage({ params, searchParams }: Page
     notFound();
   }
 
-  // ✨ 3. پاس دادن هر دو داده به کامپوننت کلاینت
+ 
   return (
     <ManufacturerPageClient 
       manufacturerData={manufacturerData} 

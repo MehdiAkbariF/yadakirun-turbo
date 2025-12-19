@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, ElementType } from 'react'; // ✅ ElementType اضافه شد
 import { ChevronDown, ChevronLeft } from 'lucide-react';
 import { MegaMenuProps } from './MegaMenu.types';
 import { Label } from '../../atoms/Label/Label';
 import './MegaMenu.scss';
 
-export const MegaMenu = ({ triggerText, categories, brands }: MegaMenuProps) => {
+// به اینترفیس در فایل types یا همینجا linkComponent را اضافه کنید
+export const MegaMenu = ({ 
+  triggerText, 
+  categories, 
+  brands,
+  linkComponent: LinkComponent = 'a' // ✅ اضافه شدن کامپوننت لینک با مقدار پیش‌فرض
+}: MegaMenuProps & { linkComponent?: ElementType }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
 
@@ -27,23 +33,21 @@ export const MegaMenu = ({ triggerText, categories, brands }: MegaMenuProps) => 
         <ChevronDown size={16} className="mega-menu__chevron" />
       </div>
 
-      <div className={`mega-menu__dropdown ${isOpen ? 'mega-menu__dropdown--open' : ''}`} data-testid="mega-menu-dropdown">
+      <div className={`mega-menu__dropdown ${isOpen ? 'mega-menu__dropdown--open' : ''}`}>
         <div className="mega-menu__content">
           
           {/* ستون اول: دسته‌بندی قطعات */}
-          <div 
-             className="mega-menu__column"
-             onMouseEnter={() => setActiveSubMenu(null)} 
-          >
+          <div className="mega-menu__column" onMouseEnter={() => setActiveSubMenu(null)}>
             <Label as="h3" size="sm" weight="bold" color="primary" className="mega-menu__title">
               قطعات خودرو
             </Label>
             <ul className="mega-menu__list">
               {categories.map((item) => (
                 <li key={item.id}>
-                  <a href={item.href} className="mega-menu__link">
+                  {/* ✅ جایگزینی a با LinkComponent */}
+                  <LinkComponent href={item.href} className="mega-menu__link">
                     <Label as="span" size="sm">{item.title}</Label>
-                  </a>
+                  </LinkComponent>
                 </li>
               ))}
             </ul>
@@ -56,30 +60,24 @@ export const MegaMenu = ({ triggerText, categories, brands }: MegaMenuProps) => 
             </Label>
             <ul className="mega-menu__list">
               {brands.map((item) => (
-                <li 
-                  key={item.id} 
-                  onMouseEnter={() => setActiveSubMenu(item.id)}
-                >
-                  <a 
+                <li key={item.id} onMouseEnter={() => setActiveSubMenu(item.id)}>
+                  {/* ✅ جایگزینی a با LinkComponent */}
+                  <LinkComponent 
                     href={item.href} 
                     className={`mega-menu__link mega-menu__link--parent ${activeSubMenu === item.id ? 'mega-menu__link--active' : ''}`}
                   >
                     <Label as="span" size="sm">{item.title}</Label>
                     {item.subItems.length > 0 && <ChevronLeft size={16} />}
-                  </a>
+                  </LinkComponent>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* 
-             ✅ ستون سوم: به صورت پیش‌فرض بسته است (در CSS) 
-             و فقط وقتی activeSubMenu مقدار داشته باشد کلاس open می‌گیرد
-          */}
+          {/* ستون سوم: مدل‌ها */}
           <div className={`mega-menu__sub-menu-column ${activeSubMenu ? 'mega-menu__sub-menu-column--open' : ''}`}>
             {brands.map((brand) => {
               if (!brand.subItems || brand.subItems.length === 0) return null;
-              
               return (
                 <div
                   key={`sub-${brand.id}`}
@@ -90,9 +88,10 @@ export const MegaMenu = ({ triggerText, categories, brands }: MegaMenuProps) => 
                   </Label>
                   <div className="mega-menu__sub-list">
                     {brand.subItems.map((subItem) => (
-                      <a key={subItem.id} href={subItem.href} className="mega-menu__link">
+                      /* ✅ جایگزینی a با LinkComponent */
+                      <LinkComponent key={subItem.id} href={subItem.href} className="mega-menu__link">
                         <Label as="span" size="sm">{subItem.title}</Label>
-                      </a>
+                      </LinkComponent>
                     ))}
                   </div>
                 </div>
