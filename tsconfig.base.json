@@ -14,9 +14,7 @@
     "paths": {
       "@design-system/*": ["packages/design-system/src/*"],
       "@theme/*": ["packages/design-system/src/theme/*"],
-      "@lib/*": ["apps/admin-panel/src/lib/*"],
-      "@services/*": ["apps/admin-panel/src/services/*"],
-      "@types/*": ["apps/admin-panel/src/types/*"]
+     
     }
   }
 }

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "cpy '../../packages/design-system/public/fonts' 'public' && next build",
+  "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
