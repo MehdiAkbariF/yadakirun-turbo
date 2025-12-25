@@ -2,7 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import { contactUsService } from '@monorepo/api-client/src/services/contactUsService';
 // ✅ ایمپورت کامپوننت کلاینت جدید
-import { ContactUsClient } from '@/src/components/ContactUsPage/ContactUsClient'; 
+import { ContactUsClient } from '@/src/components/ContactUsPage/ContactUsClient';
 
 // --- Metadata (داینامیک) ---
 export async function generateMetadata(): Promise<Metadata> {

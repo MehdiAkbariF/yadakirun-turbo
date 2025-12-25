@@ -24,7 +24,7 @@ export const AppMobileNav = () => {
 
   const getActiveId = () => {
     if (pathname === '/') return 'home';
-    if (pathname.startsWith('/products-category')) return 'category';
+    if (pathname.startsWith('/categories')) return 'category';
     if (pathname.startsWith('/blog')) return 'blog';
     if (pathname.startsWith('/checkout')) return 'cart';
     if (pathname.startsWith('/dashboard') || pathname.startsWith('/login')) return 'profile';
@@ -56,7 +56,7 @@ export const AppMobileNav = () => {
       id: 'category',
       label: 'دسته‌بندی',
       icon: <LayoutGrid size={20} />,
-      href: '/products-category',
+      href: '/categories',
     },
     {
       id: 'home',

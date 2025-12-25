@@ -21,10 +21,12 @@ const nextConfig = {
 
   async rewrites() {
     return [
-      {
+   {
         source: "/api/:path*",
-        destination: "https://api-yadakirun.yadakchi.com/api/:path*",
+        // اگر API_REMOTE_URL تعریف شده باشه از اون استفاده کن، وگرنه سرور اصلی
+        destination: `${process.env.API_REMOTE_URL || "https://api-yadakirun.yadakchi.com"}/api/:path*`,
       },
+      
     ];
   },
 };

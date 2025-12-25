@@ -17,7 +17,7 @@ interface AuthContextType {
   logout: () => void;
 }
 
-const STATIC_TOKEN = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxNDdhZGM4NS00NmEzLTRiNzEtYWEzZi01MWExMjliZmY4NTgiLCJuYmYiOjE3NjQyNDM3NTksImV4cCI6MTc3NDI0MzY1OSwiaXNzIjoiWWFkYWtjaGkiLCJhdWQiOiJmcm9udC5sb3R0ZXN0LmlyIn0.5rS-qOsJjOUfURTzoymhuSwbi9tKQ1kSJ_U4IgcbxqExr75ec9Z5b7i9Hk7aL8geAR1Y0WbePb5vQNMlbSCfuQ";
+const STATIC_TOKEN = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxNDdhZGM4NS00NmEzLTRiNzEtYWEzZi01MWExMjliZmY4NTgiLCJuYmYiOjE3NjY2NzA3MjYsImV4cCI6MTc3NjY3MDYyNiwiaXNzIjoiWWFkYWtjaGkiLCJhdWQiOiJmcm9udC5sb3R0ZXN0LmlyIn0.Ee9Lv9BwkAKsFxdOuapdvqE2VETKsVMNWw_nDXVHoC1-PGxAGAQcFGhPoBuTAgx0j4UVmfj0lOpnqT4R017IfQ";
 const AUTH_TOKEN_KEY = 'authToken'; // یک کلید ثابت برای localStorage
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

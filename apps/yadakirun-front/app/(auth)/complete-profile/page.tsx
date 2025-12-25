@@ -1,25 +1,24 @@
 "use client";
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { User } from 'lucide-react';
 
-// Imports from DS
+// ایمپورت‌ها را چک کن که دقیق باشند
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
 import { Input } from '@monorepo/design-system/src/components/atoms/Input/Input';
 import { Button } from '@monorepo/design-system/src/components/atoms/Button/Button';
 import { Alert } from '@monorepo/design-system/src/components/molecules/Alert/Alert';
-
-export default function CompleteProfilePage() {
+export const dynamic = 'force-dynamic';
+const CompleteProfilePage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   
-  // مدیریت داده‌های فرم
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
   });
 
-  // مدیریت ارور با تایمر (مشابه صفحه لاگین)
   const [errorState, setErrorState] = useState<{ message: string; id: number } | null>(null);
 
   const showError = (msg: string) => {
@@ -30,7 +29,6 @@ export default function CompleteProfilePage() {
     e.preventDefault();
     setErrorState(null);
 
-    // اعتبارسنجی
     if (!formData.firstName.trim()) {
       showError('لطفاً نام خود را وارد کنید.');
       return;
@@ -42,18 +40,14 @@ export default function CompleteProfilePage() {
 
     setIsLoading(true);
 
-    // شبیه‌سازی درخواست API برای ذخیره اطلاعات
     setTimeout(() => {
       setIsLoading(false);
-      // هدایت به صفحه اصلی یا داشبورد
       router.push('/'); 
     }, 1500);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      
-      {/* هدر صفحه */}
       <div className="text-center mb-8">
         <Label size="lg" weight="bold" className="mb-2">تکمیل ثبت نام</Label>
         <Label size="sm" color="secondary">
@@ -61,7 +55,6 @@ export default function CompleteProfilePage() {
         </Label>
       </div>
 
-      {/* نمایش ارور */}
       {errorState && (
         <Alert 
           key={errorState.id}
@@ -73,7 +66,6 @@ export default function CompleteProfilePage() {
         </Alert>
       )}
 
-      {/* فیلدهای ورودی */}
       <div className="space-y-4">
         <Input
           id="firstName"
@@ -102,7 +94,6 @@ export default function CompleteProfilePage() {
         />
       </div>
 
-      {/* دکمه ثبت */}
       <Button 
         type="submit" 
         fullWidth 
@@ -114,4 +105,6 @@ export default function CompleteProfilePage() {
       </Button>
     </form>
   );
-}
+};
+
+export default CompleteProfilePage;

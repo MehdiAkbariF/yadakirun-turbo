@@ -85,8 +85,8 @@ export default function CheckoutPage() {
     if (isLoading && cartItems.length === 0) {
         return (
             <Container className="flex flex-col items-center justify-center min-h-[60vh]">
-                <Loader2 className="animate-spin text-brand-primary" size={48} />
-                <Label size="lg" weight="medium" className="mt-4">در حال بارگذاری سبد خرید شما...</Label>
+                <Loader2 className="animate-spin text-brand-primary transition-transform " size={40} />
+                <Label size="sm" weight="medium" className="mt-4" color="secondary">در حال بارگذاری سبد خرید شما...</Label>
             </Container>
         );
     }

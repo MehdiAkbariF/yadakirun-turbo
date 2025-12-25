@@ -1,29 +1,30 @@
+
 import React from 'react';
 import Image from 'next/image';
 import { Wrench, ShieldCheck, Headphones } from 'lucide-react';
-// ✅ 1. AuthProvider از اینجا حذف شد
-// import { AuthProvider } from '@/src/context/AuthContext';
 
-// --- سرویس‌های API ---
+
+
+
 import { menuService } from '@monorepo/api-client/src/services/menuService';
 import { footerService } from '@monorepo/api-client/src/services/footerService';
 
-// --- کامپوننت کلاینت جدید ---
+
 import { MainLayoutClient } from '@/src/components/layout/MainLayoutClient';
 
-// این کامپوننت حالا فقط یک کامپوننت سرور `async` است
+
 export default async function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // 1. فراخوانی موازی APIها در سرور
+  
   const [menuData, footerApiData] = await Promise.all([
     menuService.getMenuData(),
     footerService.getFooterData()
   ]);
 
-  // 2. آماده‌سازی داده‌ها برای فوتر
+  
   const footerData = {
     logo: <Image src="/logo.webp" alt="لوگوی یاداکیرون" width={80} height={80} />,
     companyName: "فروشگاه آنلاین لوازم یدکی خودرو",
@@ -48,7 +49,7 @@ export default async function MainLayout({
     footerButtons: footerApiData.footerLinks.map(link => ({ text: link.title, href: link.url })),
   };
 
-  // ✅ 2. JSX ساده شد و AuthProvider حذف گردید
+  
   return (
     <MainLayoutClient menuData={menuData} footerData={footerData}>
       {children}

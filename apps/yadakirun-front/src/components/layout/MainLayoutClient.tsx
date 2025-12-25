@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect } from 'react'; // ✅ useEffect را برای فراخوانی اولیه لازم داریم
-import { useRouter } from 'next/navigation'; // ✅ برای هدایت به صفحه تسویه حساب
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 // --- کامپوننت‌های لی‌اوت ---
 import { MainHeader } from '@/src/components/layout/MainHeader';
@@ -15,18 +15,24 @@ import { CartDrawer } from '@monorepo/design-system/src/components/organisms/Car
 import { MenuData } from '@monorepo/api-client/src/types/menu.types';
 import { useBasketStore } from '@/src/stores/basketStore';
 import { useUIStore } from '@/src/stores/uiStore';
+import { useMediaQuery } from '@/src/hooks/useMediaQuery';
 
-// پراپس‌هایی که این کامپوننت از لی‌اوت سرور دریافت می‌کند
 interface MainLayoutClientProps {
   menuData: MenuData;
   footerData: FooterProps;
   children: React.ReactNode;
+  showVideoBanner?: boolean; // ✅ اضافه شدن آپشن نمایش بنر
 }
 
-export function MainLayoutClient({ menuData, footerData, children }: MainLayoutClientProps) {
+export function MainLayoutClient({ 
+  menuData, 
+  footerData, 
+  children, 
+  showVideoBanner = true // ✅ پیش‌فرض نمایش داده شود
+}: MainLayoutClientProps) {
   const router = useRouter();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
-  // ✅ 1. اتصال به store ها برای دریافت وضعیت و اکشن‌ها
   const { isCartDrawerOpen, closeCartDrawer } = useUIStore();
   const { 
     items, 
@@ -37,8 +43,6 @@ export function MainLayoutClient({ menuData, footerData, children }: MainLayoutC
     clearCart 
   } = useBasketStore();
 
-  // ✅ 2. فراخوانی اطلاعات سبد خرید در اولین بارگذاری اپلیکیشن
-  // این اطمینان می‌دهد که سبد خرید کاربر همیشه به‌روز است.
   useEffect(() => {
     fetchBasket();
   }, [fetchBasket]);
@@ -49,18 +53,20 @@ export function MainLayoutClient({ menuData, footerData, children }: MainLayoutC
         <ProgressBar />
       </React.Suspense>
     
-      <div className="">
-        <VideoBanner />
-        <div className="relative flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen">
+        {/* ✅ نمایش شرطی بنر ویدیو */}
+        {showVideoBanner && <VideoBanner />}
+        
+        <div className="relative flex flex-col flex-1">
           <div className="sticky top-0 z-20">
             <MainHeader menuData={menuData} />
           </div>
           
-          <main className="py-1 flex-grow">
+          <main className=" flex-grow">
             {children}
           </main>
         
-          <div className='mt-auto pt-16'> {/* mt-auto فوتر را به پایین هل می‌دهد */}
+          <div className='mt-auto pt-16'>
             <Footer {...footerData} />
           </div>
         </div>
@@ -68,25 +74,22 @@ export function MainLayoutClient({ menuData, footerData, children }: MainLayoutC
         <AppMobileNav />
       </div>
 
-      {/* ✅ 3. رندر کردن CartDrawer سراسری و تزریق داده‌ها و اکشن‌ها از store */}
       <CartDrawer
         isOpen={isCartDrawerOpen}
         onClose={closeCartDrawer}
         items={items.map(item => ({
-          // تبدیل داده‌های API به پراپ‌های مورد انتظار کامپوننت
           id: item.productId,
           title: item.productName,
           imgSrc: item.productImage,
           price: item.unitPrice,
           quantity: item.quantity,
-          // اتصال اکشن‌های UI به اکشن‌های store
           onIncrease: () => updateItemQuantity(item.productId, item.quantity + 1),
           onDecrease: () => updateItemQuantity(item.productId, item.quantity - 1),
           onRemove: () => removeItem({ productId: item.productId, quantity: item.quantity }),
         }))}
         totalPrice={totalFinalPrice}
         onCheckout={() => {
-          router.push('/checkout'); // هدایت به صفحه تسویه حساب
+          router.push('/checkout');
           closeCartDrawer();
         }}
         onClearCart={clearCart}

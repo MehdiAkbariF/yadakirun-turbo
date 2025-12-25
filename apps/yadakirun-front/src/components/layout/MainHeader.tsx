@@ -46,7 +46,7 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
       {
         id: "categories",
         title: "دسته‌بندی فروشگاه",
-        href: "/products-category",
+        href: "/categories",
         children: [
           {
             id: "parts",
@@ -106,12 +106,13 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
           <Image src="/logo.webp" alt="لوگوی یدکی‌ران" width={150} height={50} className="h-auto" priority />
         </Link>
       }
-      megaMenuSlot={
+       megaMenuSlot={
         megaMenuItem && (
           <MegaMenu
             triggerText={megaMenuItem.title}
+            href={megaMenuItem.href} // ✅ پاس دادن آدرس /categories به مگامنو
             categories={categoriesForMegaMenu}
-            linkComponent={Link} // ✅ تزریق کامپوننت Link به مگامنو
+            linkComponent={Link}
             brands={brandsForMegaMenu.map((brand: any) => ({
               ...brand,
               subItems: brand.children || [],

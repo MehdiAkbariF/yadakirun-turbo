@@ -1,22 +1,22 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowRight, Timer } from 'lucide-react';
 
-// ✅ 1. ایمپورت هوک useAuth
 import { useAuth } from '@/src/context/AuthContext';
-
-// Imports from DS
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
 import { Button } from '@monorepo/design-system/src/components/atoms/Button/Button';
 import { OtpInput } from '@monorepo/design-system/src/components/molecules/OtpInput/OtpInput';
 
-export default function VerifyPage() {
+// این خط را نگه می‌داریم برای اطمینان
+export const dynamic = 'force-dynamic';
+
+// 1. جدا کردن منطق صفحه در یک کامپوننت داخلی
+const VerifyContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const mobile = searchParams.get('mobile') || '---';
-
-  // ✅ 2. دسترسی به تابع login از AuthContext
   const { login } = useAuth();
 
   const [otp, setOtp] = useState('');
@@ -48,13 +48,9 @@ export default function VerifyPage() {
 
     setIsLoading(true);
 
-    // شبیه‌سازی API تایید کد
     setTimeout(() => {
-      // ✅ 3. به جای alert، تابع login را فراخوانی می‌کنیم
       login();
-
       setIsLoading(false);
-      // پس از لاگین موفق، کاربر را به صفحه اصلی هدایت می‌کنیم
       router.push('/');
     }, 1500);
   };
@@ -63,12 +59,10 @@ export default function VerifyPage() {
     setTimer(120);
     setCanResend(false);
     setOtp('');
-    console.log('Resending code...');
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      
       <div className="text-center mb-2 relative">
         <button 
           type="button" 
@@ -127,4 +121,15 @@ export default function VerifyPage() {
       </Button>
     </form>
   );
-}
+};
+
+// 2. کامپوننت اصلی که محتوا را در Suspense قرار می‌دهد
+const VerifyPage = () => {
+  return (
+    <Suspense fallback={<div className="text-center p-4">در حال بارگذاری...</div>}>
+      <VerifyContent />
+    </Suspense>
+  );
+};
+
+export default VerifyPage;
