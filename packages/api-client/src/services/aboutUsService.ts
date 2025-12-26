@@ -1,13 +1,29 @@
-import { AboutUsPageData } from '../types/about.types';
 
-const BASE_URL = "https://api-yadakirun.yadakchi.com/api";
+import { AboutUsPageData } from '../types/about.types';
+import { API_CONFIG } from '../config'; 
+
+
+interface NextFetchRequestConfig extends RequestInit {
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
+}
+
+
+const BASE_URL = API_CONFIG.BASE_URL;
 
 export const aboutUsService = {
   getAboutUsPageData: async (): Promise<AboutUsPageData | null> => {
     try {
+      
+      
       const response = await fetch(`${BASE_URL}/Front/AboutUsPage`, {
-        next: { revalidate: 86400 }, // کش برای ۲۴ ساعت
-      } as any);
+        next: { revalidate: 86400 }, 
+        headers: {
+          'Accept': 'application/json',
+        }
+      } as NextFetchRequestConfig); 
 
       if (!response.ok) {
         throw new Error(`API call failed: ${response.statusText}`);

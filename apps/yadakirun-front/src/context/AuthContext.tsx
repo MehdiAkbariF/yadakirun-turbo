@@ -1,7 +1,20 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { setAuthToken } from '@monorepo/api-client/src/utils/authToken';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { setAuthToken } from "@monorepo/api-client/src/utils/authToken";
+import { jwtDecode } from "jwt-decode"; // ← درست: named import
+
+interface JwtClaims {
+  UserId: string;
+  name?: string;
+  // بقیه فیلدها اگر لازم بود
+}
 
 interface User {
   id: string;
@@ -17,48 +30,63 @@ interface AuthContextType {
   logout: () => void;
 }
 
-const STATIC_TOKEN = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxNDdhZGM4NS00NmEzLTRiNzEtYWEzZi01MWExMjliZmY4NTgiLCJuYmYiOjE3NjY2NzA3MjYsImV4cCI6MTc3NjY3MDYyNiwiaXNzIjoiWWFkYWtjaGkiLCJhdWQiOiJmcm9udC5sb3R0ZXN0LmlyIn0.Ee9Lv9BwkAKsFxdOuapdvqE2VETKsVMNWw_nDXVHoC1-PGxAGAQcFGhPoBuTAgx0j4UVmfj0lOpnqT4R017IfQ";
-const AUTH_TOKEN_KEY = 'authToken'; // یک کلید ثابت برای localStorage
+const STATIC_TOKEN =
+  "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxNDdhZGM4NS00NmEzLTRiNzEtYWEzZi01MWExMjliZmY4NTgiLCJuYmYiOjE3NjY2NzA3MjYsImV4cCI6MTc3NjY3MDYyNiwiaXNzIjoiWWFkYWtjaGkiLCJhdWQiOiJmcm9udC5sb3R0ZXN0LmlyIn0.Ee9Lv9BwkAKsFxdOuapdvqE2VETKsVMNWw_nDXVHoC1-PGxAGAQcFGhPoBuTAgx0j4UVmfj0lOpnqT4R017IfQ";
+
+const AUTH_TOKEN_KEY = "authToken";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // در ابتدا لودینگ است تا وضعیت از localStorage خوانده شود
+  const [isLoading, setIsLoading] = useState(true);
 
-  // ✅ 3. چک کردن localStorage در اولین بارگذاری
+  // تابع استخراج userId کامل از توکن
+  const decodeToken = (jwtToken: string): User | null => {
+    try {
+      const decoded: JwtClaims = jwtDecode<JwtClaims>(jwtToken); // ← با generic برای تایپ‌سیفتی
+      return {
+        id: decoded.UserId, // کامل: "147adc85-46a3-4b71-aa3f-51a129bff858"
+        name: decoded.name || "کاربر",
+      };
+    } catch (error) {
+      console.error("Failed to decode JWT token", error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     try {
       const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
-
       if (storedToken) {
-        // اگر توکنی پیدا شد، وضعیت لاگین را بازیابی کن
-        setToken(storedToken);
-        setUser({ id: '147ad...', name: 'کاربر بازگشتی' }); // کاربر شبیه‌سازی شده
-        setAuthToken(storedToken); // توکن را برای api-client هم تنظیم کن
+        const decodedUser = decodeToken(storedToken);
+        if (decodedUser) {
+          setUser(decodedUser);
+          setToken(storedToken);
+          setAuthToken(storedToken);
+        }
       }
     } catch (error) {
       console.error("Failed to read auth token from localStorage", error);
     } finally {
-      // چه توکن پیدا شد چه نشد، لودینگ اولیه تمام شده است
       setIsLoading(false);
     }
   }, []);
 
   const login = () => {
-    // ✅ 1. ذخیره توکن در localStorage
     localStorage.setItem(AUTH_TOKEN_KEY, STATIC_TOKEN);
-    
+
+    const decodedUser = decodeToken(STATIC_TOKEN);
+    if (decodedUser) {
+      setUser(decodedUser);
+    }
     setToken(STATIC_TOKEN);
-    setUser({ id: '147ad...', name: 'کاربر تست' });
     setAuthToken(STATIC_TOKEN);
   };
 
   const logout = () => {
-    // ✅ 2. حذف توکن از localStorage
     localStorage.removeItem(AUTH_TOKEN_KEY);
-    
     setToken(null);
     setUser(null);
     setAuthToken(null);
@@ -73,9 +101,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     logout,
   };
 
-  // تا زمانی که در حال چک کردن localStorage هستیم، چیزی رندر نمی‌کنیم تا از پرش UI جلوگیری شود
   if (isLoading) {
-    return null; // یا یک کامپوننت لودینگ تمام صفحه
+    return null; // یا لودینگ
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -84,7 +111,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

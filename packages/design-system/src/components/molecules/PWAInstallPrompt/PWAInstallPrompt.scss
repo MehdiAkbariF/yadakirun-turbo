@@ -1,0 +1,161 @@
+@use '../../../styles/_variables.scss' as tokens;
+
+.pwa-install-prompt {
+  width: 100%;
+  background-color: tokens.$color-bg-surface;
+  border-top: 1px solid tokens.$color-border-secondary;
+  box-shadow: tokens.$shadow-lg;
+  padding: tokens.$spacing-4;
+  display: flex;
+  align-items: center;
+  gap: tokens.$spacing-4;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: 
+    opacity 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    visibility 0.5s;
+
+  // sticky در پایین صفحه
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  z-index: 15;
+
+
+  &--visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+
+  &--dismissed {
+    transform: translateY(100%);
+  }
+
+  &__close {
+    position: absolute;
+    top: tokens.$spacing-3;
+    left: tokens.$spacing-3;
+    background: none;
+    border: none;
+    padding: tokens.$spacing-1;
+    cursor: pointer;
+    border-radius: tokens.$radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: tokens.$transition-base;
+
+    &:hover {
+      background-color: tokens.$color-bg-surface-hover;
+    }
+
+    svg {
+      color: tokens.$color-text-secondary;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  @media (min-width: tokens.$breakpoint-md) {
+    width: 380px;
+    max-width: 90vw;
+  
+ 
+    bottom: tokens.$spacing-2;
+    padding: tokens.$spacing-5;
+    border: 1px solid tokens.$color-border-secondary;
+    transform: translateY(100%);
+
+    &--visible {
+      transform: translateY(0);
+    }
+
+    &--dismissed {
+      transform: translateY(100%);
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background-color: tokens.$color-brand-primary;
+    border-radius: tokens.$radius-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: tokens.$color-text-on-brand;
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+    padding-left: tokens.$spacing-8;
+    padding-right: tokens.$spacing-8; // برای دکمه X
+  }
+
+  &__title {
+    font-weight: tokens.$font-weight-bold;
+    color: tokens.$color-text-primary;
+    margin-bottom: tokens.$spacing-1;
+    font-size: tokens.$font-size-sm;
+  }
+
+  &__message {
+    font-size: tokens.$font-size-xs;
+    color: tokens.$color-text-secondary;
+    line-height: tokens.$line-height-snug;
+  }
+
+  &__actions {
+    display: flex;
+    gap: tokens.$spacing-16;
+    margin-top: tokens.$spacing-3;
+  }
+
+  &__button {
+    padding: tokens.$spacing-1 tokens.$spacing-4;
+    border-radius: tokens.$radius-md;
+    font-weight: tokens.$font-weight-semi-bold;
+    font-size: tokens.$font-size-sm;
+    transition: tokens.$transition-base;
+    cursor: pointer;
+
+    &--install {
+      background-color: tokens.$color-brand-primary;
+      color: tokens.$color-text-on-brand;
+
+      &:hover {
+        background-color: tokens.$color-brand-primary-hover;
+      }
+    }
+
+    &--dismiss {
+      background-color: transparent;
+      color: tokens.$color-text-secondary;
+      border: 1px solid tokens.$color-border-secondary;
+
+      &:hover {
+        background-color: tokens.$color-bg-surface-hover;
+      }
+    }
+  }
+
+  // ریسپانسیو: در موبایل تمام عرض، در دسکتاپ محدود
+  @media (min-width: tokens.$breakpoint-md) {
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: tokens.$radius-xl tokens.$radius-xl 0 0;
+    border-left: 1px solid tokens.$color-border-secondary;
+    border-right: 1px solid tokens.$color-border-secondary;
+  }
+}

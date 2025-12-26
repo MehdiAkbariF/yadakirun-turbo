@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
 import { categoryService } from "@monorepo/api-client/src/services/categoryService";
-import { CategoryPageClient } from "@/src/components/CategoryPage/CategoryPageClient"; // کامپوننت کلاینت جدید
+import { CategoryPageClient } from "@/src/components/CategoryPage/CategoryPageClient"; 
 
 interface PageProps {
   params: Promise<{ ProductCategoryId: string }>;
   searchParams: Promise<{ page?: string }>;
 }
 
-// 1. تولید متادیتا داینامیک برای SEO
+
 export async function generateMetadata({ params }: PageProps) {
   const resolvedParams = await params;
   const { ProductCategoryId } = resolvedParams;
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
-// 2. کامپوننت اصلی سرور
+
 export default async function ProductCategoryPage({ params, searchParams }: PageProps) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
@@ -35,7 +35,7 @@ export default async function ProductCategoryPage({ params, searchParams }: Page
   const { ProductCategoryId } = resolvedParams;
   const currentPage = Number(resolvedSearchParams.page) || 1;
 
-  // اجرای موازی هر دو درخواست API
+  
   const [categoryData, productsData] = await Promise.all([
     categoryService.getCategoryDetails(ProductCategoryId),
     categoryService.getCategoryProducts(ProductCategoryId, currentPage)
@@ -45,7 +45,7 @@ export default async function ProductCategoryPage({ params, searchParams }: Page
     notFound();
   }
 
-  // پاس دادن هر دو داده به کامپوننت کلاینت
+  
   return (
     <CategoryPageClient 
       categoryData={categoryData} 

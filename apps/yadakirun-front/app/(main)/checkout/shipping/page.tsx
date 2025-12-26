@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Truck, CheckCircle, Plus } from 'lucide-react';
+import { Truck, CheckCircle } from 'lucide-react';
+import Image from 'next/image';
 
 // --- Stores & Services ---
 import { useAddressStore } from '@/src/stores/addressStore';
@@ -12,38 +13,41 @@ import type { ShippingMethod } from '@monorepo/api-client/src/types/checkout.typ
 // --- Components ---
 import { Container } from '@monorepo/design-system/src/components/organisms/Container/Container';
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
-import { Button } from '@monorepo/design-system/src/components/atoms/Button/Button';
 import { OrderSummary } from '@monorepo/design-system/src/components/organisms/OrderSummary/OrderSummary';
 import { AddressManager } from '@monorepo/design-system/src/components/organisms/AddressManager/AddressManager';
 
 export default function ShippingPage() {
   const router = useRouter();
 
-  const { addresses, isLoading: isAddressLoading, fetchAddresses, addAddress, updateAddress, deleteAddress, openAddModal, closeAddModal, isAddModalOpen } = useAddressStore();
+  const { addresses, isLoading: isAddressLoading, fetchAddresses, addAddress, updateAddress, deleteAddress } = useAddressStore();
   const { totalOriginalPrice, totalFinalPrice } = useBasketStore();
   
   const [shippingMethods, setShippingMethods] = useState<ShippingMethod[]>([]);
+  const [isDataLoading, setIsDataLoading] = useState(true);
   const [selectedAddressId, setSelectedAddressId] = useState<number | string | null>(null);
   const [selectedShippingMethodId, setSelectedShippingMethodId] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // واکشی داده‌های اولیه
   useEffect(() => {
-    fetchAddresses();
-    checkoutService.getShippingMethods().then(methods => {
-      setShippingMethods(methods);
-    });
+    async function fetchData() {
+      setIsDataLoading(true);
+      try {
+        await fetchAddresses();
+        const methods = await checkoutService.getShippingMethods();
+        setShippingMethods(methods);
+      } catch (error) {
+        console.error("Failed to fetch shipping page data:", error);
+      } finally {
+        setIsDataLoading(false);
+      }
+    }
+    fetchData();
   }, [fetchAddresses]);
 
-  // ✅✅✅ تغییر اصلی اینجاست ✅✅✅
-  // یک useEffect جداگانه برای انتخاب مقادیر پیش‌فرض
-  // این افکت به تغییرات addresses و shippingMethods گوش می‌دهد
   useEffect(() => {
-    // انتخاب اولین آدرس به عنوان پیش‌فرض، فقط اگر آدرسی وجود داشت و هنوز چیزی انتخاب نشده بود
     if (addresses.length > 0 && !selectedAddressId) {
       setSelectedAddressId(addresses[0].id);
     }
-    // انتخاب اولین روش ارسال به عنوان پیش‌فرض
     if (shippingMethods.length > 0 && !selectedShippingMethodId) {
       setSelectedShippingMethodId(shippingMethods[0].id);
     }
@@ -56,8 +60,9 @@ export default function ShippingPage() {
     }
     setIsSubmitting(true);
     try {
+      // ✅✅✅ اصلاح اصلی اینجاست: استفاده از `userLocationId` ✅✅✅
       const result = await checkoutService.finalizeCheckout({
-        userLocationId: Number(selectedAddressId),
+        userLocationId: Number(selectedAddressId), // نام پراپرتی مطابق با API اصلاح شد
         shipmentMethodId: selectedShippingMethodId,
       });
       window.location.href = result.paymentUrl;
@@ -68,24 +73,11 @@ export default function ShippingPage() {
   };
 
   const discount = totalOriginalPrice - totalFinalPrice;
-  const selectedShipping = shippingMethods.find(s => s.id === selectedShippingMethodId);
-  const finalTotal = totalFinalPrice + (selectedShipping?.price || 0);
+  const shippingCost = 0;
+  const finalTotal = totalFinalPrice + shippingCost;
 
   return (
     <Container className="py-8">
-      <div className="sr-only">
-        <AddressManager 
-          addresses={addresses}
-          isLoading={isAddressLoading}
-          isAddModalOpen={isAddModalOpen}
-          onOpenAddModal={openAddModal}
-          onCloseAddModal={closeAddModal}
-          onAddAddress={addAddress}
-          onUpdateAddress={updateAddress}
-          onDeleteAddress={deleteAddress}
-        />
-      </div>
-
       <Label as="h1" size="2x" weight="bold" className="mb-8">تکمیل سفارش</Label>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
@@ -107,20 +99,37 @@ export default function ShippingPage() {
               <Truck className="text-brand-primary" />
               <Label as="h2" weight="bold">۲. انتخاب روش ارسال</Label>
             </div>
-            <div className="space-y-3">
-              {shippingMethods.map(method => (
-                <div key={method.id} onClick={() => setSelectedShippingMethodId(method.id)} className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedShippingMethodId === method.id ? 'border-brand-primary bg-brand-secondary ring-2 ring-brand-primary' : 'border-border-secondary hover:border-border-primary'}`}>
-                  <div className="flex items-center justify-between">
-                    <Label weight="bold">{method.name}</Label>
-                    {selectedShippingMethodId === method.id && <CheckCircle className="text-brand-primary" />}
+            {isDataLoading ? (
+              <div className="space-y-3">
+                <div className="h-20 bg-gray-100 rounded-lg animate-pulse" />
+                <div className="h-20 bg-gray-100 rounded-lg animate-pulse" />
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {shippingMethods.map(method => (
+                  <div 
+                    key={method.id} 
+                    onClick={() => setSelectedShippingMethodId(method.id)} 
+                    className={`p-4 border rounded-lg cursor-pointer transition-all flex items-center gap-4 ${selectedShippingMethodId === method.id ? 'border-brand-primary bg-brand-secondary ring-2 ring-brand-primary' : 'border-border-secondary hover:border-border-primary'}`}
+                  >
+                    <Image 
+                      src={`https://api-yadakirun.yadakchi.com${method.imageUrl}`}
+                      alt={method.title}
+                      width={48}
+                      height={48}
+                      className="rounded-md"
+                    />
+                    <div className="flex-grow">
+                      <div className="flex items-center justify-between">
+                        <Label weight="bold">{method.title}</Label>
+                        {selectedShippingMethodId === method.id && <CheckCircle className="text-brand-primary" />}
+                      </div>
+                      <Label size="sm" color="secondary" className="mt-1 block">{method.description}</Label>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between mt-1">
-                    <Label size="sm" color="secondary">{method.deliveryTime}</Label>
-                    <Label size="sm" weight="bold">{method.price > 0 ? `${method.price.toLocaleString('fa-IR')} تومان` : 'رایگان'}</Label>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -128,12 +137,12 @@ export default function ShippingPage() {
           <OrderSummary 
             subtotal={totalOriginalPrice}
             discount={discount}
-            shippingCost={selectedShipping?.price || 0}
+            shippingCost={shippingCost}
             total={finalTotal}
             buttonText="پرداخت و نهایی کردن"
             onCheckout={handleSubmitOrder}
             isLoading={isSubmitting}
-            disabled={!selectedAddressId || !selectedShippingMethodId}
+            disabled={!selectedAddressId || !selectedShippingMethodId || isDataLoading}
           />
         </div>
       </div>

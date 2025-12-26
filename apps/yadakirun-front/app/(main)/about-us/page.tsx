@@ -1,7 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { CheckCircle } from 'lucide-react';
 import { aboutUsService } from '@monorepo/api-client/src/services/aboutUsService';
 
 // --- Design System Imports ---
@@ -32,9 +31,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function AboutPage() {
   const pageData = await aboutUsService.getAboutUsPageData();
 
-  // پیدا کردن بنر مناسب از API
-  const mainBanner = pageData?.banners.find(b => b.bannerPlace === "AboutUsMain" || b.bannerPlace === "TrustUsMain");
-  const fallbackBanner = "/aboutus.png"; // یک تصویر پیش‌فرض
+  // ✅ اصلاح: اضافه کردن پرانتز و fallback آرایه خالی قبل از فراخوانی .find()
+  const mainBanner = (pageData?.banners || []).find(b => String(b.bannerPlace) === "AboutUsMain" || String(b.bannerPlace) === "TrustUsMain");
+  const fallbackBanner = "/aboutus.png";
 
   return (
     <div className="bg-bg-body min-h-screen pb-20">
@@ -61,7 +60,7 @@ export default async function AboutPage() {
             <div className="bg-surface rounded-3xl shadow-xl border border-border-secondary p-6 md:p-10 lg:p-14">
                 
                 <div className="space-y-12">
-                    {/* ✅✅✅ بخش داینامیک: توضیحات اصلی از API ✅✅✅ */}
+                    {/* این بخش چون از قبل شرط && دارد، ایمن است */}
                     {pageData?.description && (
                         <ContentSection title="درباره ما">
                             <Label as="p" size="base" className="leading-loose text-justify text-text-secondary whitespace-pre-line">
@@ -69,10 +68,6 @@ export default async function AboutPage() {
                             </Label>
                         </ContentSection>
                     )}
-
-                  
-
-              
                 </div>
 
             </div>

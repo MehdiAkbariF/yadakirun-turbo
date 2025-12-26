@@ -1,22 +1,26 @@
-// packages/api-client/src/services/basketService.ts
-
 import { BasketResponse, UpdateBasketPayload } from '../types/basket.types';
 import { getAuthToken } from '../utils/authToken';
+import { API_CONFIG } from '../config'; // استفاده از کانفیگ مرکزی
 
-const BASE_URL = "/api"; 
+// ✅ تعریف تایپ برای پشتیبانی از تنظیمات Next.js بدون ارور TypeScript
+interface NextFetchRequestConfig extends RequestInit {
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
+}
 
-async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<T> {
+// استفاده از آدرس پایه داینامیک (سرور: Absolute / کلاینت: Relative)
+const BASE_URL = API_CONFIG.BASE_URL; 
+
+async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
   const token = getAuthToken();
 
-  // ✅✅✅ راه حل مشکل تایپ‌اسکریپت اینجاست ✅✅✅
-  // ما کل شیء هدر را در یک مرحله و به صورت شرطی می‌سازیم.
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     ...options.headers,
-    // این تکنیک به صورت شرطی پراپرتی Authorization را اضافه می‌کند:
-    // اگر توکن وجود داشته باشد، آبجکت { Authorization: ... } به هدرها اضافه می‌شود.
-    // اگر توکن null باشد، هیچ چیزی اضافه نمی‌شود.
+    // ✅ استفاده از تکنیک Spread برای امنیت تایپ و ارسال داینامیک توکن
     ...(token && { 'Authorization': `Bearer ${token}` }),
   };
 
@@ -24,10 +28,11 @@ async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(url, { ...options, headers });
     if (!response.ok) {
       const errorBody = await response.text();
-      console.error("API Error Response:", errorBody);
+      console.error("API Basket Error Response:", errorBody);
       throw new Error(`API call failed: ${response.status} ${response.statusText}`);
     }
     const text = await response.text();
+    // اگر پاسخ موفقیت‌آمیز بود ولی بدنه نداشت (مثلاً در حذف)، یک آبجکت موفقیت برمی‌گردانیم
     return text ? JSON.parse(text) as T : { success: true } as T;
   } catch (error) {
     console.error(`Error fetching from ${url}:`, error);
@@ -36,13 +41,21 @@ async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<T> {
 }
 
 export const basketService = {
+  /**
+   * دریافت اطلاعات کامل سبد خرید کاربر
+   * آدرس نهایی: [BASE_URL]/Front/Basket
+   */
   getBasket: (): Promise<BasketResponse> => {
     return apiFetch<BasketResponse>(`${BASE_URL}/Front/Basket`, {
       method: 'GET',
-      cache: 'no-store', 
+      cache: 'no-store', // سبد خرید نباید کش شود
     });
   },
 
+  /**
+   * افزودن یک محصول به سبد خرید
+   * آدرس نهایی: [BASE_URL]/Front/Basket
+   */
   addToBasket: (payload: UpdateBasketPayload): Promise<any> => {
     return apiFetch(`${BASE_URL}/Front/Basket`, {
       method: 'POST',
@@ -50,6 +63,10 @@ export const basketService = {
     });
   },
 
+  /**
+   * حذف یا کاهش تعداد یک محصول از سبد خرید
+   * آدرس نهایی: [BASE_URL]/Front/Basket
+   */
   removeFromBasket: (payload: UpdateBasketPayload): Promise<any> => {
     return apiFetch(`${BASE_URL}/Front/Basket`, {
       method: 'DELETE',

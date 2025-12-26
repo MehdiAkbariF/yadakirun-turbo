@@ -1,4 +1,5 @@
 // packages/design-system/src/components/atoms/Input/Input.tsx
+"use client";
 import React from 'react';
 import { InputProps } from './Input.types';
 import { Label } from '../Label/Label';

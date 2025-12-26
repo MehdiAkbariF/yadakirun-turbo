@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from 'react';
-import { LogOut, ChevronDown, Menu } from 'lucide-react';
+import React, { useRef, useEffect } from 'react';
+import { LogOut } from 'lucide-react';
 import { Label } from '../../atoms/Label/Label';
 import './DashboardSidebar.scss';
 
-export type DashboardTab = 'dashboard' | 'profile' | 'addresses' | 'orders' | 'reviews';
+// ✅ اضافه شدن tickets به تایپ‌ها
+export type DashboardTab = 'dashboard' | 'profile' | 'addresses' | 'orders' | 'tickets' | 'returns' | 'reviews';
 
 export interface DashboardMenuItem {
   id: DashboardTab;
@@ -16,8 +17,8 @@ interface DashboardSidebarProps {
   activeTab: DashboardTab;
   onTabChange: (tab: DashboardTab) => void;
   onLogout: () => void;
-  menuItems: DashboardMenuItem[]; // منو را از بیرون میگیریم تا وابسته نباشد
-  userDisplayName: string; // نام کاربر برای نمایش در هدر
+  menuItems: DashboardMenuItem[];
+  userDisplayName: string;
 }
 
 export const DashboardSidebar = ({ 
@@ -27,61 +28,62 @@ export const DashboardSidebar = ({
   menuItems,
   userDisplayName 
 }: DashboardSidebarProps) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const activeLabel = menuItems.find(item => item.id === activeTab)?.label;
+  // ✅ اسکرول خودکار به سمت آیتم فعال در موبایل
+  useEffect(() => {
+    const activeElement = scrollRef.current?.querySelector('.dashboard-sidebar__item--active');
+    if (activeElement) {
+      activeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  }, [activeTab]);
 
   return (
-    <div className="dashboard-sidebar">
+    <aside className="dashboard-sidebar">
       
-      {/* Mobile Header / Toggle */}
-      <div className="dashboard-sidebar__mobile-header">
-        <button 
-          className="dashboard-sidebar__toggle-btn"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          <div className="dashboard-sidebar__toggle-content">
-            <Menu size={20} />
-            <Label className="dashboard-sidebar__active-label">{activeLabel}</Label>
+      {/* --- بخش اطلاعات کاربر (در دسکتاپ عمودی و در موبایل افقی) --- */}
+      <div className="dashboard-sidebar__user-box">
+        <div className="dashboard-sidebar__user-info">
+          <div className="dashboard-sidebar__avatar">
+            {userDisplayName.charAt(0)}
           </div>
-          <ChevronDown size={20} className={`dashboard-sidebar__chevron ${isMobileMenuOpen ? 'open' : ''}`} />
+          <div className="dashboard-sidebar__text">
+            <Label weight="bold" size="base" className="dashboard-sidebar__welcome">خوش آمدید</Label>
+            <Label size="sm" color="secondary" className="dashboard-sidebar__name">{userDisplayName}</Label>
+          </div>
+        </div>
+        
+        {/* دکمه خروج مخصوص موبایل (در دسکتاپ مخفی است) */}
+        <button onClick={onLogout} className="dashboard-sidebar__logout-mobile" title="خروج">
+          <LogOut size={20} />
         </button>
       </div>
 
-      {/* Sidebar Content */}
-      <div className={`dashboard-sidebar__container ${isMobileMenuOpen ? 'dashboard-sidebar__container--open' : ''}`}>
-        
-        {/* Sidebar Header (Desktop) */}
-        <div className="dashboard-sidebar__header">
-           <div className="dashboard-sidebar__user-info">
-              <Label weight="bold" size="lg" >حساب کاربری </Label>
-              <Label size="sm" color="secondary">{userDisplayName}</Label>
-           </div>
-        </div>
-        
-        <nav className="dashboard-sidebar__nav">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => {
-                onTabChange(item.id);
-                setIsMobileMenuOpen(false);
-              }}
-              className={`dashboard-sidebar__item ${activeTab === item.id ? 'dashboard-sidebar__item--active' : ''}`}
-            >
-              <span className="dashboard-sidebar__icon">{item.icon}</span>
-              <span className="dashboard-sidebar__label">{item.label}</span>
-            </button>
-          ))}
-        </nav>
-
-        <div className="dashboard-sidebar__footer">
-          <button onClick={onLogout} className="dashboard-sidebar__logout-btn">
-            <LogOut size={20} />
-            <span>خروج از حساب</span>
+      {/* --- نوار ناوبری --- */}
+      <nav className="dashboard-sidebar__nav custom-scrollbar" ref={scrollRef}>
+        {menuItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => onTabChange(item.id)}
+            className={`dashboard-sidebar__item ${activeTab === item.id ? 'dashboard-sidebar__item--active' : ''}`}
+          >
+            <span className="dashboard-sidebar__icon">{item.icon}</span>
+            <span className="dashboard-sidebar__label">{item.label}</span>
+            
+            {/* ایندیکیتور فعال بودن (مخصوص موبایل) */}
+            {activeTab === item.id && <span className="dashboard-sidebar__active-dot" />}
           </button>
-        </div>
+        ))}
+      </nav>
+
+      {/* --- فوتر (فقط دسکتاپ) --- */}
+      <div className="dashboard-sidebar__footer">
+        <button onClick={onLogout} className="dashboard-sidebar__logout-btn">
+          <LogOut size={20} />
+          <Label as="span" size="sm" weight="bold">خروج از حساب</Label>
+        </button>
       </div>
-    </div>
+
+    </aside>
   );
 };

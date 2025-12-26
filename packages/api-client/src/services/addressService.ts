@@ -1,53 +1,84 @@
 import { getAuthToken } from '../utils/authToken';
+import { API_CONFIG } from '../config';
 import { ApiAddressItem, AddAddressPayload, UpdateAddressPayload } from '../types/address.types';
 
-const BASE_URL = "/api/UserPanel";
+// ✅ تعریف تایپ برای پشتیبانی از تنظیمات Next.js (مانند سایر سرویس‌ها)
+interface NextFetchRequestConfig extends RequestInit {
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
+}
+
+// ترکیب آدرس پایه با بخش پنل کاربری
+// خروجی در سرور: https://api-yadakirun.yadakchi.com/api/UserPanel
+// خروجی در کلاینت: /api/UserPanel
+const BASE_URL = `${API_CONFIG.BASE_URL}/UserPanel`;
 
 async function apiFetchFormData<T>(url: string, formData: FormData, method: 'POST' | 'PUT' = 'POST'): Promise<T> {
   const token = getAuthToken();
-  const headers: HeadersInit = {};
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
+  
+  // استفاده از تکنیک Spread برای جلوگیری از خطای ایندکس تایپ‌اسکریپت در HeadersInit
+  const headers: HeadersInit = {
+    ...(token && { 'Authorization': `Bearer ${token}` }),
+    // نکته: برای FormData نباید Content-Type ست کنیم، خود مرورگر Boundary را تنظیم می‌کند
+  };
 
   try {
     const response = await fetch(url, { method, headers, body: formData });
     if (!response.ok) {
       const errorBody = await response.text();
-      console.error("API Error Response body:", errorBody); // لاگ کردن بدنه خطا
+      console.error("API FormData Error Response:", errorBody);
       throw new Error(`API call failed: ${response.status} ${response.statusText}`);
     }
     const text = await response.text();
-    return text ? JSON.parse(text) as T : {} as T;
+    return text ? JSON.parse(text) as T : { success: true } as T;
   } catch (error) {
     console.error(`Error in apiFetchFormData to ${url}:`, error);
     throw error;
   }
 }
 
-async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<T> {
+async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
     const token = getAuthToken();
+    
     const headers: HeadersInit = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         ...options.headers,
         ...(token && { 'Authorization': `Bearer ${token}` }),
     };
-    const response = await fetch(url, { ...options, headers });
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error("API Error Response body:", errorBody);
-      throw new Error(`API call failed: ${response.statusText}`);
+
+    try {
+      const response = await fetch(url, { ...options, headers });
+      if (!response.ok) {
+        const errorBody = await response.text();
+        console.error("API JSON Error Response:", errorBody);
+        throw new Error(`API call failed: ${response.status} ${response.statusText}`);
+      }
+      const text = await response.text();
+      return text ? JSON.parse(text) as T : { success: true } as T;
+    } catch (error) {
+      console.error(`Error in apiFetch to ${url}:`, error);
+      throw error;
     }
-    const text = await response.text();
-    return text ? JSON.parse(text) as T : {} as T;
 }
 
 export const addressService = {
+  /**
+   * دریافت تمام آدرس‌های کاربر
+   * آدرس نهایی: [BASE_URL]/UserLocations
+   */
   fetchAddresses: (): Promise<ApiAddressItem[]> => {
-    return apiFetch<ApiAddressItem[]>(`${BASE_URL}/UserLocations`);
+    return apiFetch<ApiAddressItem[]>(`${BASE_URL}/UserLocations`, {
+      cache: 'no-store'
+    });
   },
 
+  /**
+   * افزودن آدرس جدید
+   * آدرس نهایی: [BASE_URL]/UserLocation
+   */
   addAddress: (data: AddAddressPayload): Promise<any> => {
     const formData = new FormData();
     formData.append('Title', data.title);
@@ -69,15 +100,15 @@ export const addressService = {
     return apiFetchFormData(`${BASE_URL}/UserLocation`, formData, 'POST');
   },
 
-  // ✅✅✅ تابع updateAddress به طور کامل پیاده‌سازی شد ✅✅✅
+  /**
+   * ویرایش آدرس موجود
+   * آدرس نهایی: [BASE_URL]/UserLocation
+   */
   updateAddress: (data: UpdateAddressPayload): Promise<any> => {
     const formData = new FormData();
     
-    // فیلد اجباری Id
     formData.append('Id', String(data.id));
 
-    // افزودن بقیه فیلدها فقط در صورتی که مقداری داشته باشند
-    // API ویرایش معمولا فقط فیلدهایی که قرار است تغییر کنند را می‌پذیرد
     if (data.title) formData.append('Title', data.title);
     if (data.latitude) formData.append('Latitude', String(data.latitude));
     if (data.longitude) formData.append('Longitude', String(data.longitude));
@@ -95,6 +126,10 @@ export const addressService = {
     return apiFetchFormData(`${BASE_URL}/UserLocation`, formData, 'PUT');
   },
 
+  /**
+   * حذف آدرس
+   * آدرس نهایی: [BASE_URL]/UserLocation
+   */
   deleteAddress: (id: number | string): Promise<any> => {
     return apiFetch(`${BASE_URL}/UserLocation`, {
       method: 'DELETE',

@@ -1,16 +1,25 @@
 import { HomePageData } from '../types/home.types';
+import { API_CONFIG } from '../config';
 
-const BASE_URL = "https://api-yadakirun.yadakchi.com/api";
+// تعریف تایپ برای پشتیبانی از تنظیمات Next.js
+interface NextFetchRequestConfig extends RequestInit {
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
+}
+
+const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
 
 export const homeService = {
   getHomePageData: async (): Promise<HomePageData | null> => {
     try {
-      // ✅✅✅ اصلاح اصلی اینجاست ✅✅✅
-      // ما آبجکت تنظیمات fetch را به صورت "as any" پاس می‌دهیم
-      // تا TypeScript از پراپرتی next که مختص Next.js است، ایراد نگیرد.
-      const response = await fetch(`${BASE_URL}/Front/HomePage`, {
-        next: { revalidate: 3600 },
-      } as any);
+      const response = await fetch(`${BASE_URL}/HomePage`, {
+        next: { revalidate: 3600 }, // کش برای یک ساعت
+        headers: {
+          'Accept': 'application/json',
+        }
+      } as NextFetchRequestConfig);
 
       if (!response.ok) {
         throw new Error(`API call failed: ${response.statusText}`);

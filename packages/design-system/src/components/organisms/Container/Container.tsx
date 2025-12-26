@@ -1,4 +1,5 @@
 // packages/design-system/src/components/organisms/Container/Container.tsx
+"use client";
 import React from 'react';
 import { ContainerProps } from './Container.types';
 import './Container.scss';

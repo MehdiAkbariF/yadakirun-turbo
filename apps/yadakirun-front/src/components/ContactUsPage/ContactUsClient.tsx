@@ -23,8 +23,9 @@ interface ContactUsClientProps {
 
 export function ContactUsClient({ pageData }: ContactUsClientProps) {
   
-  // داده‌های بنر را از پراپ می‌خوانیم
-  const mainBanner = pageData?.banners.find(b => b.bannerPlaceName === "ContactUsMain");
+  // ✅✅✅ اصلاح اصلی اینجاست: استفاده از `?? []` ✅✅✅
+  // اگر pageData.banners وجود نداشت، یک آرایه خالی جایگزین می‌شود
+  const mainBanner = (pageData?.banners ?? []).find(b => b.bannerPlaceName === "ContactUsMain");
 
   // داده‌های استاتیک
   const officeLocation = { lat: 35.689997, lng: 51.426637 };
@@ -40,6 +41,7 @@ export function ContactUsClient({ pageData }: ContactUsClientProps) {
     <main>
       <PageHeader 
         title="تماس با ما" 
+        // در اینجا هم چک می‌کنیم که mainBanner پیدا شده باشد
         imageSrc={mainBanner ? `https://api-yadakirun.yadakchi.com${mainBanner.image}` : "/contact-banner.webp"}
         height="350px"
       />

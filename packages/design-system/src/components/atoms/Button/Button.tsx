@@ -1,10 +1,10 @@
-"use client"; // ✅✅✅ این خط حیاتی است و باید اضافه شود
+"use client";
 
 import React from 'react';
-import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 import { ButtonProps } from './Button.types';
 import './Button.scss';
+import Link from 'next/link';
 
 export const Button = (props: ButtonProps) => {
   const {
@@ -33,6 +33,7 @@ export const Button = (props: ButtonProps) => {
     .filter(Boolean)
     .join(' ');
 
+  // ✅ محتوا هم داخل تابع تعریف می‌شود
   const content = (
     <>
       <span className="ds-button__loader">
@@ -47,7 +48,6 @@ export const Button = (props: ButtonProps) => {
     </>
   );
 
-  // --- رندر به عنوان لینک ---
   if (props.href) {
     const { href, target, ...linkProps } = rest as any;
     const finalHref = isDisabled ? '#' : href;
@@ -58,10 +58,9 @@ export const Button = (props: ButtonProps) => {
         className={classNames}
         aria-disabled={isDisabled}
         target={target}
-        // ✅ وجود این onClick باعث می‌شد ارور بگیرید چون فایل use client نداشت
         onClick={(e) => {
-           if (isDisabled) e.preventDefault();
-           if (props.onClick) props.onClick(e as any);
+          if (isDisabled) e.preventDefault();
+          if (props.onClick) props.onClick(e as any);
         }}
         {...linkProps}
       >
@@ -70,7 +69,6 @@ export const Button = (props: ButtonProps) => {
     );
   }
 
-  // --- رندر به عنوان دکمه ---
   return (
     <button
       className={classNames}

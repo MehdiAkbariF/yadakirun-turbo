@@ -2,149 +2,184 @@
 
 .dashboard-sidebar {
   width: 100%;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-4;
 
-  // --- Mobile Toggle Style ---
-  &__mobile-header {
-    display: block;
-    margin-bottom: tokens.$spacing-4;
-
-    @media (min-width: tokens.$breakpoint-lg) {
-      display: none; // مخفی کردن در دسکتاپ
-    }
-  }
-
-  &__toggle-btn {
-    width: 100%;
+  // --- کانتینر اطلاعات کاربر ---
+  &__user-box {
+    background-color: tokens.$color-bg-surface;
+    border: 1px solid tokens.$color-border-secondary;
+    border-radius: tokens.$radius-2xl;
+    padding: tokens.$spacing-2;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: tokens.$spacing-4;
-    background-color: tokens.$color-bg-surface;
-    border: 1px solid tokens.$color-border-secondary;
-    border-radius: tokens.$radius-lg;
-    color: tokens.$color-text-primary;
-    cursor: pointer;
-  }
+    box-shadow: tokens.$shadow;
 
-  &__toggle-content {
-    display: flex;
-    align-items: center;
-    gap: tokens.$spacing-3;
-  }
-
-  &__chevron {
-    transition: transform 0.3s ease;
-    &.open { transform: rotate(180deg); }
-  }
-
-  // --- Sidebar Container ---
-  &__container {
-    background-color: tokens.$color-bg-surface;
-    border-radius: tokens.$radius-2xl;
-    overflow: hidden;
-    
-    // Mobile Logic
-    max-height: 0; 
-    transition: max-height 0.3s ease-in-out;
-    opacity: 0;
-
-    &--open {
-      max-height: 600px; // ارتفاع تقریبی برای باز شدن
-      opacity: 1;
-      border: 1px solid tokens.$color-border-secondary;
-      margin-bottom: tokens.$spacing-6;
-    }
-
-    // Desktop Logic
     @media (min-width: tokens.$breakpoint-lg) {
-      display: block;
-      max-height: none;
-      opacity: 1;
-      width: 280px; // عرض ثابت سایدبار
-      flex-shrink: 0;
-      padding: tokens.$spacing-4;
-      border: 1px solid tokens.$color-border-secondary;
-      position: sticky;
-      top: 100px;
-    }
-  }
-
-  &__header {
-    display: none;
-    @media (min-width: tokens.$breakpoint-lg) {
-      display: block;
-      padding-bottom: tokens.$spacing-4;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: tokens.$spacing-6;
       margin-bottom: tokens.$spacing-2;
-      border-bottom: 1px solid tokens.$color-border-secondary;
     }
   }
 
   &__user-info {
     display: flex;
-    flex-direction: column;
-    gap: tokens.$spacing-1;
+    align-items: center;
+    gap: tokens.$spacing-3;
+
+    @media (min-width: tokens.$breakpoint-lg) {
+      flex-direction: row;
+      width: 100%;
+    }
   }
 
-  &__nav {
+  &__avatar {
+    width: 48px;
+    height: 48px;
+    background: tokens.$color-bg-secondary;
+    color: tokens.$color-text-primary;
+    border-radius: tokens.$radius-xl;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: tokens.$font-weight-black;
+    font-size: tokens.$font-size-xl;
+  }
+
+  &__text {
     display: flex;
     flex-direction: column;
+  }
+
+  &__welcome {
+    display: none; // در موبایل مخفی
+    @media (min-width: tokens.$breakpoint-lg) {
+      display: block;
+    }
+  }
+
+  // --- دکمه‌های ناوبری ---
+  &__nav {
+    display: flex;
+    flex-direction: row; // حالت افقی برای موبایل
     gap: tokens.$spacing-1;
-    padding: tokens.$spacing-2 0;
+    overflow-x: auto; // اسکرول افقی
+    
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; // مخفی کردن اسکرول‌بار در فایرفاکس
+
+    &::-webkit-scrollbar {
+      display: none; // مخفی کردن اسکرول‌بار در کروم
+    }
+
+    @media (min-width: tokens.$breakpoint-lg) {
+      flex-direction: column;
+      gap: tokens.$spacing-1;
+      overflow-x: visible;
+      padding: 0;
+    }
   }
 
   &__item {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: tokens.$spacing-3;
-    padding: tokens.$spacing-3 tokens.$spacing-4;
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-radius: tokens.$radius-lg;
+    gap: tokens.$spacing-1;
+    padding: tokens.$spacing-2 tokens.$spacing-3;
+    background-color: tokens.$color-bg-surface;
+    border: 1px solid tokens.$color-border-secondary;
+    border-radius: tokens.$radius-full; // حالت چیپ (Chip) در موبایل
     color: tokens.$color-text-secondary;
-    font-family: tokens.$font-family-base;
-    font-weight: tokens.$font-weight-medium;
-    font-size: tokens.$font-size-sm;
     cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: right;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    white-space: nowrap; // جلوگیری از شکستن متن در موبایل
+    position: relative;
 
-    &:hover {
-      background-color: tokens.$color-bg-secondary;
-      color: tokens.$color-text-primary;
+    @media (min-width: tokens.$breakpoint-lg) {
+      border: none;
+      border-radius: tokens.$radius-xl;
+      width: 100%;
+      padding: tokens.$spacing-4;
+      background-color: transparent;
+      
+      &:hover {
+     
+        transform: translateX(-5px); // افکت حرکت به راست در هاور دسکتاپ
+      }
     }
 
     &--active {
-      background-color: rgba(tokens.$color-brand-primary, 0.1);
-      color: tokens.$color-brand-primary;
-      font-weight: tokens.$font-weight-bold;
-      
+      border-color: tokens.$color-brand-primary;
+      background-color: tokens.$color-brand-primary;
+      color: tokens.$color-text-on-brand;
+      box-shadow: 0 4px 12px rgba(var(--color-brand-primary-rgb), 0.2);
+
       .dashboard-sidebar__icon {
+        color: tokens.$color-text-on-brand;
+      }
+
+      @media (min-width: tokens.$breakpoint-lg) {
+        background-color: rgba(tokens.$color-brand-primary, 0.1);
         color: tokens.$color-brand-primary;
+        box-shadow: none;
+        
+        .dashboard-sidebar__icon {
+          color: tokens.$color-brand-primary;
+        }
       }
     }
   }
 
-  &__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  &__label {
+    font-size: tokens.$font-size-sm;
+    font-weight: tokens.$font-weight-bold;
   }
 
+  // --- دکمه خروج ---
   &__footer {
-    margin-top: tokens.$spacing-4;
-    padding-top: tokens.$spacing-4;
-    border-top: 1px solid tokens.$color-border-secondary;
+    display: none; // در موبایل مخفی
+    @media (min-width: tokens.$breakpoint-lg) {
+      display: block;
+      
+      padding-top: tokens.$spacing-1;
+      border-top: 1px solid tokens.$color-border-secondary;
+    }
   }
 
   &__logout-btn {
-    @extend .dashboard-sidebar__item;
+    display: flex;
+    align-items: center;
+    gap: tokens.$spacing-2;
+    width: 100%;
+    padding: tokens.$spacing-2;
+    background: transparent;
+    border: none;
     color: tokens.$color-utility-error;
-    
+    cursor: pointer;
+    border-radius: tokens.$radius-xl;
+    transition: all 0.2s;
+
     &:hover {
       background-color: rgba(tokens.$color-utility-error, 0.05);
-      color: tokens.$color-utility-error;
+    }
+  }
+
+  &__logout-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: tokens.$radius-lg;
+    background-color: rgba(tokens.$color-utility-error, 0.1);
+    color: tokens.$color-utility-error;
+    border: none;
+
+    @media (min-width: tokens.$breakpoint-lg) {
+      display: none;
     }
   }
 }

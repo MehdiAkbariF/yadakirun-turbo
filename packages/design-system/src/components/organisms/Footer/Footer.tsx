@@ -3,7 +3,6 @@ import React from 'react';
 import { IoMdArrowRoundUp } from 'react-icons/io';
 import { PhoneIcon, ClockIcon } from 'lucide-react';
 
-// ✨✨✨ 2. ایمپورت کردن تایپ از فایل جداگانه ✨✨✨
 import { FooterProps } from './Footer.types'; 
 
 import { Label } from '../../atoms/Label/Label';
@@ -42,7 +41,8 @@ export const Footer = (props: FooterProps) => {
             <div>
               <Label as="h3" weight="semi-bold" className="mb-4">خدمات ما</Label>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {props.serviceCards.map((card, i) => <ServiceCard key={i} {...card} />)}
+                {/* ✅ اصلاح شده: اگر serviceCards وجود نداشت، مپ اجرا نمی‌شود */}
+                {props.serviceCards?.map((card, i) => <ServiceCard key={i} {...card} />)}
               </div>
             </div>
           </div>
@@ -62,7 +62,8 @@ export const Footer = (props: FooterProps) => {
                 <ClockIcon className="w-6 h-6 text-gray-500 mt-1" />
                 <div>
                   <Label as="span" weight="semi-bold">ساعات کاری</Label>
-                  {props.workHours.map(line => <Label key={line} size="sm">{line}</Label>)}
+                  {/* ✅ اصلاح شده: اگر workHours وجود نداشت، مپ اجرا نمی‌شود */}
+                  {props.workHours?.map(line => <Label key={line} size="sm">{line}</Label>)}
                 </div>
               </div>
             </div>
@@ -71,7 +72,8 @@ export const Footer = (props: FooterProps) => {
 
           {/* بخش دکمه‌های لینک */}
           <div className="footer__grid-links">
-            {props.footerButtons.map((button, i) => (
+            {/* ✅ اصلاح شده: اگر footerButtons وجود نداشت، مپ اجرا نمی‌شود */}
+            {props.footerButtons?.map((button, i) => (
               <a key={i} href={button.href} className="footer__link-button">
                 {button.text}
               </a>
@@ -83,7 +85,8 @@ export const Footer = (props: FooterProps) => {
         <div className="footer__bottom">
           <Label as="p" size="xs" color="secondary">{props.copyrightText}</Label>
           <div className="flex items-center justify-center gap-4">
-            {props.trustSeals.map((seal, i) => <TrustSeal key={i} {...seal} />)}
+            {/* ✅ اصلاح شده: اگر trustSeals وجود نداشت، مپ اجرا نمی‌شود */}
+            {props.trustSeals?.map((seal, i) => <TrustSeal key={i} {...seal} />)}
           </div>
         </div>
       </Container>

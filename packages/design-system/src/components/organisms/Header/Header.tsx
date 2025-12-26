@@ -1,5 +1,6 @@
+"use client";
+
 import React, { useState, useEffect, ElementType } from 'react';
-// ❌ حذف import Link from 'next/link'; (دیزاین سیستم نباید وابسته باشد)
 import { Menu, X } from 'lucide-react';
 import { HeaderProps, NavLinkItem } from './Header.types';
 import { Label } from '../../atoms/Label/Label';
@@ -17,12 +18,13 @@ export const Header = ({
   className,
   isScrolled,
   activePath,
-  linkComponent: LinkComponent = 'a' // ✅ اضافه شدن پراپ برای تزریق Link
+  linkComponent: LinkComponent = 'a'
 }: HeaderProps & { linkComponent?: ElementType }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
+    // جلوگیری از اسکرول صفحه وقتی منو باز است
     document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset';
     return () => { document.body.style.overflow = 'unset'; };
   }, [isMobileMenuOpen]);
@@ -32,7 +34,7 @@ export const Header = ({
     setOpenAccordions({});
   };
 
-  const renderNavItems = (items: NavLinkItem[], isSubmenu = false) => {
+ const renderNavItems = (items: NavLinkItem[], isSubmenu = false) => {
     return items.map((item) => {
       if (item.children && item.children.length > 0 && item.id) {
         return (
@@ -43,13 +45,22 @@ export const Header = ({
             onToggle={() => setOpenAccordions(prev => ({ ...prev, [item.id!]: !prev[item.id!] }))}
           >
             <div className={isSubmenu ? "mobile-menu__sublist--nested" : "mobile-menu__sublist"}>
+              {/* ✅ اضافه کردن لینک "مشاهده همه" در ابتدای زیرمنو برای موبایل */}
+              {item.href && (
+                <LinkComponent 
+                  href={item.href} 
+                  onClick={handleCloseMenu}
+                  className="mobile-menu__link mobile-menu__link--all"
+                >
+                  <Label as="span" size="sm" weight="bold" color="brand-primary">مشاهده همه {item.title}</Label>
+                </LinkComponent>
+              )}
               {renderNavItems(item.children, true)}
             </div>
           </AccordionMenu>
         );
       }
       return (
-        /* ✅ استفاده از LinkComponent تزریق شده */
         <LinkComponent 
           key={item.href} 
           href={item.href} 
@@ -62,20 +73,26 @@ export const Header = ({
     });
   };
 
+  // ✅ ایجاد نام کلاس‌ها به صورت داینامیک
+  const headerClasses = [
+    'header',
+    className,
+    isScrolled ? 'header--scrolled' : '',
+    isMobileMenuOpen ? 'header--menu-open' : '' // این کلاس برای استایل‌های موبایل حیاتی است
+  ].filter(Boolean).join(' ');
+
   return (
     <>
-      <header className={`header ${className || ''} ${isScrolled ? 'header--scrolled' : ''}`}>
+      <header className={headerClasses}>
         <div className="header__container">
           <div className="header__left">
             <div className="header__actions-mobile">{searchSlot}</div>
-            {/* ✅ لوگو هم باید LinkComponent باشد (اگر از بیرون به عنوان المنت نیاید) */}
             {logo}
             <nav className="header__nav">
               {megaMenuSlot}
               {navLinks
                 .filter(link => !link.mobileOnly && !link.children)
                 .map((link) => (
-                  /* ✅ استفاده از LinkComponent تزریق شده */
                   <LinkComponent 
                     key={link.href} 
                     href={link.href} 
@@ -88,13 +105,24 @@ export const Header = ({
           </div>
           <div className="header__right">
             <div className="header__actions-desktop">{searchSlot}{cartSlot}{themeToggleSlot}{userSlot}</div>
-            <button className="header__mobile-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            <button 
+              className={`header__mobile-toggle ${isMobileMenuOpen ? 'header__mobile-toggle--active' : ''}`} 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <div className="header__toggle-icon">
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </div>
             </button>
           </div>
         </div>
       </header>
-      <div className={`mobile-menu-backdrop ${isMobileMenuOpen ? 'mobile-menu-backdrop--visible' : ''}`} onClick={handleCloseMenu} />
+
+      {/* بخش‌های بک‌دراپ و منوی موبایل بدون تغییر */}
+      <div 
+        className={`mobile-menu-backdrop ${isMobileMenuOpen ? 'mobile-menu-backdrop--visible' : ''}`} 
+        onClick={handleCloseMenu} 
+      />
       <div className={`mobile-menu ${isMobileMenuOpen ? 'mobile-menu--open' : ''}`}>
         <div className="mobile-menu__content">
           <div className="mobile-menu__scroll-area">

@@ -13,6 +13,6 @@ export interface SaleService {
   }
   
   export interface FooterData {
-    saleServices: SaleService[];
+    SaleServices: SaleService[];
     footerLinks: FooterLink[];
   }

@@ -4,12 +4,11 @@ import { useParams, useSearchParams } from "next/navigation";
 import { ProductCategoryPageData } from "@monorepo/api-client/src/types/category.types";
 import { PaginatedResponse, Product } from "@monorepo/api-client/src/types/car";
 
-// ✅ 1. ایمپورت استورها و هوک تشخیص سایز صفحه
+
 import { useBasketStore } from "@/src/stores/basketStore";
 import { useUIStore } from "@/src/stores/uiStore";
 import { useMediaQuery } from "@/src/hooks/useMediaQuery";
 
-// --- Design System Imports ---
 import { Container } from "@monorepo/design-system/src/components/organisms/Container/Container";
 import { Label } from "@monorepo/design-system/src/components/atoms/Label/Label";
 import { FilterSidebar, FilterState, FilterItem } from "@monorepo/design-system/src/components/organisms/FilterSidebar/FilterSidebar";

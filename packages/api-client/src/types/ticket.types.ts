@@ -1,10 +1,31 @@
-// مسیر: packages/api-client/src/types/ticket.types.ts
-// ✅ اینترفیس برای آیتم تیکت خام از API (بر اساس ساختار ریسپانس نمونه)
-export interface Ticket {
+export interface TicketMessage {
   id: number;
-  ticketNumber: string;
+  text: string;
+  ticketId: string | number;
+  creatorId: string;
+  isRead: boolean;
+  creator?: any; // یا تایپ دقیق کاربر
+  attachments?: any[];
+}
+
+export interface Ticket {
+  id: string | number;
+  ticketNumber: number;
+  title: string;
+  orderNumber: number;
+  categoryId: string;
+  resolvedAt: string | null;
+  hasAdminUnread: boolean;
+  hasUserUnread: boolean;
+  category: {
+    id: string;
+    name: string;
+    description: string;
+    isActive: boolean;
+  } | null;
   createdDate: string;
-  subject: string;
-  status: number;
-  // ✅ فیلدهای اضافی اگر در آینده از API بیایند، اینجا اضافه شوند
+  status: number; // 1 = open, 2 = pending, etc.
+
+  // ✅ این خط رو اضافه کن
+  messages: TicketMessage[];
 }

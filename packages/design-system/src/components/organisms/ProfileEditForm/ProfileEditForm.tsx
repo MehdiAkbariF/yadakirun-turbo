@@ -35,7 +35,7 @@ export const ProfileEditForm = ({ initialData, onSubmit }: ProfileEditFormProps)
         <div className="profile-edit-form__icon-wrapper">
            <User size={24} />
         </div>
-        <Label size="xl" weight="bold">مشخصات فردی</Label>
+        <Label size="lg" weight="bold">مشخصات فردی</Label>
       </div>
 
       <form onSubmit={handleSubmit} className="profile-edit-form__body">
@@ -85,7 +85,7 @@ export const ProfileEditForm = ({ initialData, onSubmit }: ProfileEditFormProps)
         <div className="profile-edit-form__footer">
           <Button 
             type="submit" 
-            size="lg" 
+            size="sm" 
             isLoading={isLoading} 
             className="profile-edit-form__submit-btn"
           >

@@ -3,8 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Store, Plus } from 'lucide-react'; // ✅ Plus اضافه شد
 import { SimpleProductCardProps } from './SimpleProductCard.types';
-import { Label } from '../../atoms/Label/Label';
-import { Badge } from '../../atoms/Badge/Badge';
+import { Label } from '../Label/Label';
+import { Badge } from '../Badge/Badge';
 import { RatingStars } from '../RatingStars/RatingStars';
 import { toPersianDigits } from '../../../utils/persian';
 import './SimpleProductCard.scss';

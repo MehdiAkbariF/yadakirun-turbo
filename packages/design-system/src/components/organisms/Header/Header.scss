@@ -21,9 +21,7 @@ $header-height: 5rem;
   &--menu-open {
     box-shadow: none !important; 
     border-bottom-color: tokens.$color-border-secondary;
-    
-    // 1. شرط: اگر کلاس header--scrolled وجود نداشت (یعنی بالای صفحه هستیم)
-    // آنگاه هدر را فیکس کن تا به بالای صفحه بچسبد و روی بنر بیاید
+
     &:not(.header--scrolled) {
       position: fixed !important; 
       top: 0 !important;

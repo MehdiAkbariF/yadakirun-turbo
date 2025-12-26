@@ -1,17 +1,11 @@
-
 import React from 'react';
 import Image from 'next/image';
 import { Wrench, ShieldCheck, Headphones } from 'lucide-react';
 
-
-
-
 import { menuService } from '@monorepo/api-client/src/services/menuService';
 import { footerService } from '@monorepo/api-client/src/services/footerService';
 
-
 import { MainLayoutClient } from '@/src/components/layout/MainLayoutClient';
-
 
 export default async function MainLayout({
   children,
@@ -24,7 +18,6 @@ export default async function MainLayout({
     footerService.getFooterData()
   ]);
 
-  
   const footerData = {
     logo: <Image src="/logo.webp" alt="لوگوی یاداکیرون" width={80} height={80} />,
     companyName: "فروشگاه آنلاین لوازم یدکی خودرو",
@@ -40,16 +33,26 @@ export default async function MainLayout({
         { src: "/samandehi-1.png", alt: "ساماندهی", href:"#" },
     ],
     copyrightText: "تمام حقوق برای یدکی‌ران محفوظ بوده و استفاده از محتوای این وبسایت تنها با ذکر نام و درج لینک مستقیم مجاز است.",
-    serviceCards: footerApiData.saleServices.map(service => {
+    
+    // ✅✅✅ اصلاح اصلی اینجاست ✅✅✅
+    serviceCards: footerApiData?.SaleServices?.map(service => {
+      // اگر خود service یا title آن وجود ندارد، آن را نادیده بگیر
+      if (!service?.title) {
+        return null;
+      }
+
       let icon = <Wrench />;
+      // با استفاده از ?. مطمئن می‌شویم که کد crash نمی‌کند
       if (service.title.includes("گارانتی")) icon = <ShieldCheck />;
       if (service.title.includes("پشتیبانی")) icon = <Headphones />;
+      
       return { icon, title: service.title, description: service.description };
-    }),
-    footerButtons: footerApiData.footerLinks.map(link => ({ text: link.title, href: link.url })),
+    }).filter(Boolean), // <-- .filter(Boolean) آیتم‌های null را از آرایه حذف می‌کند
+
+    // ✅ همچنین برای footerLinks هم بهتر است این کار را انجام دهیم
+    footerButtons: footerApiData?.footerLinks?.map(link => ({ text: link.title, href: link.url })) || [],
   };
 
-  
   return (
     <MainLayoutClient menuData={menuData} footerData={footerData}>
       {children}

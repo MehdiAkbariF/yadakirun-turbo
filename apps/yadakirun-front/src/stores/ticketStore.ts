@@ -1,80 +1,152 @@
 import { create } from 'zustand';
-import { ticketService } from '@monorepo/api-client/src/services/ticketService';
+import { ticketService, TicketCategory } from '@monorepo/api-client/src/services/ticketService';
 import { Ticket } from '@monorepo/api-client/src/types/ticket.types';
 
-// تعریف تایپ پیام برای استور
 interface Message {
   id: number | string;
   text: string;
   sender: 'user' | 'support' | 'system';
   timestamp: string;
+  imageUrl?: string;
 }
 
 interface TicketState {
   tickets: Ticket[];
-  chatMessages: Message[]; // ✅ لیست پیام‌های چت فعلی
+  categories: TicketCategory[];
+  chatMessages: Message[];
   isLoading: boolean;
-  error: string | null;
+  isLoadingCategories: boolean;
   currentView: 'list' | 'chat' | 'create';
   selectedTicketId: number | string | null;
-  selectedCategory: any | null; // برای تیکت جدید
+  selectedCategory: TicketCategory | null;
 
-  // اکشن‌ها
-  fetchTickets: (page?: number, status?: number) => Promise<void>;
-  fetchChatMessages: (ticketId: number | string) => Promise<void>; // دریافت پیام‌ها از سرور
-  viewTicket: (id: number | string) => void;
+  fetchTickets: () => Promise<void>;
+  fetchCategories: () => Promise<void>;
+  viewTicket: (id: number | string, userId?: string) => Promise<void>;
   goBackToList: () => void;
   openCreateView: () => void;
-  setCategory: (category: any) => void;
-  sendMessage: (text: string) => Promise<void>; // ارسال پیام جدید
+  setCategory: (category: TicketCategory) => void;
+  createAndOpenNewTicket: (title: string, text: string) => Promise<void>;
+  sendMessageToExistingTicket: (text: string) => Promise<void>;
 }
 
 export const useTicketStore = create<TicketState>((set, get) => ({
   tickets: [],
+  categories: [],
   chatMessages: [],
   isLoading: false,
-  error: null,
+  isLoadingCategories: false,
   currentView: 'list',
   selectedTicketId: null,
   selectedCategory: null,
 
-  fetchTickets: async (page = 1, status) => {
-    set({ isLoading: true, error: null });
+  fetchTickets: async () => {
+    set({ isLoading: true });
     try {
-      const response = await ticketService.getTickets(page, 30, status);
+      const response = await ticketService.getTickets();
       set({ tickets: response.items, isLoading: false });
-    } catch (err) {
-      set({ error: 'خطا در دریافت تیکت‌ها', isLoading: false });
+    } catch {
+      set({ isLoading: false });
     }
   },
 
-  // شبیه‌سازی دریافت پیام‌های یک تیکت
-  fetchChatMessages: async (ticketId) => {
+  fetchCategories: async () => {
+    set({ isLoadingCategories: true });
+    try {
+      const cats = await ticketService.getTicketCategories();
+      set({ categories: cats, isLoadingCategories: false });
+    } catch {
+      set({ isLoadingCategories: false });
+    }
+  },
+
+  viewTicket: async (id, userIdFromDashboard) => {
+    console.log('🔍 viewTicket called with id:', id);
+    console.log('🔑 userId from dashboard:', userIdFromDashboard);
+
     set({ isLoading: true });
-    // در آینده: const messages = await ticketService.getMessages(ticketId);
-    setTimeout(() => {
-      set({ 
-        chatMessages: [
-          { id: 1, text: 'سلام، چطور می‌توانم کمکتان کنم؟', sender: 'support', timestamp: '۱۰:۳۰' }
-        ],
-        isLoading: false 
-      });
-    }, 500);
+    try {
+      const ticketDetails = await ticketService.getTicketDetails(id);
+      if (ticketDetails) {
+        console.log('📨 Raw messages from API:', ticketDetails.messages);
+
+        const messages = ticketDetails.messages.map(m => {
+          const isUser = userIdFromDashboard && m.creatorId === userIdFromDashboard;
+          console.log(`Message ${m.id}: creatorId=${m.creatorId} === userId=${userIdFromDashboard} → isUser=${isUser}`);
+
+          return {
+            id: m.id,
+            text: m.text || '',
+            sender: isUser ? 'user' : 'support',
+            timestamp: new Date().toLocaleTimeString('fa-IR', {
+              hour: '2-digit',
+              minute: '2-digit'
+            }),
+          };
+        });
+
+        console.log('✅ Final mapped messages:', messages);
+
+        set({
+          currentView: 'chat',
+          selectedTicketId: id,
+          chatMessages: messages,
+          isLoading: false
+        });
+      } else {
+        set({ isLoading: false });
+      }
+    } catch (err) {
+      console.error('❌ Error fetching ticket details:', err);
+      set({ isLoading: false });
+    }
   },
 
-  viewTicket: (id) => {
-    set({ currentView: 'chat', selectedTicketId: id });
-    get().fetchChatMessages(id); // به محض باز کردن تیکت، پیام‌ها را لود کن
-  },
+sendMessageToExistingTicket: async (text: string, attachedFile?: File) => {
+  const state = get();
+  if (!state.selectedTicketId) return;
 
-  goBackToList: () => set({ 
-    currentView: 'list', 
-    selectedTicketId: null, 
+  const tempId = Date.now();
+  const newMessage: Message = {
+    id: tempId,
+    text,
+    sender: 'user',
+    timestamp: new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' }),
+    imageUrl: attachedFile && attachedFile.type.startsWith('image/') 
+      ? URL.createObjectURL(attachedFile) 
+      : undefined
+  };
+
+  set((state) => ({
+    chatMessages: [...state.chatMessages, newMessage],
+    isLoading: true
+  }));
+
+  const result = await ticketService.sendMessageToTicket(state.selectedTicketId, text, attachedFile);
+
+  if (result) {
+    set((state) => ({
+      chatMessages: state.chatMessages.map(m =>
+        m.id === tempId ? { ...m, id: result.id } : m
+      ),
+      isLoading: false
+    }));
+  } else {
+    set((state) => ({
+      chatMessages: state.chatMessages.filter(m => m.id !== tempId),
+      isLoading: false
+    }));
+  }
+},
+
+  goBackToList: () => set({
+    currentView: 'list',
+    selectedTicketId: null,
     chatMessages: [],
-    selectedCategory: null 
+    selectedCategory: null
   }),
 
-  openCreateView: () => set({ 
+  openCreateView: () => set({
     currentView: 'create',
     selectedTicketId: null,
     chatMessages: [],
@@ -83,25 +155,53 @@ export const useTicketStore = create<TicketState>((set, get) => ({
 
   setCategory: (category) => set({ selectedCategory: category }),
 
-  sendMessage: async (text) => {
-    const newMessage: Message = {
-      id: Date.now(),
-      text,
-      sender: 'user',
-      timestamp: new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })
-    };
+  createAndOpenNewTicket: async (title, text) => {
+    const state = get();
+    if (!state.selectedCategory) return;
 
-    // بروزرسانی خوش‌بینانه UI (Optimistic Update)
-    set((state) => ({ 
-      chatMessages: [...state.chatMessages, newMessage] 
-    }));
+    set({ isLoading: true });
+    const result = await ticketService.createTicket(
+      state.selectedCategory.id,
+      title,
+      text
+    );
 
-    try {
-      // در آینده فراخوانی API:
-      // await ticketService.sendNewMessage(get().selectedTicketId, text);
-      console.log("Message sent to server:", text);
-    } catch (err) {
-      console.error("Failed to send message");
+    if (result) {
+      const newTicket: Ticket = {
+        id: result.id,
+        title: result.title,
+        createdDate: new Date().toISOString(),
+        status: 1,
+        ticketNumber: result.ticketNumber,
+        orderNumber: 0,
+        resolvedAt: null,
+        hasAdminUnread: true,
+        hasUserUnread: false,
+        categoryId: state.selectedCategory.id,
+        category: state.selectedCategory,
+        messages: result.messages
+      };
+
+      const newMessages: Message[] = result.messages.map(m => ({
+        id: m.id,
+        text: m.text || '',
+        sender: 'user',
+        timestamp: new Date().toLocaleTimeString('fa-IR', {
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      }));
+
+      set({
+        tickets: [newTicket, ...state.tickets],
+        chatMessages: newMessages,
+        currentView: 'chat',
+        selectedTicketId: result.id,
+        selectedCategory: null,
+        isLoading: false
+      });
+    } else {
+      set({ isLoading: false });
     }
   },
 }));

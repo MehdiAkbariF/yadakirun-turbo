@@ -1,46 +1,90 @@
 import { ProductCategoryPageData } from '../types/category.types';
-// تایپ‌های مربوط به محصول و صفحه‌بندی را از فایل car ایمپورت می‌کنیم
 import { Product, PaginatedResponse } from '../types/car';
+import { API_CONFIG } from '../config';
 
-const BASE_URL = "https://api-yadakirun.yadakchi.com/api";
+
+interface NextFetchRequestConfig extends RequestInit {
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
+}
+
+
+const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
+
+/**
+ * تابع کمکی برای فراخوانی APIهای مربوط به دسته‌بندی‌ها
+ */
+async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'Accept': 'application/json',
+        ...options.headers,
+      },
+    });
+
+    if (!response.ok) {
+      
+      const errorBody = await response.text();
+      console.error(`Category API Error [${response.status}]:`, errorBody);
+      throw new Error(`API call failed: ${response.statusText}`);
+    }
+
+    return await response.json() as T;
+  } catch (error) {
+    console.error(`Network or Parsing Error in apiFetch for ${url}:`, error);
+    throw error;
+  }
+}
 
 export const categoryService = {
+  /**
+   * دریافت جزئیات یک دسته‌بندی خاص (نام، توضیحات، متادیتا و ...)
+   * آدرس نهایی: [API_URL]/api/Front/ProductCategoryPage
+   */
   getCategoryDetails: async (categoryId: string | number): Promise<ProductCategoryPageData | null> => {
     try {
-      const response = await fetch(`${BASE_URL}/Front/ProductCategoryPage?ProductCategoryId=${categoryId}`, {
-        next: { revalidate: 86400 }, // کش برای 24 ساعت
-      } as any);
-
-      if (!response.ok) {
-        console.error("Failed to fetch category details:", response.statusText);
-        return null;
-      }
-      return await response.json();
+      const url = `${BASE_URL}/ProductCategoryPage?ProductCategoryId=${categoryId}`;
+      
+      return await apiFetch<ProductCategoryPageData>(url, {
+        next: { revalidate: 86400 }, 
+      });
     } catch (error) {
       console.error("Error fetching category details:", error);
+      
       return null;
     }
   },
 
-  // ✨ تابع برای دریافت محصولات یک دسته‌بندی
+  /**
+   * دریافت لیست محصولات مرتبط با یک دسته‌بندی خاص به صورت صفحه‌بندی شده
+   * آدرس نهایی: [API_URL]/api/Front/Products
+   */
   getCategoryProducts: async (
     categoryId: string | number, 
     page = 1, 
     pageSize = 30
   ): Promise<PaginatedResponse<Product>> => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/Front/Products?ProductCategoryId=${categoryId}&PageNumber=${page}&PageSize=${pageSize}`,
-        { cache: "no-store" }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch category products");
-      }
-      return await response.json();
+      const url = `${BASE_URL}/Products?ProductCategoryId=${categoryId}&PageNumber=${page}&PageSize=${pageSize}`;
+      
+      return await apiFetch<PaginatedResponse<Product>>(url, { 
+        cache: "no-store" 
+      });
     } catch (error) {
       console.error("Error fetching category products:", error);
-      return { currentPage: 1, totalPages: 0, pageSize, totalCount: 0, items: [], searchParams: null };
+      
+      return { 
+        currentPage: 1, 
+        totalPages: 0, 
+        pageSize, 
+        totalCount: 0, 
+        items: [], 
+        searchParams: null 
+      };
     }
   }
 };

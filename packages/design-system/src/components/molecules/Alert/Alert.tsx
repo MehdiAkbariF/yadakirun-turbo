@@ -1,14 +1,8 @@
+"use client";
 import React from 'react';
 import { AlertTriangle, CheckCircle2, Info, XCircle, X } from 'lucide-react';
 import { AlertProps, AlertVariant } from './Alert.types';
 import './Alert.scss';
-
-const icons: Record<AlertVariant, React.ReactNode> = {
-  error: <XCircle size={20} />,
-  success: <CheckCircle2 size={20} />,
-  warning: <AlertTriangle size={20} />,
-  info: <Info size={20} />,
-};
 
 export const Alert = ({
   variant = 'error',
@@ -16,10 +10,18 @@ export const Alert = ({
   children,
   icon,
   onClose,
-  duration, // اگر مقدار داشته باشد، تایمر فعال می‌شود
+  duration,
   className,
   ...props
 }: AlertProps) => {
+
+  // ✅ آیکون‌ها به داخل کامپوننت منتقل شدند
+  const icons: Record<AlertVariant, React.ReactNode> = {
+    error: <XCircle size={20} />,
+    success: <CheckCircle2 size={20} />,
+    warning: <AlertTriangle size={20} />,
+    info: <Info size={20} />,
+  };
   
   const classNames = [
     'ds-alert',
@@ -50,13 +52,12 @@ export const Alert = ({
         </button>
       )}
 
-      {/* ✅ نوار تایمر (فقط اگر duration و onClose وجود داشته باشند) */}
       {duration && onClose && (
         <div className="ds-alert__progress">
           <div 
             className="ds-alert__progress-bar" 
             style={{ animationDuration: `${duration}ms` }}
-            onAnimationEnd={onClose} // وقتی انیمیشن تمام شد، بسته شود
+            onAnimationEnd={onClose}
           />
         </div>
       )}

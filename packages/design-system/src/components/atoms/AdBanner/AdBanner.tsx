@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Megaphone } from 'lucide-react';
-import { Label } from '../../atoms/Label/Label';
+import { Label } from '../Label/Label';
 import { AdBannerProps } from './AdBanner.types'; // ✅ ایمپورت از فایل جداگانه
 import './AdBanner.scss';
 

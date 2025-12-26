@@ -2,8 +2,8 @@
 
 .profile-edit-form {
   background-color: tokens.$color-bg-surface;
-  border: 1px solid tokens.$color-border-secondary;
-  border-radius: tokens.$radius-2xl;
+  
+  border-radius: tokens.$radius-md;
   overflow: hidden;
 
   &__header {

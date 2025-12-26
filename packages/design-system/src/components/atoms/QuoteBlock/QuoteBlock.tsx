@@ -1,6 +1,6 @@
 import React from 'react';
 import { Info } from 'lucide-react';
-import { Label } from '../../atoms/Label/Label';
+import { Label } from '../Label/Label';
 import './QuoteBlock.scss';
 
 export const QuoteBlock = ({ text }: { text: string }) => {

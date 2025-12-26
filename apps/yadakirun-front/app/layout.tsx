@@ -4,14 +4,14 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "@/src/context/ThemeProvider";
 import { ThemeScript } from "@/src/components/layout/ThemeScript";
 import { AuthProvider } from "@/src/context/AuthContext";
-
+import { PWAInstallPrompt } from '@monorepo/design-system/src/components/molecules/PWAInstallPrompt/PWAInstallPrompt';
 import "@monorepo/design-system/src/styles/global.scss";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "یدکی ران - فروشگاه آنلاین لوازم یدکی خودرو",
   description: "فروش تخصصی قطعات یدکی اصلی خودرو با گارانتی اصالت کالا.",
-  // اختیاری: برای بهتر شدن SEO و PWA
+  
   manifest: "/manifest.json",
   icons: {
     icon: ["/icons/icon-192x192.png", "/icons/icon-512x512.png"],
@@ -69,6 +69,12 @@ export default function RootLayout({
         <ThemeProvider>
           <AuthProvider>
             {children}
+            <PWAInstallPrompt
+          message="اپلیکیشن یدکی ران را در موبایل و یا کامپیوتر خود نصب کرده و از خدمات آن با سرعت بیشتری استفاده کنید"
+          installText="نصب کن"
+          dismissText="بعداً"
+          delaySeconds={1}
+        />
           </AuthProvider>
         </ThemeProvider>
       </body>

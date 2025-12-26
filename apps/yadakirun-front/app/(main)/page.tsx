@@ -100,52 +100,52 @@ const brandCardsData = [
 
 // ✅ کامپوننت به async تبدیل شد
 export default async function HomePage() {
-  // ۱. دریافت داده از API در سمت سرور
   const homeData = await homeService.getHomePageData();
 
-  // ۲. آماده‌سازی داده‌ها برای کامپوننت‌ها (با در نظر گرفتن حالت null)
-  const specialOfferProducts = homeData?.discountedProducts.map(p => ({
+  // ✅✅✅ اصلاح اصلی اینجاست: استفاده از `?? []` ✅✅✅
+  // اگر `homeData` یا هر پراپرتی در زنجیره null/undefined باشد، یک آرایه خالی جایگزین می‌شود
+  const specialOfferProducts = (homeData?.discountedProducts ?? []).map(p => ({
     id: p.id,
     title: p.title,
     href: `/ProductPage/${p.id}`,
     imgSrc: `https://api-yadakirun.yadakchi.com${p.imageUrl}`,
     price: p.priceAfterDiscount,
     originalPrice: p.price,
-    rating: 4.5, // فیلد استاتیک چون در API نیست
+    rating: 4.5,
     carName: p.discountPercent > 0 ? `${p.discountPercent}% تخفیف` : "فروش ویژه",
-  })) || [];
+  }));
 
-  const bestSellerItems = homeData?.mostSoldProducts.map(p => ({
+  const bestSellerItems = (homeData?.mostSoldProducts ?? []).map(p => ({
     id: String(p.id),
     title: p.title,
     href: `/ProductPage/${p.id}`,
     imgSrc: `https://api-yadakirun.yadakchi.com${p.imageUrl}`,
     price: p.priceAfterDiscount,
     originalPrice: p.price,
-    rating: 4.8, // فیلد استاتیک
+    rating: 4.8,
     badgeText: "پرفروش",
-  })) || [];
+  }));
 
-  const newestProductItems = homeData?.mostRecentProducts.map(p => ({
+  const newestProductItems = (homeData?.mostRecentProducts ?? []).map(p => ({
     id: String(p.id),
     title: p.title,
     href: `/ProductPage/${p.id}`,
     imgSrc: `https://api-yadakirun.yadakchi.com${p.imageUrl}`,
     price: p.priceAfterDiscount,
     originalPrice: p.price,
-    rating: 4.2, // فیلد استاتیک
+    rating: 4.2,
     badgeText: "جدیدترین",
-  })) || [];
+  }));
 
-  const newsItems = homeData?.mostRecentBlogPosts.map(post => ({
+  const newsItems = (homeData?.mostRecentBlogPosts ?? []).map(post => ({
     href: `/blog/${post.id}`,
     title: post.title,
     imgSrc: `https://api-yadakirun.yadakchi.com${post.coverUrl}`,
     date: new Date(post.createDate).toLocaleDateString('fa-IR', { day: 'numeric', month: 'long', year: 'numeric' }),
     description: `این مقاله را در ${post.readingTime} دقیقه بخوانید...`,
-  })) || [];
+  }));
 
-  // آماده‌سازی داده‌های استاتیک
+  // بقیه کد بدون تغییر باقی می‌ماند
   const moreCount = 10;
   const moreHref = "/categories";
   const desktopItems = [
@@ -160,7 +160,6 @@ export default async function HomePage() {
   return (
     <>
       <HomeBanner />
-
       <Container>
         <section className="my-10">
           <div className="hidden lg:block">
@@ -173,7 +172,6 @@ export default async function HomePage() {
       </Container>
       
       <Container>
-        {/* ✅ پاس دادن داده‌های داینامیک */}
         <SpecialOffers products={specialOfferProducts} title="پیشنهادهای شگفت‌انگیز" />
         <BestSellersSlider title="پرفروش‌ترین محصولات" items={bestSellerItems} uniqueId="bestsellers" />
       </Container>
@@ -198,11 +196,10 @@ export default async function HomePage() {
       </Container>
 
       <Container>
-        {/* ✅ پاس دادن داده‌های داینامیک */}
         <BestSellersSlider title="جدیدترین محصولات" items={newestProductItems} uniqueId="newest-products" />
       </Container>
 
-       <Container className="my-12">
+      <Container className="my-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <ImageCard href="/category/body" src="/SGA-banner.webp" alt="قطعات بدنه" aspectRatio="6 / 3" />
           <ImageCard href="/category/engine" src="/aisin-clutch-banner.webp" alt="قطعات موتوری" aspectRatio="6 / 3" />
@@ -212,15 +209,14 @@ export default async function HomePage() {
       </Container>
 
       <Container className="my-4">
-         <section>
-            <div className="mb-4 text-right border-r-4 border-brand-accent pr-4 pt-2">
-                <Label as="h2" size="xl" weight="extra-bold">برندهای منتخب</Label>
-            </div>
-            <CardGrid items={brandCardsData} className="card-grid--responsive" />
-         </section>
+        <section>
+          <div className="mb-4 text-right border-r-4 border-brand-accent pr-4 pt-2">
+            <Label as="h2" size="xl" weight="extra-bold">برندهای منتخب</Label>
+          </div>
+          <CardGrid items={brandCardsData} className="card-grid--responsive" />
+        </section>
       </Container>
 
-      {/* ✅ پاس دادن داده‌های داینامیک */}
       <NewsSection title="آخرین اخبار و مقالات" items={newsItems} uniqueId="homepage-news" />
       
       <SeoContentSection textContentData={textContentData} />
