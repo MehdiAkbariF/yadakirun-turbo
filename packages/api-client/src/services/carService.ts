@@ -1,7 +1,6 @@
 import { CarPageData, Product, PaginatedResponse } from '../types/car';
 import { API_CONFIG } from '../config';
 
-// ✅ تعریف تایپ برای پشتیبانی از تنظیمات Next.js بدون نیاز به any
 interface NextFetchRequestConfig extends RequestInit {
   next?: {
     revalidate?: number | false;
@@ -9,24 +8,27 @@ interface NextFetchRequestConfig extends RequestInit {
   };
 }
 
-// تنظیم آدرس پایه برای بخش خودروها در قسمت Front
 const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
 
-/**
- * تابع کمکی برای فراخوانی APIهای مربوط به خودرو
- */
+// ✅ تابع کمکی برای استخراج ID از Slug (برای پشتیبانی از URLهای سئو فرندلی)
+const extractIdFromSlug = (slugOrId: string | number): string => {
+  if (!slugOrId) return '';
+  const parts = String(slugOrId).split('-');
+  return parts[0];
+};
+
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
   try {
     const response = await fetch(url, {
       ...options,
       headers: {
         'Accept': 'application/json',
+        // ❌ بدون Authorization
         ...options.headers,
       },
     });
 
     if (!response.ok) {
-      // لاگ کردن جزئیات خطا برای دیباگ سریع‌تر در محیط توسعه
       const errorBody = await response.text();
       console.error(`Car API Error [${response.status}]:`, errorBody);
       throw new Error(`API call failed: ${response.statusText}`);
@@ -41,39 +43,39 @@ async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): P
 
 export const carService = {
   /**
-   * دریافت جزئیات یک خودروی خاص (اطلاعات مدل، بنرها، متادیتا)
+   * دریافت جزئیات یک خودرو
    * آدرس نهایی: [API_URL]/api/Front/CarPage
    */
-  getCarDetails: async (carId: string | number): Promise<CarPageData | null> => {
+  getCarDetails: async (slugOrId: string | number): Promise<CarPageData | null> => {
     try {
-      const url = `${BASE_URL}/CarPage?CarId=${carId}`;
+      const id = extractIdFromSlug(slugOrId);
+      const url = `${BASE_URL}/CarPage?CarId=${id}`;
       
       return await apiFetch<CarPageData>(url, { 
-        next: { revalidate: 3600 } // کش برای یک ساعت
+        next: { revalidate: 3600 } 
       });
     } catch (error) {
-      // در صورت بروز خطا در دریافت جزئیات، null برمی‌گردانیم تا صفحه 404 یا پیام مناسب نمایش داده شود
       return null;
     }
   },
 
   /**
-   * دریافت لیست محصولات مرتبط با یک خودرو به صورت صفحه‌بندی شده
+   * دریافت محصولات یک خودرو
    * آدرس نهایی: [API_URL]/api/Front/Products
    */
   getCarProducts: async (
-    carId: string | number, 
+    slugOrId: string | number, 
     page = 1, 
     pageSize = 30
   ): Promise<PaginatedResponse<Product>> => {
     try {
-      const url = `${BASE_URL}/Products?CarId=${carId}&PageNumber=${page}&PageSize=${pageSize}`;
+      const id = extractIdFromSlug(slugOrId);
+      const url = `${BASE_URL}/Products?CarId=${id}&PageNumber=${page}&PageSize=${pageSize}`;
       
       return await apiFetch<PaginatedResponse<Product>>(url, { 
-        cache: "no-store" // محصولات معمولاً سریع تغییر می‌کنند، پس کش نمی‌کنیم
+        cache: "no-store" 
       });
     } catch (error) {
-      // در صورت خطا، یک پاسخ خالی استاندارد برمی‌گردانیم تا برنامه کرش نکند
       return { 
         currentPage: 1, 
         totalPages: 0, 

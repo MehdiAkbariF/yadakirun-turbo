@@ -1,7 +1,7 @@
 import { FAQPageData } from '../types/faq.types';
 import { API_CONFIG } from '../config';
 
-// ✅ تعریف تایپ برای پشتیبانی از تنظیمات Next.js بدون نیاز به any
+// تعریف تایپ برای پشتیبانی از تنظیمات Next.js
 interface NextFetchRequestConfig extends RequestInit {
   next?: {
     revalidate?: number | false;
@@ -13,7 +13,7 @@ interface NextFetchRequestConfig extends RequestInit {
 const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
 
 /**
- * تابع کمکی برای فراخوانی APIهای مربوط به سوالات متداول
+ * تابع کمکی برای فراخوانی API
  */
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
   try {
@@ -21,12 +21,12 @@ async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): P
       ...options,
       headers: {
         'Accept': 'application/json',
+        // ❌ بدون Authorization
         ...options.headers,
       },
     });
 
     if (!response.ok) {
-      // لاگ کردن جزئیات خطا برای دیباگ راحت‌تر در زمان توسعه
       const errorBody = await response.text();
       console.error(`FAQ API Error [${response.status}]:`, errorBody);
       throw new Error(`API call failed: ${response.statusText}`);
@@ -41,7 +41,7 @@ async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): P
 
 export const faqService = {
   /**
-   * دریافت اطلاعات صفحه سوالات متداول (لیست سوال و جواب‌ها و متادیتا)
+   * دریافت اطلاعات صفحه سوالات متداول
    * آدرس نهایی: [API_URL]/api/Front/FAQPage
    */
   getFaqPageData: async (): Promise<FAQPageData | null> => {
@@ -53,7 +53,6 @@ export const faqService = {
       });
     } catch (error) {
       console.error('Error fetching FAQ page data:', error);
-      // در صورت بروز خطا null برمی‌گردانیم تا لایه نمایش بتواند حالت جایگزین را مدیریت کند
       return null;
     }
   },

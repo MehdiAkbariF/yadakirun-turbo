@@ -1,7 +1,6 @@
 import { FooterData } from '../types/footer.types';
 import { API_CONFIG } from '../config';
 
-// ✅ تعریف تایپ برای پشتیبانی از تنظیمات Next.js بدون نیاز به any
 interface NextFetchRequestConfig extends RequestInit {
   next?: {
     revalidate?: number | false;
@@ -9,30 +8,27 @@ interface NextFetchRequestConfig extends RequestInit {
   };
 }
 
-// تنظیم آدرس پایه برای بخش Front
 const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
 
-// داده‌های پیش‌فرض برای جلوگیری از کرش کردن سایت در صورت خطای API
+// داده‌های پیش‌فرض برای جلوگیری از کرش کردن
 const defaultFooterData: FooterData = {
-  SaleServices: [],
+  // دقت کنید که این نام‌ها باید دقیقاً با اینترفیس FooterData یکی باشند
+  SaleServices: [], 
   footerLinks: [],
 };
 
-/**
- * تابع کمکی برای فراخوانی APIهای مربوط به فوتر
- */
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
   try {
     const response = await fetch(url, {
       ...options,
       headers: {
         'Accept': 'application/json',
+        // ❌ بدون Authorization
         ...options.headers,
       },
     });
 
     if (!response.ok) {
-      // لاگ کردن جزئیات خطا برای دیباگ در محیط توسعه
       const errorBody = await response.text();
       console.error(`Footer API Error [${response.status}]:`, errorBody);
       throw new Error(`API call failed: ${response.statusText}`);
@@ -46,17 +42,19 @@ async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): P
 }
 
 export const footerService = {
-
+  /**
+   * دریافت اطلاعات فوتر
+   * آدرس نهایی: [API_URL]/api/Front/Footer
+   */
   getFooterData: async (): Promise<FooterData> => {
     try {
       const url = `${BASE_URL}/Footer`;
       
       return await apiFetch<FooterData>(url, {
-        next: { revalidate: 86400 }, // کش برای ۲۴ ساعت (داده‌های فوتر به ندرت تغییر می‌کنند)
+        next: { revalidate: 86400 }, // کش برای ۲۴ ساعت
       });
     } catch (error) {
       console.error("Error fetching footer data:", error);
-      // در صورت بروز هرگونه خطا، ساختار خالی استاندارد برمی‌گردانیم تا چیدمان سایت به هم نریزد
       return defaultFooterData;
     }
   },

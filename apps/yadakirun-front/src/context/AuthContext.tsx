@@ -7,102 +7,76 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { setAuthToken } from "@monorepo/api-client/src/utils/authToken";
-import { jwtDecode } from "jwt-decode"; // ← درست: named import
 
-interface JwtClaims {
-  UserId: string;
-  name?: string;
-  // بقیه فیلدها اگر لازم بود
-}
+// ❌ ایمپورت‌های مربوط به توکن و دیکد کردن حذف شدند
 
 interface User {
   id: string;
   name: string;
+  phoneNumber?: string;
 }
 
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
-  token: string | null;
   isLoading: boolean;
-  login: () => void;
+  // متد login حالا اطلاعات کاربر را می‌گیرد (چون توکنی برای دیکد کردن نداریم)
+  login: (userData: User) => void;
   logout: () => void;
 }
 
-const STATIC_TOKEN =
-  "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxNDdhZGM4NS00NmEzLTRiNzEtYWEzZi01MWExMjliZmY4NTgiLCJuYmYiOjE3NjY2NzA3MjYsImV4cCI6MTc3NjY3MDYyNiwiaXNzIjoiWWFkYWtjaGkiLCJhdWQiOiJmcm9udC5sb3R0ZXN0LmlyIn0.Ee9Lv9BwkAKsFxdOuapdvqE2VETKsVMNWw_nDXVHoC1-PGxAGAQcFGhPoBuTAgx0j4UVmfj0lOpnqT4R017IfQ";
-
-const AUTH_TOKEN_KEY = "authToken";
+const USER_DATA_KEY = "userData"; // فقط اطلاعات پروفایل را نگه می‌داریم (نه توکن)
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // تابع استخراج userId کامل از توکن
-  const decodeToken = (jwtToken: string): User | null => {
-    try {
-      const decoded: JwtClaims = jwtDecode<JwtClaims>(jwtToken); // ← با generic برای تایپ‌سیفتی
-      return {
-        id: decoded.UserId, // کامل: "147adc85-46a3-4b71-aa3f-51a129bff858"
-        name: decoded.name || "کاربر",
-      };
-    } catch (error) {
-      console.error("Failed to decode JWT token", error);
-      return null;
-    }
-  };
-
   useEffect(() => {
+    // در شروع برنامه، چک می‌کنیم آیا دیتای کاربر در لوکال استوریج هست؟
+    // نکته: چون توکن در کوکی HttpOnly است، ما به آن دسترسی نداریم.
+    // بهترین راه این است که یک ریکوئست به اندپوینت /api/User/Me بزنیم تا وضعیت لاگین چک شود.
+    // فعلاً برای حفظ ظاهر لاگین، اطلاعات کاربر (بدون توکن) را از حافظه می‌خوانیم.
     try {
-      const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
-      if (storedToken) {
-        const decodedUser = decodeToken(storedToken);
-        if (decodedUser) {
-          setUser(decodedUser);
-          setToken(storedToken);
-          setAuthToken(storedToken);
-        }
+      const storedUser = localStorage.getItem(USER_DATA_KEY);
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
       }
     } catch (error) {
-      console.error("Failed to read auth token from localStorage", error);
+      console.error("Failed to read user data from localStorage", error);
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  const login = () => {
-    localStorage.setItem(AUTH_TOKEN_KEY, STATIC_TOKEN);
-
-    const decodedUser = decodeToken(STATIC_TOKEN);
-    if (decodedUser) {
-      setUser(decodedUser);
-    }
-    setToken(STATIC_TOKEN);
-    setAuthToken(STATIC_TOKEN);
+  const login = (userData: User) => {
+    // ذخیره اطلاعات کاربر در استیت و حافظه
+    setUser(userData);
+    localStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
+    
+    // نکته: کوکی احراز هویت توسط بک‌اند ست شده است و ما کاری با آن نداریم
   };
 
   const logout = () => {
-    localStorage.removeItem(AUTH_TOKEN_KEY);
-    setToken(null);
+    // پاک کردن اطلاعات کاربر از فرانت
+    localStorage.removeItem(USER_DATA_KEY);
     setUser(null);
-    setAuthToken(null);
+    
+    // نکته: برای حذف کوکی HttpOnly باید یک درخواست به اندپوینت LogOut بک‌اند ارسال کنید
+    // مثلا: authService.logout();
   };
 
   const value = {
-    isAuthenticated: !!token,
+    isAuthenticated: !!user,
     user,
-    token,
     isLoading,
     login,
     logout,
   };
 
   if (isLoading) {
-    return null; // یا لودینگ
+    return null; // یا یک کامپوننت لودینگ ساده
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

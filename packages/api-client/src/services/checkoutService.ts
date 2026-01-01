@@ -1,4 +1,3 @@
-import { getAuthToken } from '../utils/authToken';
 import { ShippingMethod, FinalizeCheckoutPayload } from '../types/checkout.types';
 import { API_CONFIG } from '../config';
 
@@ -17,13 +16,13 @@ const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
  * تابع کمکی برای فراخوانی API
  */
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
-  const token = getAuthToken();
+  // ❌ حذف دریافت توکن دستی
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     ...options.headers,
-    ...(token && { 'Authorization': `Bearer ${token}` }),
+    // ❌ حذف هدر Authorization (کوکی‌ها خودکار ارسال می‌شوند)
   };
 
   try {
@@ -45,33 +44,32 @@ async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): P
 
 export const checkoutService = {
   /**
-   * ✅ اصلاح شده: دریافت روش‌های ارسال موجود از API واقعی.
+   * دریافت روش‌های ارسال موجود
    * آدرس نهایی: [API_URL]/api/Front/ShipmentMethods
    */
   getShippingMethods: (): Promise<ShippingMethod[]> => {
     return apiFetch<ShippingMethod[]>(`${BASE_URL}/ShipmentMethods`, {
       method: 'GET',
       next: {
-        revalidate: 3600, // روش‌های ارسال به ندرت تغییر می‌کنند، پس برای ۱ ساعت کش می‌کنیم
+        revalidate: 3600, 
       }
     });
   },
 
   /**
-   * نهایی کردن سفارش و دریافت لینک درگاه پرداخت.
+   * نهایی کردن سفارش و دریافت لینک درگاه پرداخت
    * آدرس نهایی: [API_URL]/api/Front/BasketPayment
    */
   finalizeCheckout: (payload: FinalizeCheckoutPayload): Promise<{ paymentUrl: string }> => {
     return apiFetch<{ paymentUrl: string }>(`${BASE_URL}/BasketPayment`, {
       method: 'POST',
       body: JSON.stringify(payload),
-      // این درخواست نباید کش شود
       cache: 'no-store',
     });
   },
 
   /**
-   * آماده‌سازی سبد خرید برای مرحله تسویه حساب.
+   * آماده‌سازی سبد خرید برای مرحله تسویه حساب
    * آدرس نهایی: [API_URL]/api/Front/CheckoutBasket
    */
   prepareBasketForCheckout: (): Promise<any> => {
@@ -82,7 +80,7 @@ export const checkoutService = {
   },
 
   /**
-   * تایید نهایی تراکنش پس از بازگشت کاربر از درگاه بانک.
+   * تایید نهایی تراکنش (کال‌بک بانک)
    * آدرس نهایی: [API_URL]/api/Front/SamanCallback
    */
   verifySamanPayment: (data: { refNum: string; status: number; token: string }): Promise<any> => {

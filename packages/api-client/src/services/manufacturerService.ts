@@ -2,7 +2,6 @@ import { ManufacturerPageData } from '../types/manufacturer.types';
 import { Product, PaginatedResponse } from '../types/car';
 import { API_CONFIG } from '../config';
 
-// ✅ تعریف تایپ برای پشتیبانی از تنظیمات Next.js بدون نیاز به any
 interface NextFetchRequestConfig extends RequestInit {
   next?: {
     revalidate?: number | false;
@@ -10,24 +9,27 @@ interface NextFetchRequestConfig extends RequestInit {
   };
 }
 
-// تنظیم آدرس پایه برای بخش Front (تولیدکنندگان)
 const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
 
-/**
- * تابع کمکی برای فراخوانی APIهای مربوط به تولیدکنندگان
- */
+// ✅ تابع کمکی برای استخراج ID از Slug (مثال: "5-bmw" -> "5")
+const extractIdFromSlug = (slugOrId: string | number): string => {
+  if (!slugOrId) return '';
+  const parts = String(slugOrId).split('-');
+  return parts[0];
+};
+
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
   try {
     const response = await fetch(url, {
       ...options,
       headers: {
         'Accept': 'application/json',
+        // ❌ بدون Authorization
         ...options.headers,
       },
     });
 
     if (!response.ok) {
-      // لاگ کردن جزئیات خطا برای دیباگ در محیط توسعه
       const errorBody = await response.text();
       console.error(`Manufacturer API Error [${response.status}]:`, errorBody);
       throw new Error(`API call failed: ${response.statusText}`);
@@ -42,41 +44,41 @@ async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): P
 
 export const manufacturerService = {
   /**
-   * دریافت جزئیات یک برند/تولیدکننده (نام، لوگو، لیست خودروها و متادیتا)
+   * دریافت جزئیات یک برند
    * آدرس نهایی: [API_URL]/api/Front/CarManufacturerPage
    */
-  getManufacturerDetails: async (manufacturerId: string | number): Promise<ManufacturerPageData | null> => {
+  getManufacturerDetails: async (slugOrId: string | number): Promise<ManufacturerPageData | null> => {
     try {
-      const url = `${BASE_URL}/CarManufacturerPage?CarManufacturerId=${manufacturerId}`;
+      const id = extractIdFromSlug(slugOrId);
+      const url = `${BASE_URL}/CarManufacturerPage?CarManufacturerId=${id}`;
       
       return await apiFetch<ManufacturerPageData>(url, {
         next: { revalidate: 86400 }, // کش برای ۲۴ ساعت
       });
     } catch (error) {
       console.error("Error fetching manufacturer details:", error);
-      // در صورت خطا null برمی‌گردانیم تا صفحه 404 یا پیام خطا نمایش داده شود
       return null;
     }
   },
 
   /**
-   * دریافت لیست محصولات یک برند خاص به صورت صفحه‌بندی شده
+   * دریافت محصولات یک برند
    * آدرس نهایی: [API_URL]/api/Front/Products
    */
   getManufacturerProducts: async (
-    manufacturerId: string | number, 
+    slugOrId: string | number, 
     page = 1, 
     pageSize = 30
   ): Promise<PaginatedResponse<Product>> => {
     try {
-      const url = `${BASE_URL}/Products?CarManufacturerId=${manufacturerId}&PageNumber=${page}&PageSize=${pageSize}`;
+      const id = extractIdFromSlug(slugOrId);
+      const url = `${BASE_URL}/Products?CarManufacturerId=${id}&PageNumber=${page}&PageSize=${pageSize}`;
       
       return await apiFetch<PaginatedResponse<Product>>(url, { 
-        cache: "no-store" // محصولات برند نباید کش شوند تا قیمت‌ها دقیق بماند
+        cache: "no-store" 
       });
     } catch (error) {
       console.error("Error fetching manufacturer products:", error);
-      // در صورت خطا، یک پاسخ خالی استاندارد برمی‌گردانیم تا گرید محصولات کرش نکند
       return { 
         currentPage: 1, 
         totalPages: 0, 

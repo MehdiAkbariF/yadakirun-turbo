@@ -9,7 +9,6 @@ import { ProgressBar } from '@/src/components/layout/ProgressBar';
 // ❌ ایمپورت useTheme حذف شد
 import { ThemeToggle } from '@monorepo/design-system/src/components/atoms/ThemeToggle/ThemeToggle';
 
-// ❌ export const dynamic حذف شد، چون دیگر نیازی به آن نیست
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   // ❌ هوک useTheme و منطق مربوط به آن کامل حذف شد
 

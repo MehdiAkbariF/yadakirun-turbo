@@ -124,15 +124,7 @@ export const CartDrawer = ({
             </div>
             
             <div className="flex gap-3">
-               {onClearCart && (
-                 <Button 
-                   variant="ghost" 
-                   onClick={() => setIsClearingCart(true)}
-                   className="text-utility-error hover:bg-utility-error/10 p-3"
-                 >
-                    <Trash2 size={20} />
-                 </Button>
-               )}
+            
                <Button fullWidth size="lg" onClick={onCheckout}>
                  نهایی کردن خرید
                </Button>
@@ -156,19 +148,6 @@ export const CartDrawer = ({
         <Label>آیا از حذف این کالا از سبد خرید اطمینان دارید؟</Label>
       </Modal>
 
-      <Modal
-        isOpen={isClearingCart}
-        onClose={() => setIsClearingCart(false)}
-        title="خالی کردن سبد خرید"
-        footer={
-          <>
-            <Button variant="secondary" onClick={() => setIsClearingCart(false)}>انصراف</Button>
-            <Button variant="danger" onClick={handleConfirmClear}>بله، همه را حذف کن</Button>
-          </>
-        }
-      >
-        <Label>آیا مطمئن هستید که می‌خواهید تمام کالاها را از سبد خرید حذف کنید؟</Label>
-      </Modal>
     </>
   );
 };

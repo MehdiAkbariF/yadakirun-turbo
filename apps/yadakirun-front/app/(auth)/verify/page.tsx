@@ -8,21 +8,21 @@ import { useAuth } from '@/src/context/AuthContext';
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
 import { Button } from '@monorepo/design-system/src/components/atoms/Button/Button';
 import { OtpInput } from '@monorepo/design-system/src/components/molecules/OtpInput/OtpInput';
+import { authService } from '@monorepo/api-client/src/services/authService'; 
 
-// این خط را نگه می‌داریم برای اطمینان
 export const dynamic = 'force-dynamic';
 
-// 1. جدا کردن منطق صفحه در یک کامپوننت داخلی
 const VerifyContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const mobile = searchParams.get('mobile') || '---';
-  const { login } = useAuth();
+  const mobile = searchParams.get('mobile') || ''; 
+  const { login } = useAuth(); 
 
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [timer, setTimer] = useState(120);
   const [canResend, setCanResend] = useState(false);
+  const [error, setError] = useState<string | null>(null); 
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -42,23 +42,44 @@ const VerifyContent = () => {
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (otp.length < 5 || isLoading) return;
+    // ✅ تغییر شرط به ۶ رقم
+    if (otp.length < 6 || isLoading) return;
 
     setIsLoading(true);
+    setError(null);
 
-    setTimeout(() => {
-      login();
-      setIsLoading(false);
+    try {
+      const response = await authService.verify(mobile, otp);
+
+      const userData = {
+        id: response?.user?.id ? String(response.user.id) : "unknown", 
+        name: response?.user?.name || "کاربر گرامی",
+        phoneNumber: mobile
+      };
+
+      login(userData); 
       router.push('/');
-    }, 1500);
+    } catch (err) {
+      setError("کد وارد شده صحیح نیست یا منقضی شده است.");
+      setOtp(''); 
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleResend = () => {
-    setTimer(120);
-    setCanResend(false);
-    setOtp('');
+  const handleResend = async () => {
+    setError(null);
+    try {
+        await authService.login(mobile);
+        
+        setTimer(120);
+        setCanResend(false);
+        setOtp('');
+    } catch (err) {
+        setError("خطا در ارسال مجدد کد.");
+    }
   };
 
   return (
@@ -74,17 +95,27 @@ const VerifyContent = () => {
         <Label size="lg" weight="bold" className="mb-2">کد تایید را وارد کنید</Label>
         <div className="flex items-center justify-center gap-1">
            <Label size="sm" color="secondary">کد به شماره</Label>
-           <Label size="sm" weight="bold" className="font-mono">{mobile}</Label>
+           <Label size="sm" weight="bold" className="font-mono" dir="ltr">{mobile}</Label>
            <Label size="sm" color="secondary">ارسال شد</Label>
         </div>
       </div>
 
       <div className="py-4">
+        {/* ✅ تغییر طول اینپوت به ۶ رقم */}
         <OtpInput 
-          length={5} 
+          length={6} 
           value={otp} 
-          onChange={setOtp} 
+          onChange={(val) => {
+              setOtp(val);
+              setError(null);
+          }} 
         />
+        {/* نمایش خطای کد */}
+        {error && (
+            <Label size="xs" className="text-red-500 mt-4 block text-center">
+            {error}
+            </Label>
+        )}
       </div>
 
       <div className="flex justify-center">
@@ -114,7 +145,8 @@ const VerifyContent = () => {
         fullWidth 
         size="md" 
         isLoading={isLoading}
-        disabled={otp.length < 5}
+        // ✅ تغییر شرط غیرفعال بودن به ۶ رقم
+        disabled={otp.length < 6}
         className="shadow-md"
       >
         تایید و ورود
@@ -123,7 +155,6 @@ const VerifyContent = () => {
   );
 };
 
-// 2. کامپوننت اصلی که محتوا را در Suspense قرار می‌دهد
 const VerifyPage = () => {
   return (
     <Suspense fallback={<div className="text-center p-4">در حال بارگذاری...</div>}>

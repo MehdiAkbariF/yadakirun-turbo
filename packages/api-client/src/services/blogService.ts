@@ -1,7 +1,6 @@
 import { BlogPageResponse, PaginatedBlogResponse, BlogPostPageResponse } from '../types/blog.types';
 import { API_CONFIG } from '../config';
 
-// ✅ تعریف تایپ برای پشتیبانی از تنظیمات Next.js بدون نیاز به any
 interface NextFetchRequestConfig extends RequestInit {
   next?: {
     revalidate?: number | false;
@@ -14,16 +13,16 @@ const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
 
 /**
  * تابع کمکی برای درخواست‌های بخش بلاگ
- * این تابع BASE_URL را با endpoint ترکیب می‌کند
  */
 async function blogFetch<T>(endpoint: string, options: NextFetchRequestConfig = {}): Promise<T | null> {
   try {
-    // ترکیب آدرس: BASE_URL خودش شامل /Front هست
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       ...options,
       headers: {
         'Accept': 'application/json',
+        // 'Content-Type': 'application/json', // برای GET الزامی نیست اما بودنش ضرری ندارد
         ...options.headers,
+        // ❌ مطمئن شدیم که هیچ هدر Authorization اینجا اضافه نمی‌شود
       },
     });
 
@@ -41,10 +40,7 @@ async function blogFetch<T>(endpoint: string, options: NextFetchRequestConfig = 
 }
 
 export const blogService = {
-  /**
-   * دریافت اطلاعات عمومی صفحه اصلی بلاگ (دسته‌بندی‌ها و پربازدیدها)
-   * آدرس نهایی: [API_URL]/api/Front/BlogPage
-   */
+
   getBlogPageData: async (): Promise<BlogPageResponse | null> => {
     return blogFetch<BlogPageResponse>('/BlogPage', {
       next: { revalidate: 3600 },
@@ -53,7 +49,6 @@ export const blogService = {
 
   /**
    * دریافت لیست مقالات با صفحه‌بندی
-   * آدرس نهایی: [API_URL]/api/Front/BlogPosts
    */
   getBlogPosts: async (page = 1, pageSize = 10): Promise<PaginatedBlogResponse | null> => {
     return blogFetch<PaginatedBlogResponse>(`/BlogPosts?PageNumber=${page}&PageSize=${pageSize}`, {
@@ -63,7 +58,6 @@ export const blogService = {
 
   /**
    * دریافت جزئیات کامل یک مقاله بر اساس ID
-   * آدرس نهایی: [API_URL]/api/Front/BlogPostPage
    */
   getBlogPostDetail: async (id: string | number): Promise<BlogPostPageResponse | null> => {
     return blogFetch<BlogPostPageResponse>(`/BlogPostPage?Id=${id}`, {

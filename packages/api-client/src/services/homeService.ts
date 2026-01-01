@@ -18,6 +18,7 @@ export const homeService = {
         next: { revalidate: 3600 }, // کش برای یک ساعت
         headers: {
           'Accept': 'application/json',
+          // ❌ بدون Authorization
         }
       } as NextFetchRequestConfig);
 

@@ -1,14 +1,17 @@
+// مسیر: apps/yadakirun-front/app/(main)/page.tsx
+
 import dynamic from 'next/dynamic';
+import { Metadata } from 'next';
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
 import { Container } from '@monorepo/design-system/src/components/organisms/Container/Container';
 import { CardGrid } from '@monorepo/design-system/src/components/molecules/CardGrid/CardGrid';
 import { CardSlider } from '@monorepo/design-system/src/components/molecules/CardSlider/CardSlider';
+import { ImageCard } from '@monorepo/design-system/src/components/atoms/ImageCard/ImageCard';
 import { SpecialOffers } from '@/src/components/layout/SpecialOffers';
 import { BestSellersSlider } from '@/src/components/layout/BestSellersSlider';
-import { ImageCard } from '@monorepo/design-system/src/components/atoms/ImageCard/ImageCard';
 import { HomeBanner } from '@/src/components/layout/HomeBanner';
-import { homeService } from '@monorepo/api-client/src/services/homeService'; // ✅ ایمپورت سرویس
-import { Metadata } from 'next'; // ✅ ۱. ایمپورت تایپ Metadata
+import { homeService } from '@monorepo/api-client/src/services/homeService';
+
 // --- بارگذاری تنبل کامپوننت‌های پایین صفحه ---
 const NewsSection = dynamic(() =>
   import('@/src/components/layout/NewsSection').then(mod => mod.NewsSection),
@@ -19,11 +22,10 @@ const SeoContentSection = dynamic(() =>
   import('@/src/components/layout/SeoContentSection').then(mod => mod.SeoContentSection),
   { loading: () => <div style={{ height: '500px' }} /> }
 );
+
 export async function generateMetadata(): Promise<Metadata> {
-  // دریافت داده‌ها از API
   const homeData = await homeService.getHomePageData();
 
-  // اگر داده‌ای وجود نداشت، از مقادیر پیش‌فرض استفاده کن
   if (!homeData) {
     return {
       title: 'یدکی‌ران - فروشگاه آنلاین لوازم یدکی خودرو',
@@ -39,7 +41,8 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
-// --- داده‌های استاتیک (که در API نبودند) ---
+
+// --- داده‌های استاتیک محتوایی ---
 const textContentData = [
     { 
       id: 'sec-1', 
@@ -74,15 +77,7 @@ const textContentData = [
     },
 ];
 
-const categoryData = [
-  { href: "/cat/1", imgSrc: "/geely.webp", title: "جیلی" },
-  { href: "/cat/2", imgSrc: "/jack.png", title: "جک" },
-  { href: "/cat/3", imgSrc: "/LandRover.svg", title: "لندرور" },
-  { href: "/cat/4", imgSrc: "/Renault.svg", title: "رنو" },
-  { href: "/cat/5", imgSrc: "/ssangyong.svg", title: "سانگ یانگ" },
-  { href: "/cat/6", imgSrc: "/Renault.svg", title: "پژو" },
-];
-
+// داده‌های استاتیک برای برندها (هنوز در API نیست)
 const brandCardsData = [
   { href: "/brand/1", imgSrc: "/geely.webp", title: "جیلی" },
   { href: "/brand/2", imgSrc: "/jack.png", title: "جک" },
@@ -98,78 +93,100 @@ const brandCardsData = [
   { href: "/brand/12", imgSrc: "/Renault.svg", title: "نیسان" },
 ];
 
-// ✅ کامپوننت به async تبدیل شد
 export default async function HomePage() {
+  const BASE_IMG_URL = "https://api-yadakirun.yadakchi.com";
+  
+  // ۱. دریافت داده از API
   const homeData = await homeService.getHomePageData();
 
-  // ✅✅✅ اصلاح اصلی اینجاست: استفاده از `?? []` ✅✅✅
-  // اگر `homeData` یا هر پراپرتی در زنجیره null/undefined باشد، یک آرایه خالی جایگزین می‌شود
-  const specialOfferProducts = (homeData?.discountedProducts ?? []).map(p => ({
+  // ۲. پردازش داده‌ها
+  // --- دسته‌بندی‌ها (Dynamic Category Data) ---
+  const categoryData = homeData?.homePageLinks.map(link => ({
+    href: link.url || '#', // لینک از API
+    title: link.title,
+    // هندل کردن آدرس عکس (اگر نسبی باشد، بیس URL اضافه می‌شود)
+    imgSrc: link.imageUrl.startsWith('http') ? link.imageUrl : `${BASE_IMG_URL}${link.imageUrl}`
+  })) || [];
+
+  // --- محصولات تخفیف‌دار ---
+  const specialOfferProducts = homeData?.discountedProducts.map(p => ({
     id: p.id,
     title: p.title,
     href: `/ProductPage/${p.id}`,
-    imgSrc: `https://api-yadakirun.yadakchi.com${p.imageUrl}`,
+    imgSrc: `${BASE_IMG_URL}${p.imageUrl}`,
     price: p.priceAfterDiscount,
     originalPrice: p.price,
     rating: 4.5,
     carName: p.discountPercent > 0 ? `${p.discountPercent}% تخفیف` : "فروش ویژه",
-  }));
+  })) || [];
 
-  const bestSellerItems = (homeData?.mostSoldProducts ?? []).map(p => ({
+  // --- پرفروش‌ترین‌ها ---
+  const bestSellerItems = homeData?.mostSoldProducts.map(p => ({
     id: String(p.id),
     title: p.title,
     href: `/ProductPage/${p.id}`,
-    imgSrc: `https://api-yadakirun.yadakchi.com${p.imageUrl}`,
+    imgSrc: `${BASE_IMG_URL}${p.imageUrl}`,
     price: p.priceAfterDiscount,
     originalPrice: p.price,
     rating: 4.8,
     badgeText: "پرفروش",
-  }));
+  })) || [];
 
-  const newestProductItems = (homeData?.mostRecentProducts ?? []).map(p => ({
+  // --- جدیدترین‌ها ---
+  const newestProductItems = homeData?.mostRecentProducts.map(p => ({
     id: String(p.id),
     title: p.title,
     href: `/ProductPage/${p.id}`,
-    imgSrc: `https://api-yadakirun.yadakchi.com${p.imageUrl}`,
+    imgSrc: `${BASE_IMG_URL}${p.imageUrl}`,
     price: p.priceAfterDiscount,
     originalPrice: p.price,
     rating: 4.2,
     badgeText: "جدیدترین",
-  }));
+  })) || [];
 
-  const newsItems = (homeData?.mostRecentBlogPosts ?? []).map(post => ({
+  // --- اخبار وبلاگ ---
+  const newsItems = homeData?.mostRecentBlogPosts.map(post => ({
     href: `/blog/${post.id}`,
     title: post.title,
-    imgSrc: `https://api-yadakirun.yadakchi.com${post.coverUrl}`,
+    imgSrc: `${BASE_IMG_URL}${post.coverUrl}`,
     date: new Date(post.createDate).toLocaleDateString('fa-IR', { day: 'numeric', month: 'long', year: 'numeric' }),
     description: `این مقاله را در ${post.readingTime} دقیقه بخوانید...`,
-  }));
+  })) || [];
 
-  // بقیه کد بدون تغییر باقی می‌ماند
+  // ۳. لاجیک نمایش دکمه "بیشتر" برای دسته‌بندی‌ها
   const moreCount = 10;
   const moreHref = "/categories";
-  const desktopItems = [
+  
+  // اگر دیتا وجود داشت، دکمه بیشتر را اضافه کن
+  const hasCategories = categoryData.length > 0;
+  
+  const desktopItems = hasCategories ? [
     { href: moreHref, title: `${moreCount}+ بیشتر`, isMore: true },
     ...categoryData.slice(0, 6)
-  ];
-  const mobileItems = [
+  ] : [];
+
+  const mobileItems = hasCategories ? [
     ...categoryData,
     { href: moreHref, title: `${moreCount}+ بیشتر`, isMore: true }
-  ];
+  ] : [];
 
   return (
     <>
       <HomeBanner />
-      <Container>
-        <section className="my-10">
-          <div className="hidden lg:block">
-            <CardGrid items={desktopItems} columns={7} />
-          </div>
-          <div className="lg:hidden">
-            <CardSlider items={mobileItems} />
-          </div>
-        </section>
-      </Container>
+
+      {/* ✅ نمایش داینامیک دسته‌بندی‌ها (homePageLinks) */}
+      {hasCategories && (
+        <Container>
+          <section className="my-10">
+            <div className="hidden lg:block">
+              <CardGrid items={desktopItems} columns={7} />
+            </div>
+            <div className="lg:hidden">
+              <CardSlider items={mobileItems} />
+            </div>
+          </section>
+        </Container>
+      )}
       
       <Container>
         <SpecialOffers products={specialOfferProducts} title="پیشنهادهای شگفت‌انگیز" />
@@ -199,7 +216,7 @@ export default async function HomePage() {
         <BestSellersSlider title="جدیدترین محصولات" items={newestProductItems} uniqueId="newest-products" />
       </Container>
 
-      <Container className="my-12">
+       <Container className="my-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <ImageCard href="/category/body" src="/SGA-banner.webp" alt="قطعات بدنه" aspectRatio="6 / 3" />
           <ImageCard href="/category/engine" src="/aisin-clutch-banner.webp" alt="قطعات موتوری" aspectRatio="6 / 3" />
@@ -209,12 +226,12 @@ export default async function HomePage() {
       </Container>
 
       <Container className="my-4">
-        <section>
-          <div className="mb-4 text-right border-r-4 border-brand-accent pr-4 pt-2">
-            <Label as="h2" size="xl" weight="extra-bold">برندهای منتخب</Label>
-          </div>
-          <CardGrid items={brandCardsData} className="card-grid--responsive" />
-        </section>
+         <section>
+            <div className="mb-4 text-right border-r-4 border-brand-accent pr-4 pt-2">
+                <Label as="h2" size="xl" weight="extra-bold">برندهای منتخب</Label>
+            </div>
+            <CardGrid items={brandCardsData} className="card-grid--responsive" />
+         </section>
       </Container>
 
       <NewsSection title="آخرین اخبار و مقالات" items={newsItems} uniqueId="homepage-news" />

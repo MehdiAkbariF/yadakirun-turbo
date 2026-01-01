@@ -1,8 +1,7 @@
 import { BasketResponse, UpdateBasketPayload } from '../types/basket.types';
-import { getAuthToken } from '../utils/authToken';
-import { API_CONFIG } from '../config'; // استفاده از کانفیگ مرکزی
+import { API_CONFIG } from '../config'; 
 
-// ✅ تعریف تایپ برای پشتیبانی از تنظیمات Next.js بدون ارور TypeScript
+
 interface NextFetchRequestConfig extends RequestInit {
   next?: {
     revalidate?: number | false;
@@ -10,18 +9,16 @@ interface NextFetchRequestConfig extends RequestInit {
   };
 }
 
-// استفاده از آدرس پایه داینامیک (سرور: Absolute / کلاینت: Relative)
 const BASE_URL = API_CONFIG.BASE_URL; 
 
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
-  const token = getAuthToken();
-
+  
+  
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     ...options.headers,
-    // ✅ استفاده از تکنیک Spread برای امنیت تایپ و ارسال داینامیک توکن
-    ...(token && { 'Authorization': `Bearer ${token}` }),
+    
   };
 
   try {
@@ -32,7 +29,7 @@ async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): P
       throw new Error(`API call failed: ${response.status} ${response.statusText}`);
     }
     const text = await response.text();
-    // اگر پاسخ موفقیت‌آمیز بود ولی بدنه نداشت (مثلاً در حذف)، یک آبجکت موفقیت برمی‌گردانیم
+    
     return text ? JSON.parse(text) as T : { success: true } as T;
   } catch (error) {
     console.error(`Error fetching from ${url}:`, error);
@@ -48,7 +45,7 @@ export const basketService = {
   getBasket: (): Promise<BasketResponse> => {
     return apiFetch<BasketResponse>(`${BASE_URL}/Front/Basket`, {
       method: 'GET',
-      cache: 'no-store', // سبد خرید نباید کش شود
+      cache: 'no-store', 
     });
   },
 

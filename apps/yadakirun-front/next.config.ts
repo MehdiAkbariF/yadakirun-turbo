@@ -1,9 +1,8 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+import type { NextConfig } from "next";
 
+const nextConfig: NextConfig = {
+  // ❌ بخش eslint حذف شد چون در Next.js جدید پشتیبانی نمی‌شود
+  
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -21,12 +20,14 @@ const nextConfig = {
 
   async rewrites() {
     return [
-   {
+      {
         source: "/api/:path*",
-        // اگر API_REMOTE_URL تعریف شده باشه از اون استفاده کن، وگرنه سرور اصلی
         destination: `${process.env.API_REMOTE_URL || "https://api-yadakirun.yadakchi.com"}/api/:path*`,
       },
-      
+      {
+        source: '/api-proxy/:path*',
+        destination: 'https://api-yadakirun.yadakchi.com/api/:path*',
+      },
     ];
   },
 };

@@ -1,8 +1,7 @@
-import { getAuthToken } from '../utils/authToken';
 import { API_CONFIG } from '../config';
 import { ApiAddressItem, AddAddressPayload, UpdateAddressPayload } from '../types/address.types';
 
-// ✅ تعریف تایپ برای پشتیبانی از تنظیمات Next.js (مانند سایر سرویس‌ها)
+// تعریف اینترفیس برای تنظیمات کش نکست
 interface NextFetchRequestConfig extends RequestInit {
   next?: {
     revalidate?: number | false;
@@ -10,27 +9,25 @@ interface NextFetchRequestConfig extends RequestInit {
   };
 }
 
-// ترکیب آدرس پایه با بخش پنل کاربری
-// خروجی در سرور: https://api-yadakirun.yadakchi.com/api/UserPanel
-// خروجی در کلاینت: /api/UserPanel
 const BASE_URL = `${API_CONFIG.BASE_URL}/UserPanel`;
 
+// ✅ تابع کمکی برای ارسال فرم دیتا (بدون هدر Authorization و بدون Content-Type دستی)
 async function apiFetchFormData<T>(url: string, formData: FormData, method: 'POST' | 'PUT' = 'POST'): Promise<T> {
-  const token = getAuthToken();
+  // نکته: برای FormData نباید Content-Type ست کنیم (مرورگر خودش boundary را هندل می‌کند)
+  // نکته: هدر Authorization حذف شد (کوکی هندل می‌کند)
   
-  // استفاده از تکنیک Spread برای جلوگیری از خطای ایندکس تایپ‌اسکریپت در HeadersInit
-  const headers: HeadersInit = {
-    ...(token && { 'Authorization': `Bearer ${token}` }),
-    // نکته: برای FormData نباید Content-Type ست کنیم، خود مرورگر Boundary را تنظیم می‌کند
-  };
-
   try {
-    const response = await fetch(url, { method, headers, body: formData });
+    const response = await fetch(url, { 
+      method, 
+      body: formData 
+    });
+
     if (!response.ok) {
       const errorBody = await response.text();
       console.error("API FormData Error Response:", errorBody);
       throw new Error(`API call failed: ${response.status} ${response.statusText}`);
     }
+
     const text = await response.text();
     return text ? JSON.parse(text) as T : { success: true } as T;
   } catch (error) {
@@ -39,14 +36,14 @@ async function apiFetchFormData<T>(url: string, formData: FormData, method: 'POS
   }
 }
 
+// ✅ تابع کمکی برای درخواست‌های JSON (بدون هدر Authorization)
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
-    const token = getAuthToken();
-    
     const headers: HeadersInit = {
+        // این هدرها برای بادی JSON الزامی هستند
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         ...options.headers,
-        ...(token && { 'Authorization': `Bearer ${token}` }),
+        // ❌ هدر Authorization حذف شد
     };
 
     try {

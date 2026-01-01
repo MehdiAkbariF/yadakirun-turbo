@@ -1,8 +1,5 @@
-// packages/api-client/src/services/returnService.ts
-
 import { API_CONFIG } from '../config';
-import { getAuthToken } from '../utils/authToken';
-import { ReturnRequestsResponse } from '../types/return.types'; // ← فقط response
+import { ReturnRequestsResponse } from '../types/return.types';
 
 const BASE_URL = `${API_CONFIG.BASE_URL}/UserPanel`;
 
@@ -14,11 +11,13 @@ interface NextFetchRequestConfig extends RequestInit {
 }
 
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
-  const token = getAuthToken();
+  // ❌ حذف دریافت توکن دستی
+
   const headers: HeadersInit = {
     'Accept': 'application/json',
+    'Content-Type': 'application/json',
     ...options.headers,
-    ...(token && { 'Authorization': `Bearer ${token}` }),
+    // ❌ حذف هدر Authorization (کوکی‌ها خودکار ارسال می‌شوند)
   };
 
   try {
@@ -46,10 +45,17 @@ export const returnService = {
     status?: string
   ): Promise<ReturnRequestsResponse> => {
     try {
-      let url = `${BASE_URL}/ReturnRequests?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+      // ساخت کوئری استرینگ
+      const queryParams = new URLSearchParams({
+        PageNumber: pageNumber.toString(),
+        PageSize: pageSize.toString(),
+      });
+
       if (status && status !== 'none') {
-        url += `&Status=${status}`;
+        queryParams.append('Status', status);
       }
+
+      const url = `${BASE_URL}/ReturnRequests?${queryParams.toString()}`;
 
       return await apiFetch<ReturnRequestsResponse>(url, {
         cache: 'no-store',

@@ -1,7 +1,5 @@
-
 import { AboutUsPageData } from '../types/about.types';
 import { API_CONFIG } from '../config'; 
-
 
 interface NextFetchRequestConfig extends RequestInit {
   next?: {
@@ -10,18 +8,16 @@ interface NextFetchRequestConfig extends RequestInit {
   };
 }
 
-
 const BASE_URL = API_CONFIG.BASE_URL;
 
 export const aboutUsService = {
   getAboutUsPageData: async (): Promise<AboutUsPageData | null> => {
     try {
-      
-      
       const response = await fetch(`${BASE_URL}/Front/AboutUsPage`, {
         next: { revalidate: 86400 }, 
         headers: {
           'Accept': 'application/json',
+          // ❌ هیچ هدر Authorization اینجا نیست
         }
       } as NextFetchRequestConfig); 
 

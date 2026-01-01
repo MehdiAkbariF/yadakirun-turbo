@@ -1,7 +1,6 @@
 import { PaginatedResponse } from '../types/car';
 import { Ticket } from '../types/ticket.types';
 import { API_CONFIG } from '../config';
-import { getAuthToken } from '../utils/authToken';
 
 interface NextFetchRequestConfig extends RequestInit {
   next?: {
@@ -13,11 +12,13 @@ interface NextFetchRequestConfig extends RequestInit {
 const BASE_URL = `${API_CONFIG.BASE_URL}/UserPanel`;
 
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
-  const token = getAuthToken();
+  // ❌ حذف توکن دستی
+  
   const headers: HeadersInit = {
     'Accept': 'application/json',
+    'Content-Type': 'application/json',
     ...options.headers,
-    ...(token && { 'Authorization': `Bearer ${token}` }),
+    // ❌ حذف هدر Authorization
   };
 
   try {
@@ -55,6 +56,9 @@ export interface CreateTicketResponse {
 }
 
 export const ticketService = {
+  /**
+   * دریافت لیست تیکت‌ها
+   */
   getTickets: async (
     pageNumber: number = 1,
     pageSize: number = 30,
@@ -80,63 +84,65 @@ export const ticketService = {
       };
     }
   },
-/**
- * دریافت جزئیات یک تیکت خاص (شامل پیام‌ها)
- */
-getTicketDetails: async (ticketId: number | string): Promise<Ticket | null> => {
-  try {
-    const url = `${BASE_URL}/Ticket?Id=${ticketId}`;
-    const data = await apiFetch<Ticket>(url, {
-      cache: 'no-store',
-    });
-    return data;
-  } catch (error) {
-    console.error("Error fetching ticket details:", error);
-    return null;
-  }
-},
-/**
- * ارسال پیام جدید به تیکت موجود (با متن + فایل اختیاری)
- */
-sendMessageToTicket: async (ticketId: string | number, text: string, attachedFile?: File): Promise<any | null> => {
-  try {
-    const formData = new FormData();
-    formData.append('Text', text);
-    formData.append('TicketId', ticketId.toString());
-    formData.append('WasHelpful', 'false');
 
-    // اگر فایل داشت، اضافه کن
-    if (attachedFile) {
-      formData.append('Attachments', attachedFile, attachedFile.name);
-    }
-
-    const response = await fetch(`${BASE_URL}/TicketMessage`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${getAuthToken()}`,
-        // Content-Type رو نذار — مرورگر خودش multipart/form-data می‌ذاره با boundary
-      },
-      body: formData,
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Send message failed:', errorText);
+  /**
+   * دریافت جزئیات یک تیکت
+   */
+  getTicketDetails: async (ticketId: number | string): Promise<Ticket | null> => {
+    try {
+      const url = `${BASE_URL}/Ticket?Id=${ticketId}`;
+      // اینجا return داریم
+      return await apiFetch<Ticket>(url, {
+        cache: 'no-store',
+      });
+    } catch (error) {
+      console.error("Error fetching ticket details:", error);
       return null;
     }
+  },
 
-    return await response.json();
-  } catch (error) {
-    console.error("Error sending message to ticket:", error);
-    return null;
-  }
-},
-  /** دریافت دسته‌بندی‌های تیکت */
+  /**
+   * ارسال پیام جدید به تیکت
+   */
+  sendMessageToTicket: async (ticketId: string | number, text: string, attachedFile?: File): Promise<any | null> => {
+    try {
+      const formData = new FormData();
+      formData.append('Text', text);
+      formData.append('TicketId', ticketId.toString());
+      formData.append('WasHelpful', 'false');
+
+      if (attachedFile) {
+        formData.append('Attachments', attachedFile, attachedFile.name);
+      }
+
+      const response = await fetch(`${BASE_URL}/TicketMessage`, {
+        method: 'POST',
+        // ❌ بدون هدر Authorization و Content-Type
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Send message failed:', errorText);
+        return null;
+      }
+
+      // ✅ حتما باید return وجود داشته باشد
+      return await response.json();
+    } catch (error) {
+      console.error("Error sending message to ticket:", error);
+      return null;
+    }
+  },
+
+  /**
+   * دریافت دسته‌بندی‌های تیکت
+   */
   getTicketCategories: async (): Promise<TicketCategory[]> => {
     try {
       const url = `${BASE_URL}/TicketCategories`;
       return await apiFetch<TicketCategory[]>(url, {
-        next: { revalidate: 3600 }, // هر ساعت بروزرسانی
+        next: { revalidate: 3600 },
       });
     } catch (error) {
       console.error("Error fetching ticket categories:", error);
@@ -144,7 +150,9 @@ sendMessageToTicket: async (ticketId: string | number, text: string, attachedFil
     }
   },
 
-  /** ایجاد تیکت جدید + ارسال پیام اول */
+  /**
+   * ایجاد تیکت جدید
+   */
   createTicket: async (
     categoryId: string,
     title: string,
@@ -159,10 +167,7 @@ sendMessageToTicket: async (ticketId: string | number, text: string, attachedFil
 
       const response = await fetch(`${BASE_URL}/Ticket`, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${getAuthToken()}`,
-          // Content-Type رو نذار — مرورگر خودش تنظیم می‌کنه
-        },
+        // ❌ بدون هدر Authorization و Content-Type
         body: formData,
       });
 
@@ -172,7 +177,9 @@ sendMessageToTicket: async (ticketId: string | number, text: string, attachedFil
         return null;
       }
 
+      // ✅✅✅ رفع خطای ts(2366): کلمه return اینجا الزامی است
       return await response.json() as CreateTicketResponse;
+      
     } catch (error) {
       console.error("Error creating ticket:", error);
       return null;

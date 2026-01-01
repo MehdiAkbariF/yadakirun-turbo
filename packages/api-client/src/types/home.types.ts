@@ -1,5 +1,13 @@
-// اینترفیس برای محصولات خلاصه‌شده در اسلایدرها
-export interface ProductSummary {
+// مسیر: packages/api-client/src/types/home.types.ts
+
+export interface HomePageLink {
+  id: number;
+  title: string;
+  imageUrl: string;
+  url: string; // فرض بر این است که API فیلدی برای لینک دارد (مثلاً url یا link)
+}
+
+export interface DiscountedProduct {
   id: number;
   title: string;
   englishTitle: string;
@@ -12,8 +20,20 @@ export interface ProductSummary {
   quantity: number;
 }
 
-// اینترفیس برای پست‌های وبلاگ
-export interface BlogPostSummary {
+export interface ProductItem {
+  id: number;
+  title: string;
+  englishTitle: string;
+  imageUrl: string;
+  imageAlt: string;
+  price: number;
+  priceAfterDiscount: number;
+  discountPercent: number;
+  discountUntil: string | null;
+  quantity: number;
+}
+
+export interface BlogPost {
   id: number;
   title: string;
   coverUrl: string;
@@ -27,29 +47,17 @@ export interface BlogPostSummary {
   creator: any | null;
 }
 
-// اینترفیس برای بنرها
-export interface Banner {
-  targetUrl: string;
-  image: string;
-  imageAlt: string;
-  bannerPlace: number;
-  bannerPlaceName: string;
-}
-
-// اینترفیس کامل ریسپانس API (نسخه اصلاح شده)
 export interface HomePageData {
   id: number;
   pageName: string;
-  
-  // ✅✅✅ فیلدهای سئو که اضافه شدند ✅✅✅
   description: string;
   metaTitle: string;
   metaDescription: string;
   canonicalUrl: string;
-
-  banners: Banner[];
-  discountedProducts: ProductSummary[];
-  mostSoldProducts: ProductSummary[];
-  mostRecentProducts: ProductSummary[];
-  mostRecentBlogPosts: BlogPostSummary[];
+  // ✅ فیلد جدید اضافه شد
+  homePageLinks: HomePageLink[];
+  discountedProducts: DiscountedProduct[];
+  mostSoldProducts: ProductItem[];
+  mostRecentProducts: ProductItem[];
+  mostRecentBlogPosts: BlogPost[];
 }
