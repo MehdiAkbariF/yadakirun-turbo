@@ -7,25 +7,31 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import { userService } from "@monorepo/api-client/src/services/userService";
 
-// ❌ ایمپورت‌های مربوط به توکن و دیکد کردن حذف شدند
+// ✅ تایپ نقش کاربر
+interface UserRole {
+  id: string;
+  name: string;
+}
 
+// ✅ آپدیت اینترفیس User
 interface User {
   id: string;
   name: string;
   phoneNumber?: string;
+  roles?: UserRole[]; // اضافه شد
 }
 
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
   isLoading: boolean;
-  // متد login حالا اطلاعات کاربر را می‌گیرد (چون توکنی برای دیکد کردن نداریم)
   login: (userData: User) => void;
   logout: () => void;
 }
 
-const USER_DATA_KEY = "userData"; // فقط اطلاعات پروفایل را نگه می‌داریم (نه توکن)
+const USER_DATA_KEY = "userData";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -34,37 +40,46 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // در شروع برنامه، چک می‌کنیم آیا دیتای کاربر در لوکال استوریج هست؟
-    // نکته: چون توکن در کوکی HttpOnly است، ما به آن دسترسی نداریم.
-    // بهترین راه این است که یک ریکوئست به اندپوینت /api/User/Me بزنیم تا وضعیت لاگین چک شود.
-    // فعلاً برای حفظ ظاهر لاگین، اطلاعات کاربر (بدون توکن) را از حافظه می‌خوانیم.
-    try {
-      const storedUser = localStorage.getItem(USER_DATA_KEY);
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
+    const checkUserStatus = async () => {
+      try {
+        // 1. اول سعی می‌کنیم از لوکال استوریج بخونیم (برای سرعت)
+        const storedUser = localStorage.getItem(USER_DATA_KEY);
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+
+        // 2. سپس از API وضعیت واقعی را می‌گیریم (چون نقش ممکن است تغییر کرده باشد)
+        // این کار در پس‌زمینه انجام می‌شود تا UI بلاک نشود
+        const remoteUser = await userService.getCurrentUser();
+        if (remoteUser) {
+           const userData: User = {
+             id: remoteUser.id,
+             name: remoteUser.name || "کاربر",
+             phoneNumber: remoteUser.phoneNumber,
+             roles: remoteUser.roles // نقش‌ها را ذخیره می‌کنیم
+           };
+           setUser(userData);
+           localStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
+        }
+      } catch (error) {
+        console.error("Failed to check auth status", error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Failed to read user data from localStorage", error);
-    } finally {
-      setIsLoading(false);
-    }
+    };
+
+    checkUserStatus();
   }, []);
 
   const login = (userData: User) => {
-    // ذخیره اطلاعات کاربر در استیت و حافظه
     setUser(userData);
     localStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
-    
-    // نکته: کوکی احراز هویت توسط بک‌اند ست شده است و ما کاری با آن نداریم
   };
 
   const logout = () => {
-    // پاک کردن اطلاعات کاربر از فرانت
     localStorage.removeItem(USER_DATA_KEY);
     setUser(null);
-    
-    // نکته: برای حذف کوکی HttpOnly باید یک درخواست به اندپوینت LogOut بک‌اند ارسال کنید
-    // مثلا: authService.logout();
+    // اینجا می‌توانید متد logout سرویس را هم صدا بزنید تا کوکی پاک شود
   };
 
   const value = {
@@ -76,7 +91,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   if (isLoading) {
-    return null; // یا یک کامپوننت لودینگ ساده
+    // بهتر است در زمان لودینگ اولیه چیزی رندر نکنیم یا اسکلتون نشان دهیم
+    // اما برای جلوگیری از پرش، فعلا null برمی‌گردانیم
+    return null; 
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

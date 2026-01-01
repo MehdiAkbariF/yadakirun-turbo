@@ -34,22 +34,22 @@ export default async function MainLayout({
     ],
     copyrightText: "تمام حقوق برای یدکی‌ران محفوظ بوده و استفاده از محتوای این وبسایت تنها با ذکر نام و درج لینک مستقیم مجاز است.",
     
-    // ✅✅✅ اصلاح اصلی اینجاست ✅✅✅
+    
     serviceCards: footerApiData?.SaleServices?.map(service => {
-      // اگر خود service یا title آن وجود ندارد، آن را نادیده بگیر
+      
       if (!service?.title) {
         return null;
       }
 
       let icon = <Wrench />;
-      // با استفاده از ?. مطمئن می‌شویم که کد crash نمی‌کند
+      
       if (service.title.includes("گارانتی")) icon = <ShieldCheck />;
       if (service.title.includes("پشتیبانی")) icon = <Headphones />;
       
       return { icon, title: service.title, description: service.description };
-    }).filter(Boolean), // <-- .filter(Boolean) آیتم‌های null را از آرایه حذف می‌کند
+    }).filter(Boolean), 
 
-    // ✅ همچنین برای footerLinks هم بهتر است این کار را انجام دهیم
+    
     footerButtons: footerApiData?.footerLinks?.map(link => ({ text: link.title, href: link.url })) || [],
   };
 

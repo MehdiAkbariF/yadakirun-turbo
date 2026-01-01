@@ -11,20 +11,12 @@ interface NextFetchRequestConfig extends RequestInit {
 
 const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
 
-// ✅ تابع کمکی برای استخراج ID از Slug
-const extractIdFromSlug = (slugOrId: string | number): string => {
-  if (!slugOrId) return '';
-  const parts = String(slugOrId).split('-');
-  return parts[0];
-};
-
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
   try {
     const response = await fetch(url, {
       ...options,
       headers: {
         'Accept': 'application/json',
-        // ❌ بدون Authorization
         ...options.headers,
       },
     });
@@ -45,12 +37,23 @@ async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): P
 export const categoryService = {
   /**
    * دریافت جزئیات یک دسته‌بندی
-   * آدرس نهایی: [API_URL]/api/Front/ProductCategoryPage
+   * اگر ورودی عدد باشد -> ProductCategoryId
+   * اگر ورودی متن باشد -> EnglishName
    */
   getCategoryDetails: async (slugOrId: string | number): Promise<ProductCategoryPageData | null> => {
     try {
-      const id = extractIdFromSlug(slugOrId);
-      const url = `${BASE_URL}/ProductCategoryPage?ProductCategoryId=${id}`;
+      const inputStr = String(slugOrId);
+      const isId = /^\d+$/.test(inputStr); 
+      const queryParams = new URLSearchParams();
+
+      if (isId) {
+        queryParams.append("ProductCategoryId", inputStr);
+      } else {
+        
+        queryParams.append("EnglishName", decodeURIComponent(inputStr));
+      }
+
+      const url = `${BASE_URL}/ProductCategoryPage?${queryParams.toString()}`;
       
       return await apiFetch<ProductCategoryPageData>(url, {
         next: { revalidate: 86400 }, 
@@ -63,16 +66,16 @@ export const categoryService = {
 
   /**
    * دریافت محصولات یک دسته‌بندی
-   * آدرس نهایی: [API_URL]/api/Front/Products
+   * نکته: برای اطمینان، بهتر است همیشه ID واقعی دسته‌بندی به این تابع پاس داده شود
    */
   getCategoryProducts: async (
-    slugOrId: string | number, 
+    categoryId: string | number, 
     page = 1, 
     pageSize = 30
   ): Promise<PaginatedResponse<Product>> => {
     try {
-      const id = extractIdFromSlug(slugOrId);
-      const url = `${BASE_URL}/Products?ProductCategoryId=${id}&PageNumber=${page}&PageSize=${pageSize}`;
+      
+      const url = `${BASE_URL}/Products?ProductCategoryId=${categoryId}&PageNumber=${page}&PageSize=${pageSize}`;
       
       return await apiFetch<PaginatedResponse<Product>>(url, { 
         cache: "no-store" 

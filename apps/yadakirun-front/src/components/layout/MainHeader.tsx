@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import Link from "next/link"; // ✅ کامپوننت اصلی Next.js
+import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ShoppingCart, User, Search } from "lucide-react";
@@ -30,7 +30,8 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
 
   const { totalQuantity } = useBasketStore();
   const { openCartDrawer } = useUIStore();
-  const { isAuthenticated, isLoading } = useAuth();
+  
+  const { isAuthenticated, isLoading, user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -55,7 +56,9 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
             children: safeProductCategories.map((cat) => ({
               id: `cat-${cat.id}`,
               title: cat.name,
-              href: `/ProductCategoryPage/${cat.id}`,
+              // ✅ استفاده از EnglishName برای لینک دسته‌بندی
+              // اگر englishName باشد از آن استفاده می‌کند، وگرنه ID
+              href: `/ProductCategoryPage/${cat.englishName || cat.id}`,
             })),
           },
           {
@@ -65,11 +68,14 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
             children: safeCarManufacturers.map((brand) => ({
               id: `brand-${brand.id}`,
               title: brand.name,
-              href: `/CarManufacturerPage/${brand.id}`,
+              // ✅ استفاده از EnglishName برای لینک برند
+              href: `/CarManufacturerPage/${brand.englishName || brand.id}`,
               children: brand.cars?.map((car) => ({
                 id: `car-${car.id}`,
                 title: car.modelName,
-                href: `/CarPage/${car.id}`,
+                // ✅ استفاده از EnglishName برای لینک خودرو (CarPage)
+                // توجه: اگر نام پارامتر صفحه خودرو [slug] است، این لینک درست است
+                href: `/CarPage/${car.englishName || car.id}`,
               })) || [],
             })),
           },
@@ -81,13 +87,20 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
     ];
   }, [menuData]);
 
+  // لاجیک تشخیص کاربر ناشناس
+  const isAnonymousUser = user?.roles?.some((role: any) => role.name === 'Anonymous');
+  const showProfileLink = isAuthenticated && !isAnonymousUser;
+
   const userLinkComponent = isLoading ? (
     <div className="header-action header-action--user-link w-[110px] h-[22px]" />
   ) : (
-    <Link href={isAuthenticated ? "/dashboard" : "/login"} className="header-action header-action--user-link">
+    <Link 
+      href={showProfileLink ? "/dashboard" : "/login"} 
+      className="header-action header-action--user-link"
+    >
       <User size={22} />
       <Label as="span" size="sm" weight="semi-bold" color="primary" className="hidden md:inline">
-        {isAuthenticated ? "پروفایل من" : "ورود | ثبت‌نام"}
+        {showProfileLink ? "پروفایل من" : "ورود | ثبت‌نام"}
       </Label>
     </Link>
   );
@@ -100,7 +113,7 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
     <Header
       isScrolled={isScrolled}
       activePath={pathname}
-      linkComponent={Link} // ✅ تزریق کامپوننت Link به هدر
+      linkComponent={Link}
       logo={
         <Link href="/">
           <Image src="/logo.webp" alt="لوگوی یدکی‌ران" width={150} height={50} className="h-auto" priority />
@@ -110,7 +123,7 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
         megaMenuItem && (
           <MegaMenu
             triggerText={megaMenuItem.title}
-            href={megaMenuItem.href} // ✅ پاس دادن آدرس /categories به مگامنو
+            href={megaMenuItem.href}
             categories={categoriesForMegaMenu}
             linkComponent={Link}
             brands={brandsForMegaMenu.map((brand: any) => ({

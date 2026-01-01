@@ -10,20 +10,12 @@ interface NextFetchRequestConfig extends RequestInit {
 
 const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
 
-// ✅ تابع کمکی برای استخراج ID از Slug
-const extractIdFromSlug = (slugOrId: string | number): string => {
-  if (!slugOrId) return '';
-  const parts = String(slugOrId).split('-');
-  return parts[0];
-};
-
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
   try {
     const response = await fetch(url, {
       ...options,
       headers: {
         'Accept': 'application/json',
-        // ❌ بدون Authorization
         ...options.headers,
       },
     });
@@ -44,12 +36,29 @@ async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): P
 export const productService = {
   /**
    * دریافت جزئیات محصول
-   * آدرس نهایی: [API_URL]/api/Front/ProductPage
+   * این تابع هوشمند است: اگر ورودی عدد باشد، با ID جستجو می‌کند.
+   * اگر متن باشد، با EnglishName جستجو می‌کند.
    */
   getProductDetails: async (slugOrId: string | number): Promise<ProductPageData | null> => {
     try {
-      const id = extractIdFromSlug(slugOrId);
-      const url = `${BASE_URL}/ProductPage?ProductId=${id}`;
+      const inputStr = String(slugOrId);
+      
+      // ✅ تشخیص اینکه ورودی عدد است یا متن
+      // اگر تمام کاراکترها عدد باشند، فرض می‌کنیم ID است
+      const isId = /^\d+$/.test(inputStr);
+
+      const queryParams = new URLSearchParams();
+
+      if (isId) {
+        // جستجو با ID
+        queryParams.append("ProductId", inputStr);
+      } else {
+        // جستجو با English Name
+        // دیکد کردن برای تبدیل %20 به فاصله و ...
+        queryParams.append("EnglishName", decodeURIComponent(inputStr));
+      }
+
+      const url = `${BASE_URL}/ProductPage?${queryParams.toString()}`;
       
       return await apiFetch<ProductPageData>(url, {
         cache: "no-store",

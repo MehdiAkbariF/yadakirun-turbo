@@ -1,12 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
-import { Wrench, ShieldCheck, Headphones } from 'lucide-react';
+import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers'; // ✅ اینجا مجاز است چون فایل app/ است
 
-// --- سرویس‌های API ---
+import { Wrench, ShieldCheck, Headphones } from 'lucide-react';
 import { menuService } from '@monorepo/api-client/src/services/menuService';
 import { footerService } from '@monorepo/api-client/src/services/footerService';
-
-// --- کامپوننت کلاینت اصلی ---
+import { userService } from '@monorepo/api-client/src/services/userService';
 import { MainLayoutClient } from '@/src/components/layout/MainLayoutClient';
 
 export default async function DashboardLayout({
@@ -14,7 +14,21 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // 1. دریافت داده‌ها در سرور
+  // 1. دریافت کوکی‌ها در سرور
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore.toString();
+
+  // 2. پاس دادن کوکی به سرویس
+  const user = await userService.getCurrentUser(cookieHeader);
+
+  // 3. بررسی نقش کاربر
+  const isAnonymous = !user || user.roles?.some(role => role.name === 'Anonymous');
+
+  if (isAnonymous) {
+    redirect('/login');
+  }
+
+  // --- ادامه کد بدون تغییر ---
   let menuData = null;
   let footerApiData = null;
 
@@ -32,7 +46,6 @@ export default async function DashboardLayout({
   const safeFooterServices = footerApiData?.saleServices || [];
   const safeFooterLinks = footerApiData?.footerLinks || [];
 
-  // 2. آماده‌سازی داده‌های فوتر
   const footerData = {
     logo: <Image src="/logo.webp" alt="لوگوی یاداکیرون" width={80} height={80} />,
     companyName: "فروشگاه آنلاین لوازم یدکی خودرو",
@@ -67,8 +80,6 @@ export default async function DashboardLayout({
       ]
   };
 
-  // 3. ✅ استفاده از MainLayoutClient برای فعال کردن تمام قابلیت‌های کلاینتی
-  // مقدار showVideoBanner را false می‌گذاریم چون در داشبورد بنر ویدیو نمی‌خواهیم.
   return (
     <MainLayoutClient 
       menuData={menuData} 

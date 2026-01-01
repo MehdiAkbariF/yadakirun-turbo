@@ -6,11 +6,11 @@ import Link from 'next/link';
 import { Container } from '@monorepo/design-system/src/components/organisms/Container/Container';
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
 import { ProgressBar } from '@/src/components/layout/ProgressBar';
-// ❌ ایمپورت useTheme حذف شد
+
 import { ThemeToggle } from '@monorepo/design-system/src/components/atoms/ThemeToggle/ThemeToggle';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
-  // ❌ هوک useTheme و منطق مربوط به آن کامل حذف شد
+  
 
   return (
     <div className="min-h-screen bg-bg-body flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative transition-colors duration-300">

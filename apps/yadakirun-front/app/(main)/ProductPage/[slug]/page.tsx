@@ -1,17 +1,19 @@
 import { notFound } from "next/navigation";
 import { productService } from "@monorepo/api-client/src/services/productService";
-import { ProductPageClient } from "@/src/components/ProductPage/ProductPageClient"; // کامپوننت کلاینت جدید
+import { ProductPageClient } from "@/src/components/ProductPage/ProductPageClient";
 
 interface PageProps {
-  params: Promise<{ ProductId: string }>;
+  
+  params: Promise<{ slug: string }>;
 }
 
-// 1. تولید متادیتا داینامیک برای SEO
+
 export async function generateMetadata({ params }: PageProps) {
   const resolvedParams = await params;
-  const { ProductId } = resolvedParams;
+  
+  const englishName = resolvedParams.slug;
 
-  const productData = await productService.getProductDetails(ProductId);
+  const productData = await productService.getProductDetails(englishName);
 
   if (!productData) {
     return { title: "محصول یافت نشد" };
@@ -26,18 +28,18 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
-// 2. کامپوننت اصلی سرور
+
 export default async function ProductPage({ params }: PageProps) {
   const resolvedParams = await params;
-  const { ProductId } = resolvedParams;
+  
+  const englishName = resolvedParams.slug;
 
-  const productData = await productService.getProductDetails(ProductId);
+  const productData = await productService.getProductDetails(englishName);
 
   if (!productData) {
-    notFound(); // اگر محصول وجود نداشت، صفحه 404
+    notFound(); 
   }
 
-  // پاس دادن داده‌ها به کامپوننت کلاینت
   return (
     <ProductPageClient productData={productData} />
   );

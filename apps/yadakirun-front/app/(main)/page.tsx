@@ -1,5 +1,3 @@
-// مسیر: apps/yadakirun-front/app/(main)/page.tsx
-
 import dynamic from 'next/dynamic';
 import { Metadata } from 'next';
 import { Label } from '@monorepo/design-system/src/components/atoms/Label/Label';
@@ -12,7 +10,6 @@ import { BestSellersSlider } from '@/src/components/layout/BestSellersSlider';
 import { HomeBanner } from '@/src/components/layout/HomeBanner';
 import { homeService } from '@monorepo/api-client/src/services/homeService';
 
-// --- بارگذاری تنبل کامپوننت‌های پایین صفحه ---
 const NewsSection = dynamic(() =>
   import('@/src/components/layout/NewsSection').then(mod => mod.NewsSection),
   { loading: () => <div style={{ height: '400px' }} /> }
@@ -42,6 +39,14 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+// ✅ تابع تولید لینک محصول (بدون تغییر دادن حروف بزرگ و کوچک)
+const getProductLink = (englishTitle: string) => {
+  if (!englishTitle) return '#';
+  // فقط انکد می‌کنیم تا در URL درست کار کند (مثلاً فاصله تبدیل به %20 شود)
+  // اما حروف بزرگ و کوچک را تغییر نمی‌دهیم چون API حساس است
+  return `/ProductPage/${englishTitle}`; // Next.js خودش انکد کردن را هندل می‌کند
+};
+
 // --- داده‌های استاتیک محتوایی ---
 const textContentData = [
     { 
@@ -50,10 +55,7 @@ const textContentData = [
       content: (
         <>
           <Label as="p" size="base" className="mb-4 leading-loose text-justify">
-            اگه صاحب یکی از خودروهای رنو باشی، حتماً می‌دونی که این ماشینا چه کیفیت خوبی دارن؛ چه از نظر سواری، چه از لحاظ مصرف سوخت و حتی دوام موتور. اما با همه‌ی این خوبی‌ها، مثل هر خودروی دیگه‌ای، بالاخره یه روزی به قطعات یدکی نیاز پیدا می‌کنن.
-          </Label>
-          <Label as="p" size="base" className="mb-4 leading-loose text-justify">
-            مخصوصاً وقتی زمان تعویض لنت ترمز، تسمه تایم یا فیلتر روغن می‌رسه، تازه می‌فهمی که انتخاب قطعه درست چقدر مهمه. چون استفاده از یه قطعه نامرغوب می‌تونه به کل سیستم ماشین آسیب بزنه و کلی هزینه رو دستت بذاره.
+            اگه صاحب یکی از خودروهای رنو باشی، حتماً می‌دونی که این ماشینا چه کیفیت خوبی دارن...
           </Label>
         </>
       ) 
@@ -64,7 +66,7 @@ const textContentData = [
       content: (
         <>
           <Label as="p" size="base" className="mb-4 leading-loose text-justify">
-            فروشگاه اینترنتی یدکی‌ران با هدف ارائه قطعات اصلی و باکیفیت برای انواع خودروهای داخلی و خارجی راه‌اندازی شده است. ما با حذف واسطه‌ها تلاش می‌کنیم تا محصولات را با بهترین قیمت به دست شما برسانیم.
+            فروشگاه اینترنتی یدکی‌ران با هدف ارائه قطعات اصلی و باکیفیت...
           </Label>
           <ul className="list-disc pr-6 mb-4 space-y-2">
             <li><Label as="span">ضمانت بازگشت وجه در صورت عدم رضایت</Label></li>
@@ -77,7 +79,6 @@ const textContentData = [
     },
 ];
 
-// داده‌های استاتیک برای برندها (هنوز در API نیست)
 const brandCardsData = [
   { href: "/brand/1", imgSrc: "/geely.webp", title: "جیلی" },
   { href: "/brand/2", imgSrc: "/jack.png", title: "جک" },
@@ -96,23 +97,19 @@ const brandCardsData = [
 export default async function HomePage() {
   const BASE_IMG_URL = "https://api-yadakirun.yadakchi.com";
   
-  // ۱. دریافت داده از API
   const homeData = await homeService.getHomePageData();
 
-  // ۲. پردازش داده‌ها
-  // --- دسته‌بندی‌ها (Dynamic Category Data) ---
   const categoryData = homeData?.homePageLinks.map(link => ({
-    href: link.url || '#', // لینک از API
+    href: link.url || '#',
     title: link.title,
-    // هندل کردن آدرس عکس (اگر نسبی باشد، بیس URL اضافه می‌شود)
     imgSrc: link.imageUrl.startsWith('http') ? link.imageUrl : `${BASE_IMG_URL}${link.imageUrl}`
   })) || [];
 
-  // --- محصولات تخفیف‌دار ---
   const specialOfferProducts = homeData?.discountedProducts.map(p => ({
     id: p.id,
     title: p.title,
-    href: `/ProductPage/${p.id}`,
+    // ✅ لینک‌دهی دقیق بر اساس English Title
+    href: getProductLink(p.englishTitle),
     imgSrc: `${BASE_IMG_URL}${p.imageUrl}`,
     price: p.priceAfterDiscount,
     originalPrice: p.price,
@@ -120,11 +117,11 @@ export default async function HomePage() {
     carName: p.discountPercent > 0 ? `${p.discountPercent}% تخفیف` : "فروش ویژه",
   })) || [];
 
-  // --- پرفروش‌ترین‌ها ---
   const bestSellerItems = homeData?.mostSoldProducts.map(p => ({
     id: String(p.id),
     title: p.title,
-    href: `/ProductPage/${p.id}`,
+    // ✅ لینک‌دهی دقیق
+    href: getProductLink(p.englishTitle),
     imgSrc: `${BASE_IMG_URL}${p.imageUrl}`,
     price: p.priceAfterDiscount,
     originalPrice: p.price,
@@ -132,11 +129,11 @@ export default async function HomePage() {
     badgeText: "پرفروش",
   })) || [];
 
-  // --- جدیدترین‌ها ---
   const newestProductItems = homeData?.mostRecentProducts.map(p => ({
     id: String(p.id),
     title: p.title,
-    href: `/ProductPage/${p.id}`,
+    // ✅ لینک‌دهی دقیق
+    href: getProductLink(p.englishTitle),
     imgSrc: `${BASE_IMG_URL}${p.imageUrl}`,
     price: p.priceAfterDiscount,
     originalPrice: p.price,
@@ -144,7 +141,6 @@ export default async function HomePage() {
     badgeText: "جدیدترین",
   })) || [];
 
-  // --- اخبار وبلاگ ---
   const newsItems = homeData?.mostRecentBlogPosts.map(post => ({
     href: `/blog/${post.id}`,
     title: post.title,
@@ -153,11 +149,9 @@ export default async function HomePage() {
     description: `این مقاله را در ${post.readingTime} دقیقه بخوانید...`,
   })) || [];
 
-  // ۳. لاجیک نمایش دکمه "بیشتر" برای دسته‌بندی‌ها
   const moreCount = 10;
   const moreHref = "/categories";
   
-  // اگر دیتا وجود داشت، دکمه بیشتر را اضافه کن
   const hasCategories = categoryData.length > 0;
   
   const desktopItems = hasCategories ? [
@@ -174,7 +168,6 @@ export default async function HomePage() {
     <>
       <HomeBanner />
 
-      {/* ✅ نمایش داینامیک دسته‌بندی‌ها (homePageLinks) */}
       {hasCategories && (
         <Container>
           <section className="my-10">
