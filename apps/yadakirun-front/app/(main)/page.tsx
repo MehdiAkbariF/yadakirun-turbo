@@ -142,7 +142,7 @@ export default async function HomePage() {
   })) || [];
 
   const newsItems = homeData?.mostRecentBlogPosts.map(post => ({
-    href: `/blog/${post.id}`,
+    href: `/blog/${post.englishTitle}`,
     title: post.title,
     imgSrc: `${BASE_IMG_URL}${post.coverUrl}`,
     date: new Date(post.createDate).toLocaleDateString('fa-IR', { day: 'numeric', month: 'long', year: 'numeric' }),

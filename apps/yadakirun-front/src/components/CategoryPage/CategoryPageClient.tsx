@@ -76,7 +76,7 @@ export function CategoryPageClient({ categoryData, initialProducts }: CategoryPa
       rating: p.rating,
       brand: (p as any).carManufacturer?.name || "عمومی",
       inStock: p.stockStatus,
-      href: `/ProductPage/${p.id}`,
+      href: `/ProductPage/${p.englishTitle}`,
       onAddToCart: () => handleAddToCart(p.id),
     };
   });
@@ -85,7 +85,7 @@ export function CategoryPageClient({ categoryData, initialProducts }: CategoryPa
     if (!categoryData.cars) return [];
     return categoryData.cars.map(car => ({
       title: car.modelName,
-      href: `/CarPage/${car.id}`,
+      href: `/CarPage/${car.englishName}`,
       imgSrc: `https://api-yadakirun.yadakchi.com${car.imageUrl}`,
     }));
   }, [categoryData.cars]);
@@ -151,7 +151,7 @@ export function CategoryPageClient({ categoryData, initialProducts }: CategoryPa
                <Pagination 
                  currentPage={initialProducts.currentPage} 
                  totalPages={initialProducts.totalPages} 
-                 baseUrl={`/ProductCategoryPage/${params.ProductCategoryId}`} 
+                 baseUrl={`/ProductCategoryPage/${params.englishName}`} 
                /> 
              </div>
           </div>

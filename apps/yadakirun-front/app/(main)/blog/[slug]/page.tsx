@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Clock, Calendar, Folder, MessageSquare, ChevronLeft } from 'lucide-react';
 import { blogService } from '@monorepo/api-client/src/services/blogService';
 
@@ -40,7 +40,7 @@ interface PageProps {
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
 
-  // ۱. دریافت داده‌ها از API (Slug در واقع ID است)
+  // ۱. دریافت داده‌ها (هوشمند: با ID یا Title)
   const apiData = await blogService.getBlogPostDetail(slug);
 
   if (!apiData) {
@@ -49,12 +49,23 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const { post, blogCategories, mostViewedPosts, relatedPosts } = apiData;
 
-  // تبدیل داده‌های سایدبار برای اسلایدر اخبار (به عنوان نمونه)
+  // ۲. ✅ لاجیک ریدایرکت سئو (SEO Redirect)
+  // فرض بر این است که Title مقاله همان Slug مورد نظر ماست (چون EnglishTitle در تایپ‌ها نبود)
+  // اگر فیلد دیگری برای اسلاگ دارید، آن را جایگزین کنید.
+  const currentSlug = decodeURIComponent(slug);
+  const standardSlug = post.title; // یا post.englishTitle اگر وجود دارد
+
+  // اگر Slug فعلی با Slug استاندارد متفاوت است (مثلاً کاربر ID وارد کرده)
+  if (standardSlug && currentSlug !== standardSlug && !/^\d+$/.test(standardSlug)) {
+     // redirect(`/blog/${standardSlug}`);
+  }
+
+  // تبدیل داده‌های سایدبار
   const sidebarNewsItems = mostViewedPosts.map(p => ({
     title: p.title,
     date: new Date(p.createDate).toLocaleDateString('fa-IR'),
     imgSrc: p.coverUrl ? `${BASE_IMG_URL}${p.coverUrl}` : '/placeholder.png',
-    href: `/blog/${p.id}`
+    href: `/blog/${p.id}` // اینجا هم می‌توانید به Slug تغییر دهید اگر می‌خواهید
   }));
 
   async function handleAddComment(data: any) {
@@ -116,10 +127,6 @@ export default async function BlogPostPage({ params }: PageProps) {
 
               {/* Article Content Body */}
               <div className="p-6 md:p-10">
-                 {/* 
-                    چون API محتوا را به صورت یک رشته متنی (احتمالا شامل HTML) برمی‌گرداند،
-                    از whitespace-pre-line برای حفظ ساختار متن یا در صورت وجود تگ، از dangerouslySetInnerHTML استفاده می‌کنیم.
-                 */}
                  <div className="prose prose-lg max-w-none text-justify leading-loose text-primary">
                     <div 
                       className="whitespace-pre-line"
@@ -153,7 +160,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                       {relatedPosts.map((related) => (
                         <BlogCard
                            key={related.id}
-                           href={`/blog/${related.id}`}
+                           href={`/blog/${related.id}`} // یا related.title
                            title={related.title}
                            imgSrc={related.coverUrl ? `${BASE_IMG_URL}${related.coverUrl}` : "/placeholder.png"}
                            category={related.blogCategory?.title || "خواندنی"}
@@ -167,7 +174,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             {/* Comments Section */}
             <div className="mt-16" id="comments">
                <CommentsSection 
-                 comments={[]} // در صورتی که API کامنت‌ها جداست، اینجا متصل شود
+                 comments={[]} 
                  stats={{ reviewCount: post.views, averageRating: 5 }}
                  onAddComment={handleAddComment}
                />

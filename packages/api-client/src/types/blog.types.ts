@@ -25,6 +25,7 @@ export interface BlogPostItem {
   coverUrl: string;
   readingTime: number;
   createDate: string;
+
   blogCategory: {
     id: number;
     title: string;

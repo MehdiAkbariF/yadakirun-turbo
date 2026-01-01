@@ -8,21 +8,15 @@ interface NextFetchRequestConfig extends RequestInit {
   };
 }
 
-// تنظیم آدرس پایه برای بخش Front
 const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
 
-/**
- * تابع کمکی برای درخواست‌های بخش بلاگ
- */
 async function blogFetch<T>(endpoint: string, options: NextFetchRequestConfig = {}): Promise<T | null> {
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       ...options,
       headers: {
         'Accept': 'application/json',
-        // 'Content-Type': 'application/json', // برای GET الزامی نیست اما بودنش ضرری ندارد
         ...options.headers,
-        // ❌ مطمئن شدیم که هیچ هدر Authorization اینجا اضافه نمی‌شود
       },
     });
 
@@ -47,9 +41,6 @@ export const blogService = {
     });
   },
 
-  /**
-   * دریافت لیست مقالات با صفحه‌بندی
-   */
   getBlogPosts: async (page = 1, pageSize = 10): Promise<PaginatedBlogResponse | null> => {
     return blogFetch<PaginatedBlogResponse>(`/BlogPosts?PageNumber=${page}&PageSize=${pageSize}`, {
       next: { revalidate: 3600 },
@@ -57,10 +48,20 @@ export const blogService = {
   },
 
   /**
-   * دریافت جزئیات کامل یک مقاله بر اساس ID
+   * دریافت جزئیات یک پست بلاگ
+   * اگر ورودی عدد باشد -> Id
+   * اگر ورودی متن باشد -> Title (یا فیلد مشابه در API)
    */
-  getBlogPostDetail: async (id: string | number): Promise<BlogPostPageResponse | null> => {
-    return blogFetch<BlogPostPageResponse>(`/BlogPostPage?Id=${id}`, {
+  getBlogPostDetail: async (slugOrId: string | number): Promise<BlogPostPageResponse | null> => {
+    const inputStr = String(slugOrId);
+    // تشخیص عدد بودن ورودی
+    const isId = /^\d+$/.test(inputStr);
+    
+    // نکته: در اینجا فرض می‌کنیم API شما از پارامتر "Title" برای جستجوی متنی پشتیبانی می‌کند
+    // اگر پارامتر دیگری دارد (مثل Slug یا EnglishTitle)، آن را جایگزین کنید.
+    const queryParam = isId ? `Id=${inputStr}` : `Title=${encodeURIComponent(inputStr)}`;
+
+    return blogFetch<BlogPostPageResponse>(`/BlogPostPage?${queryParam}`, {
       next: { revalidate: 3600 },
     });
   },

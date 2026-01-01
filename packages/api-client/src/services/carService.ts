@@ -10,20 +10,12 @@ interface NextFetchRequestConfig extends RequestInit {
 
 const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
 
-// ✅ تابع کمکی برای استخراج ID از Slug (برای پشتیبانی از URLهای سئو فرندلی)
-const extractIdFromSlug = (slugOrId: string | number): string => {
-  if (!slugOrId) return '';
-  const parts = String(slugOrId).split('-');
-  return parts[0];
-};
-
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
   try {
     const response = await fetch(url, {
       ...options,
       headers: {
         'Accept': 'application/json',
-        // ❌ بدون Authorization
         ...options.headers,
       },
     });
@@ -44,12 +36,25 @@ async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): P
 export const carService = {
   /**
    * دریافت جزئیات یک خودرو
-   * آدرس نهایی: [API_URL]/api/Front/CarPage
+   * اگر ورودی عدد باشد -> CarId
+   * اگر ورودی متن باشد -> EnglishName (یا EnglishTitle)
    */
   getCarDetails: async (slugOrId: string | number): Promise<CarPageData | null> => {
     try {
-      const id = extractIdFromSlug(slugOrId);
-      const url = `${BASE_URL}/CarPage?CarId=${id}`;
+      const inputStr = String(slugOrId);
+      // تشخیص عدد بودن ورودی
+      const isId = /^\d+$/.test(inputStr);
+      
+      const queryParams = new URLSearchParams();
+
+      if (isId) {
+        queryParams.append("CarId", inputStr);
+      } else {
+        // دیکد کردن برای تبدیل کاراکترهای URL
+        queryParams.append("EnglishName", decodeURIComponent(inputStr));
+      }
+
+      const url = `${BASE_URL}/CarPage?${queryParams.toString()}`;
       
       return await apiFetch<CarPageData>(url, { 
         next: { revalidate: 3600 } 
@@ -61,16 +66,16 @@ export const carService = {
 
   /**
    * دریافت محصولات یک خودرو
-   * آدرس نهایی: [API_URL]/api/Front/Products
+   * نکته: این متد انتظار دارد ID واقعی خودرو ارسال شود
    */
   getCarProducts: async (
-    slugOrId: string | number, 
+    carId: string | number, 
     page = 1, 
     pageSize = 30
   ): Promise<PaginatedResponse<Product>> => {
     try {
-      const id = extractIdFromSlug(slugOrId);
-      const url = `${BASE_URL}/Products?CarId=${id}&PageNumber=${page}&PageSize=${pageSize}`;
+      // اینجا فرض می‌کنیم همیشه ID ارسال می‌شود (چون در Page کنترل می‌کنیم)
+      const url = `${BASE_URL}/Products?CarId=${carId}&PageNumber=${page}&PageSize=${pageSize}`;
       
       return await apiFetch<PaginatedResponse<Product>>(url, { 
         cache: "no-store" 

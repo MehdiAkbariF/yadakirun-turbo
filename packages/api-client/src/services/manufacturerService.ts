@@ -11,20 +11,12 @@ interface NextFetchRequestConfig extends RequestInit {
 
 const BASE_URL = `${API_CONFIG.BASE_URL}/Front`;
 
-// ✅ تابع کمکی برای استخراج ID از Slug (مثال: "5-bmw" -> "5")
-const extractIdFromSlug = (slugOrId: string | number): string => {
-  if (!slugOrId) return '';
-  const parts = String(slugOrId).split('-');
-  return parts[0];
-};
-
 async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): Promise<T> {
   try {
     const response = await fetch(url, {
       ...options,
       headers: {
         'Accept': 'application/json',
-        // ❌ بدون Authorization
         ...options.headers,
       },
     });
@@ -44,16 +36,29 @@ async function apiFetch<T>(url: string, options: NextFetchRequestConfig = {}): P
 
 export const manufacturerService = {
   /**
-   * دریافت جزئیات یک برند
-   * آدرس نهایی: [API_URL]/api/Front/CarManufacturerPage
+   * دریافت جزئیات یک برند (تولیدکننده)
+   * اگر ورودی عدد باشد -> CarManufacturerId
+   * اگر ورودی متن باشد -> EnglishName
    */
   getManufacturerDetails: async (slugOrId: string | number): Promise<ManufacturerPageData | null> => {
     try {
-      const id = extractIdFromSlug(slugOrId);
-      const url = `${BASE_URL}/CarManufacturerPage?CarManufacturerId=${id}`;
+      const inputStr = String(slugOrId);
+      // تشخیص اینکه آیا ورودی فقط شامل اعداد است (ID) یا خیر (Slug)
+      const isId = /^\d+$/.test(inputStr);
+      
+      const queryParams = new URLSearchParams();
+
+      if (isId) {
+        queryParams.append("CarManufacturerId", inputStr);
+      } else {
+        // دیکد کردن نام برای اطمینان (تبدیل %20 به فاصله و ...)
+        queryParams.append("EnglishName", decodeURIComponent(inputStr));
+      }
+
+      const url = `${BASE_URL}/CarManufacturerPage?${queryParams.toString()}`;
       
       return await apiFetch<ManufacturerPageData>(url, {
-        next: { revalidate: 86400 }, // کش برای ۲۴ ساعت
+        next: { revalidate: 86400 }, 
       });
     } catch (error) {
       console.error("Error fetching manufacturer details:", error);
@@ -63,16 +68,16 @@ export const manufacturerService = {
 
   /**
    * دریافت محصولات یک برند
-   * آدرس نهایی: [API_URL]/api/Front/Products
+   * نکته: برای اطمینان، همیشه ID واقعی برند باید به این تابع پاس داده شود
    */
   getManufacturerProducts: async (
-    slugOrId: string | number, 
+    manufacturerId: string | number, 
     page = 1, 
     pageSize = 30
   ): Promise<PaginatedResponse<Product>> => {
     try {
-      const id = extractIdFromSlug(slugOrId);
-      const url = `${BASE_URL}/Products?CarManufacturerId=${id}&PageNumber=${page}&PageSize=${pageSize}`;
+      // در اینجا فرض می‌کنیم همیشه ID ارسال می‌شود (چون در Page کنترل می‌کنیم)
+      const url = `${BASE_URL}/Products?CarManufacturerId=${manufacturerId}&PageNumber=${page}&PageSize=${pageSize}`;
       
       return await apiFetch<PaginatedResponse<Product>>(url, { 
         cache: "no-store" 

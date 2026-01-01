@@ -30,7 +30,7 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
 
   const { totalQuantity } = useBasketStore();
   const { openCartDrawer } = useUIStore();
-  
+
   const { isAuthenticated, isLoading, user } = useAuth();
 
   useEffect(() => {
@@ -70,13 +70,14 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
               title: brand.name,
               // ✅ استفاده از EnglishName برای لینک برند
               href: `/CarManufacturerPage/${brand.englishName || brand.id}`,
-              children: brand.cars?.map((car) => ({
-                id: `car-${car.id}`,
-                title: car.modelName,
-                // ✅ استفاده از EnglishName برای لینک خودرو (CarPage)
-                // توجه: اگر نام پارامتر صفحه خودرو [slug] است، این لینک درست است
-                href: `/CarPage/${car.englishName || car.id}`,
-              })) || [],
+              children:
+                brand.cars?.map((car) => ({
+                  id: `car-${car.id}`,
+                  title: car.modelName,
+                  // ✅ استفاده از EnglishName برای لینک خودرو (CarPage)
+                  // توجه: اگر نام پارامتر صفحه خودرو [slug] است، این لینک درست است
+                  href: `/CarPage/${car.englishName || car.id}`,
+                })) || [],
             })),
           },
         ],
@@ -88,26 +89,36 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
   }, [menuData]);
 
   // لاجیک تشخیص کاربر ناشناس
-  const isAnonymousUser = user?.roles?.some((role: any) => role.name === 'Anonymous');
+  const isAnonymousUser = user?.roles?.some(
+    (role: any) => role.name === "Anonymous"
+  );
   const showProfileLink = isAuthenticated && !isAnonymousUser;
 
   const userLinkComponent = isLoading ? (
     <div className="header-action header-action--user-link w-[110px] h-[22px]" />
   ) : (
-    <Link 
-      href={showProfileLink ? "/dashboard" : "/login"} 
+    <Link
+      href={showProfileLink ? "/dashboard" : "/login"}
       className="header-action header-action--user-link"
     >
       <User size={22} />
-      <Label as="span" size="sm" weight="semi-bold" color="primary" className="hidden md:inline">
+      <Label
+        as="span"
+        size="sm"
+        weight="semi-bold"
+        color="primary"
+        className="hidden md:inline"
+      >
         {showProfileLink ? "پروفایل من" : "ورود | ثبت‌نام"}
       </Label>
     </Link>
   );
 
   const megaMenuItem = navigationItems.find((item) => item.id === "categories");
-  const categoriesForMegaMenu = megaMenuItem?.children?.find((c: any) => c.id === "parts")?.children || [];
-  const brandsForMegaMenu = megaMenuItem?.children?.find((c: any) => c.id === "brands")?.children || [];
+  const categoriesForMegaMenu =
+    megaMenuItem?.children?.find((c: any) => c.id === "parts")?.children || [];
+  const brandsForMegaMenu =
+    megaMenuItem?.children?.find((c: any) => c.id === "brands")?.children || [];
 
   return (
     <Header
@@ -116,10 +127,17 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
       linkComponent={Link}
       logo={
         <Link href="/">
-          <Image src="/logo.webp" alt="لوگوی یدکی‌ران" width={150} height={50} className="h-auto" priority />
+          <Image
+            src="/logo.webp"
+            alt="لوگوی یدکی‌ران"
+            width={150}
+            height={50}
+            className="h-auto"
+            priority
+          />
         </Link>
       }
-       megaMenuSlot={
+      megaMenuSlot={
         megaMenuItem && (
           <MegaMenu
             triggerText={megaMenuItem.title}
@@ -134,9 +152,36 @@ export const MainHeader = ({ menuData }: MainHeaderProps) => {
         )
       }
       navLinks={navigationItems}
-      searchSlot={<div className="header-action header-action--search"><Input id="header-search" type="search" placeholder="جستجو..." leftIcon={<Search size={18} />} containerClassName="w-48 xl:w-72" /></div>}
-      cartSlot={<button className="header-action header-action--cart relative" onClick={openCartDrawer}><ShoppingCart size={22} />{totalQuantity > 0 && <span className="cart-badge">{toPersianDigits(totalQuantity)}</span>}</button>}
-      themeToggleSlot={<ThemeToggle variant="icon" className="header-action header-action--theme-toggle" isDarkMode={theme === "dark-blue"} onToggle={toggleTheme} />}
+      searchSlot={
+        <div className="header-action header-action--search">
+          <Input
+            id="header-search"
+            type="search"
+            placeholder="جستجو..."
+            leftIcon={<Search size={18} />}
+            containerClassName="w-48 xl:w-72"
+          />
+        </div>
+      }
+      cartSlot={
+        <button
+          className="header-action header-action--cart relative"
+          onClick={openCartDrawer}
+        >
+          <ShoppingCart size={22} />
+          {totalQuantity > 0 && (
+            <span className="cart-badge">{toPersianDigits(totalQuantity)}</span>
+          )}
+        </button>
+      }
+      themeToggleSlot={
+        <ThemeToggle
+          variant="icon"
+          className="header-action header-action--theme-toggle"
+          isDarkMode={theme === "dark-blue"}
+          onToggle={toggleTheme}
+        />
+      }
       userSlot={userLinkComponent}
     />
   );

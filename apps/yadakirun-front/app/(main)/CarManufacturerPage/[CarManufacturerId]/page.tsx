@@ -1,18 +1,20 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { manufacturerService } from "@monorepo/api-client/src/services/manufacturerService";
-import { ManufacturerPageClient } from "@/src/components/BrandPage/ManufacturerPageClient"; // ما همچنان از همان کامپوننت کلاینت استفاده می‌کنیم
+import { ManufacturerPageClient } from "@/src/components/BrandPage/ManufacturerPageClient";
 
-// ✨ 1. اینترفیس پراپس‌ها برای مطابقت با نام پوشه جدید به‌روز شد
 interface PageProps {
+  // پارامتر ورودی با نام پوشه [CarManufacturerId] یکی است
+  // اما می‌تواند حاوی ID یا EnglishName باشد
   params: Promise<{ CarManufacturerId: string }>;
+  searchParams: Promise<{ page?: string }>;
 }
 
-// ✨ 2. تولید متادیتا داینامیک (SEO) با پارامتر جدید
 export async function generateMetadata({ params }: PageProps) {
   const resolvedParams = await params;
   const { CarManufacturerId } = resolvedParams;
 
-  const manufacturerData = await manufacturerService.getManufacturerDetails(CarManufacturerId);
+  const manufacturerData =
+    await manufacturerService.getManufacturerDetails(CarManufacturerId);
 
   if (!manufacturerData) {
     return { title: "برند یافت نشد" };
@@ -27,27 +29,49 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
-export default async function CarManufacturerPage({ params, searchParams }: PageProps) {
+export default async function CarManufacturerPage({
+  params,
+  searchParams,
+}: PageProps) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
-  
+
   const { CarManufacturerId } = resolvedParams;
   const currentPage = Number(resolvedSearchParams.page) || 1;
 
-  // ✨ 2. اجرای موازی هر دو درخواست API
-  const [manufacturerData, productsData] = await Promise.all([
-    manufacturerService.getManufacturerDetails(CarManufacturerId),
-    manufacturerService.getManufacturerProducts(CarManufacturerId, currentPage)
-  ]);
+  // 1. ابتدا دریافت اطلاعات برند (با قابلیت پشتیبانی از Slug یا ID)
+  const manufacturerData =
+    await manufacturerService.getManufacturerDetails(CarManufacturerId);
 
   if (!manufacturerData) {
     notFound();
   }
 
- 
+  // 2. دریافت محصولات با استفاده از ID واقعی و قطعی برند
+  const productsData = await manufacturerService.getManufacturerProducts(
+    manufacturerData.id,
+    currentPage
+  );
+
+  // 3. ✅ لاجیک ریدایرکت سئو (SEO Redirect Logic)
+  // اگر کاربر با ID وارد شده باشد (/12) ولی برند دارای نام انگلیسی باشد (/bmw)، ریدایرکت می‌شود.
+  const currentSlug = decodeURIComponent(CarManufacturerId);
+  // فرض بر این است که API فیلدی به نام englishName یا englishTitle برمی‌گرداند (بسته به تایپ‌های شما)
+  // در اینجا از englishName استفاده شده، اگر در تایپ manufacturer.types.ts نامش englishTitle است، تغییر دهید.
+  const standardSlug =
+    (manufacturerData as any).englishName ||
+    (manufacturerData as any).englishTitle;
+
+  if (standardSlug && currentSlug !== standardSlug) {
+    // فقط در صفحه اول ریدایرکت می‌کنیم تا در صفحه‌بندی اختلال ایجاد نشود
+    if (currentPage === 1) {
+      redirect(`/CarManufacturerPage/${standardSlug}`);
+    }
+  }
+
   return (
-    <ManufacturerPageClient 
-      manufacturerData={manufacturerData} 
+    <ManufacturerPageClient
+      manufacturerData={manufacturerData}
       initialProducts={productsData}
     />
   );

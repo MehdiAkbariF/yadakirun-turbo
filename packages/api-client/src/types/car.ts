@@ -15,6 +15,7 @@ export interface CarPageData {
   metaTitle: string;
   metaDescription: string;
   canonicalUrl: string;
+   englishTitle?: string;
   carManufacturer: CarManufacturer;
   // این فیلد در آینده از بک‌اند می‌آید
   description?: string; 

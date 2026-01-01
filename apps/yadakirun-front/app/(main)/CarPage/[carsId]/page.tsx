@@ -1,16 +1,14 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { carService } from "@monorepo/api-client/src/services/carService";
 import { CarPageClient } from "@/src/components/CarPage/CarPage";
 
-// ✅ تایپ پراپس‌ها را اصلاح می‌کنیم تا Promise بودن را منعکس کند
 interface PageProps {
+  // نام پارامتر با نام پوشه [carsId] یکی است
   params: Promise<{ carsId: string }>;
   searchParams: Promise<{ page?: string }>;
 }
 
-// ✅ 1. تولید متادیتا داینامیک (SEO)
 export async function generateMetadata({ params }: PageProps) {
-  // ✨✨✨ اصلاح اصلی: ابتدا params را await می‌کنیم ✨✨✨
   const resolvedParams = await params;
   const { carsId } = resolvedParams;
 
@@ -29,27 +27,35 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
-// ✅ 2. کامپوننت اصلی سرور (فقط برای دریافت دیتا)
 export default async function CarPage({ params, searchParams }: PageProps) {
-  // ✨✨✨ اصلاح اصلی: await کردن هر دو پراپ ✨✨✨
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
   
-  const { carsId } = resolvedParams;
+  const { carsId } = resolvedParams; // می‌تواند ID یا Slug باشد
   const currentPage = Number(resolvedSearchParams.page) || 1;
 
-  // اجرای موازی درخواست‌ها برای سرعت بیشتر
-  const [carData, productsData] = await Promise.all([
-    carService.getCarDetails(carsId),
-    carService.getCarProducts(carsId, currentPage)
-  ]);
+  // 1. ابتدا دریافت جزئیات خودرو (هوشمند: با ID یا Slug)
+  const carData = await carService.getCarDetails(carsId);
 
-  // اگر اطلاعات خودرو وجود نداشت، صفحه 404 نمایش داده شود
   if (!carData) {
     notFound();
   }
 
-  // پاس دادن داده‌های اولیه به کامپوننت کلاینت
+  // 2. دریافت محصولات با استفاده از ID واقعی خودرو
+  const productsData = await carService.getCarProducts(carData.id, currentPage);
+
+  // 3. ✅ لاجیک ریدایرکت سئو (SEO Redirect)
+  const currentSlug = decodeURIComponent(carsId);
+  // فرض بر این است که API فیلدی به نام englishName یا englishTitle دارد
+  const standardSlug = (carData as any).englishName || (carData as any).englishTitle;
+
+  if (standardSlug && currentSlug !== standardSlug) {
+    // فقط در صفحه اول ریدایرکت می‌کنیم
+    if (currentPage === 1) {
+       redirect(`/CarPage/${standardSlug}`);
+    }
+  }
+
   return (
     <CarPageClient 
       carData={carData} 
